@@ -1,0 +1,23 @@
+# Real project material belongs in approved project storage.
+project-data/
+projects/
+private/
+inputs/
+outputs/
+upload/
+*.pdf
+*.dwg
+*.dxf
+*.xlsx
+*.xls
+*.zip
+*.bak
+*.tmp
+.env
+.env.*
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,38 @@
+---
+title: "Fixture Type"
+page_type: canonical_model
+page_status: draft
+confidence_level: medium
+domain_primary: low-voltage-lighting
+ai_role: model_contract
+invocation_triggers:
+  systems_present: [low_voltage_lighting]
+decision_axes: [model_semantics, traceability]
+related_pages:
+  - "README.md"
+  - "../../validation/README.md"
+---
+
+# Fixture Type
+
+## Purpose and Scope
+
+Original shared schedule facts for one fixture mark.
+
+## Fields and Meaning
+
+Location: `facts.fixture_types[]`
+
+`id`, `type_mark`, `description`, `source_input_watts`, `source_voltage`, `driver_notes`, `source_ref_ids`.
+
+## Relationships
+
+Referenced by each physical occurrence and its separate LV selection.
+
+## Constraints and Validation
+
+Preserve original wattage and driver notes. Missing source wattage may remain null when the LV load is independently confirmed. Duplicate marks must be normalized explicitly.
+
+## Sources and Stewardship
+
+Derived from the October 2026 LV lighting handoff; field shape and validation details are draft implementation decisions. Owner: KIS Solutions. Validate against one real project before treating this contract as stable.

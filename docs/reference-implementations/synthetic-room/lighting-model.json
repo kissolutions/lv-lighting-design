@@ -1,0 +1,275 @@
+{
+  "schema_version": "0.1.0",
+  "project": {
+    "id": "SYNTHETIC-DEMO",
+    "name": "Synthetic four-fixture room; no client data",
+    "model_revision": "DEMO-01",
+    "stage": "checkpoint",
+    "takeoff_status": "reconciled"
+  },
+  "source_documents": [
+    {
+      "id": "DOC-DEMO",
+      "filename": "SYNTHETIC-NO-ACTUAL-PDF",
+      "revision": "DEMO-01",
+      "storage_uri": null
+    }
+  ],
+  "drawing_pages": [
+    {
+      "id": "PAGE-DEMO",
+      "source_document_id": "DOC-DEMO",
+      "sheet_id": "E-DEMO",
+      "revision": "DEMO-01",
+      "page_index": 0,
+      "width_pt": 2592,
+      "height_pt": 1728,
+      "pdf_rotation_deg": 0
+    }
+  ],
+  "source_references": [
+    {
+      "id": "REF-DEMO-SCHEDULE",
+      "source_document_id": "DOC-DEMO",
+      "drawing_page_id": "PAGE-DEMO",
+      "locator": "Synthetic schedule",
+      "statement": "L3 source fixture, 20 W. Four instances in Room 204."
+    },
+    {
+      "id": "REF-DEMO-PLAN",
+      "source_document_id": "DOC-DEMO",
+      "drawing_page_id": "PAGE-DEMO",
+      "locator": "Synthetic Room 204 layout",
+      "statement": "A1-A4 are in one confirmed control zone Z-204."
+    },
+    {
+      "id": "REF-DEMO-PLATFORM",
+      "source_document_id": "DOC-DEMO",
+      "drawing_page_id": null,
+      "locator": "Synthetic device capacity and LV selection assumptions",
+      "statement": "Demonstration only: 20 W LV input, group DEMO-COMPATIBLE, one 100 W channel and 90 W aggregate design budget."
+    }
+  ],
+  "facts": {
+    "spaces": [
+      {
+        "id": "SPACE-204",
+        "name": "Room 204",
+        "drawing_page_ids": [
+          "PAGE-DEMO"
+        ],
+        "source_ref_ids": [
+          "REF-DEMO-PLAN"
+        ]
+      }
+    ],
+    "control_zones": [
+      {
+        "id": "Z-204",
+        "label": "Room 204 general lighting",
+        "space_id": "SPACE-204",
+        "intent_status": "confirmed",
+        "source_ref_ids": [
+          "REF-DEMO-PLAN"
+        ]
+      }
+    ],
+    "fixture_types": [
+      {
+        "id": "TYPE-L3",
+        "type_mark": "L3",
+        "description": "Synthetic luminaire",
+        "source_input_watts": 20,
+        "source_voltage": null,
+        "driver_notes": "Synthetic evidence only",
+        "source_ref_ids": [
+          "REF-DEMO-SCHEDULE"
+        ]
+      }
+    ],
+    "fixture_instances": [
+      {
+        "id": "A1",
+        "fixture_type_id": "TYPE-L3",
+        "space_id": "SPACE-204",
+        "source_control_zone_id": "Z-204",
+        "drawing_page_id": "PAGE-DEMO",
+        "drawing_anchor": {
+          "x_pt": 300,
+          "y_pt": 400
+        },
+        "source_ref_ids": [
+          "REF-DEMO-PLAN"
+        ]
+      },
+      {
+        "id": "A2",
+        "fixture_type_id": "TYPE-L3",
+        "space_id": "SPACE-204",
+        "source_control_zone_id": "Z-204",
+        "drawing_page_id": "PAGE-DEMO",
+        "drawing_anchor": {
+          "x_pt": 400,
+          "y_pt": 400
+        },
+        "source_ref_ids": [
+          "REF-DEMO-PLAN"
+        ]
+      },
+      {
+        "id": "A3",
+        "fixture_type_id": "TYPE-L3",
+        "space_id": "SPACE-204",
+        "source_control_zone_id": "Z-204",
+        "drawing_page_id": "PAGE-DEMO",
+        "drawing_anchor": {
+          "x_pt": 500,
+          "y_pt": 400
+        },
+        "source_ref_ids": [
+          "REF-DEMO-PLAN"
+        ]
+      },
+      {
+        "id": "A4",
+        "fixture_type_id": "TYPE-L3",
+        "space_id": "SPACE-204",
+        "source_control_zone_id": "Z-204",
+        "drawing_page_id": "PAGE-DEMO",
+        "drawing_anchor": {
+          "x_pt": 600,
+          "y_pt": 400
+        },
+        "source_ref_ids": [
+          "REF-DEMO-PLAN"
+        ]
+      }
+    ]
+  },
+  "design": {
+    "fixture_selections": [
+      {
+        "id": "LV-L3",
+        "fixture_type_id": "TYPE-L3",
+        "lv_description": "Synthetic LV version",
+        "lv_input_watts": 20,
+        "compatibility_group": "DEMO-COMPATIBLE",
+        "status": "confirmed",
+        "source_ref_ids": [
+          "REF-DEMO-PLATFORM"
+        ],
+        "decision_id": "DEC-SELECTION"
+      }
+    ],
+    "fixture_scope": [
+      {
+        "id": "SCOPE-A1",
+        "fixture_id": "A1",
+        "disposition": "included",
+        "reason": null,
+        "decision_id": "DEC-SCOPE"
+      },
+      {
+        "id": "SCOPE-A2",
+        "fixture_id": "A2",
+        "disposition": "included",
+        "reason": null,
+        "decision_id": "DEC-SCOPE"
+      },
+      {
+        "id": "SCOPE-A3",
+        "fixture_id": "A3",
+        "disposition": "included",
+        "reason": null,
+        "decision_id": "DEC-SCOPE"
+      },
+      {
+        "id": "SCOPE-A4",
+        "fixture_id": "A4",
+        "disposition": "included",
+        "reason": null,
+        "decision_id": "DEC-SCOPE"
+      }
+    ],
+    "zone_assignments": [],
+    "lv_channels": [
+      {
+        "id": "LPC-3:CH-07",
+        "control_zone_id": "Z-204",
+        "fixture_ids": [
+          "A1",
+          "A2",
+          "A3",
+          "A4"
+        ],
+        "power_node_id": "PN-DEMO",
+        "nominal_rating_watts": 100,
+        "design_limit_watts": 90,
+        "compatibility_group": "DEMO-COMPATIBLE",
+        "decision_id": "DEC-GROUP"
+      }
+    ],
+    "power_nodes": [
+      {
+        "id": "PN-DEMO",
+        "label": "LPC-3",
+        "device_class": "Synthetic one-channel power/control unit",
+        "drawing_page_id": null,
+        "drawing_anchor": null,
+        "capacity_channels": 1,
+        "aggregate_design_limit_watts": 90,
+        "source_ref_ids": [
+          "REF-DEMO-PLATFORM"
+        ],
+        "decision_id": "DEC-NODE"
+      }
+    ],
+    "control_nodes": [],
+    "decisions": [
+      {
+        "id": "DEC-SCOPE",
+        "statement": "Include A1-A4 in LV scope.",
+        "rationale": "Synthetic Phase 1 example.",
+        "status": "confirmed",
+        "source_ref_ids": [
+          "REF-DEMO-PLAN"
+        ],
+        "assumption_ids": []
+      },
+      {
+        "id": "DEC-SELECTION",
+        "statement": "Use the synthetic 20 W LV selection.",
+        "rationale": "Synthetic load and compatibility are defined solely for tests.",
+        "status": "confirmed",
+        "source_ref_ids": [
+          "REF-DEMO-PLATFORM"
+        ],
+        "assumption_ids": []
+      },
+      {
+        "id": "DEC-GROUP",
+        "statement": "Assign A1-A4 to LPC-3:CH-07.",
+        "rationale": "80 W <= 90 W and a single zone.",
+        "status": "confirmed",
+        "source_ref_ids": [
+          "REF-DEMO-PLAN",
+          "REF-DEMO-PLATFORM"
+        ],
+        "assumption_ids": []
+      },
+      {
+        "id": "DEC-NODE",
+        "statement": "Use one synthetic power/control unit.",
+        "rationale": "One channel and 80 W within the synthetic capacity.",
+        "status": "confirmed",
+        "source_ref_ids": [
+          "REF-DEMO-PLATFORM"
+        ],
+        "assumption_ids": []
+      }
+    ],
+    "assumptions": [],
+    "cable_routes": []
+  },
+  "open_items": []
+}

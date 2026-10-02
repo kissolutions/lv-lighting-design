@@ -1,0 +1,57 @@
+{
+  "schema_version": "0.1.0",
+  "project": {
+    "id": "REPLACE-PROJECT-ID",
+    "name": "REPLACE PROJECT NAME",
+    "model_revision": "P01",
+    "stage": "takeoff",
+    "takeoff_status": "in_progress"
+  },
+  "source_documents": [
+    {
+      "id": "DOC-01",
+      "filename": "REPLACE SOURCE FILENAME",
+      "revision": "REPLACE SOURCE REVISION",
+      "storage_uri": null
+    }
+  ],
+  "drawing_pages": [
+    {
+      "id": "PAGE-01",
+      "source_document_id": "DOC-01",
+      "sheet_id": "REPLACE-SHEET-ID",
+      "revision": "REPLACE SOURCE REVISION",
+      "page_index": 0,
+      "width_pt": 2592,
+      "height_pt": 1728,
+      "pdf_rotation_deg": 0
+    }
+  ],
+  "source_references": [
+    {
+      "id": "REF-01",
+      "source_document_id": "DOC-01",
+      "drawing_page_id": "PAGE-01",
+      "locator": "REPLACE LOCATOR",
+      "statement": "REPLACE SOURCE OBSERVATION"
+    }
+  ],
+  "facts": {
+    "spaces": [],
+    "control_zones": [],
+    "fixture_types": [],
+    "fixture_instances": []
+  },
+  "design": {
+    "fixture_selections": [],
+    "fixture_scope": [],
+    "zone_assignments": [],
+    "lv_channels": [],
+    "power_nodes": [],
+    "control_nodes": [],
+    "decisions": [],
+    "assumptions": [],
+    "cable_routes": []
+  },
+  "open_items": []
+}

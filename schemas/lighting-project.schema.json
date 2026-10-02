@@ -1,0 +1,1105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KIS LV Lighting Project Model v0.1.0",
+  "description": "Phase 1 contract. Source facts, design decisions, and derived views remain separate.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project",
+    "source_documents",
+    "drawing_pages",
+    "source_references",
+    "facts",
+    "design",
+    "open_items"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "model_revision",
+        "stage",
+        "takeoff_status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "model_revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "stage": {
+          "enum": [
+            "takeoff",
+            "provisional",
+            "checkpoint"
+          ]
+        },
+        "takeoff_status": {
+          "enum": [
+            "in_progress",
+            "reconciled"
+          ]
+        }
+      }
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source_document"
+      },
+      "minItems": 1
+    },
+    "drawing_pages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/drawing_page"
+      },
+      "minItems": 1
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source_reference"
+      },
+      "minItems": 1
+    },
+    "facts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spaces",
+        "control_zones",
+        "fixture_types",
+        "fixture_instances"
+      ],
+      "properties": {
+        "spaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/space"
+          },
+          "minItems": 0
+        },
+        "control_zones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/control_zone"
+          },
+          "minItems": 0
+        },
+        "fixture_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fixture_type"
+          },
+          "minItems": 0
+        },
+        "fixture_instances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fixture_instance"
+          },
+          "minItems": 0
+        }
+      }
+    },
+    "design": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_selections",
+        "fixture_scope",
+        "zone_assignments",
+        "lv_channels",
+        "power_nodes",
+        "control_nodes",
+        "decisions",
+        "assumptions",
+        "cable_routes"
+      ],
+      "properties": {
+        "fixture_selections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fixture_selection"
+          },
+          "minItems": 0
+        },
+        "fixture_scope": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fixture_scope"
+          },
+          "minItems": 0
+        },
+        "zone_assignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/zone_assignment"
+          },
+          "minItems": 0
+        },
+        "lv_channels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lv_channel"
+          },
+          "minItems": 0
+        },
+        "power_nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/power_node"
+          },
+          "minItems": 0
+        },
+        "control_nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/control_node"
+          },
+          "minItems": 0
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/decision"
+          },
+          "minItems": 0
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assumption"
+          },
+          "minItems": 0
+        },
+        "cable_routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cable_route"
+          },
+          "minItems": 0
+        }
+      }
+    },
+    "open_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/open_item"
+      },
+      "minItems": 0
+    }
+  },
+  "$defs": {
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x_pt",
+        "y_pt"
+      ],
+      "properties": {
+        "x_pt": {
+          "type": "number",
+          "minimum": 0
+        },
+        "y_pt": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "source_document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "filename",
+        "revision",
+        "storage_uri"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "storage_uri": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "drawing_page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_document_id",
+        "sheet_id",
+        "revision",
+        "page_index",
+        "width_pt",
+        "height_pt",
+        "pdf_rotation_deg"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "source_document_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "sheet_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "page_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "width_pt": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height_pt": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "pdf_rotation_deg": {
+          "enum": [
+            0,
+            90,
+            180,
+            270
+          ]
+        }
+      }
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_document_id",
+        "drawing_page_id",
+        "locator",
+        "statement"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "source_document_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "drawing_page_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "space": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "drawing_page_ids",
+        "source_ref_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "drawing_page_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "control_zone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "space_id",
+        "intent_status",
+        "source_ref_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "space_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "intent_status": {
+          "enum": [
+            "confirmed",
+            "unknown"
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "fixture_type": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type_mark",
+        "description",
+        "source_input_watts",
+        "source_voltage",
+        "driver_notes",
+        "source_ref_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "type_mark": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_input_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "source_voltage": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "driver_notes": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "fixture_instance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "fixture_type_id",
+        "space_id",
+        "source_control_zone_id",
+        "drawing_page_id",
+        "drawing_anchor",
+        "source_ref_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "fixture_type_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "space_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "source_control_zone_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "drawing_page_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "drawing_anchor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/point"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "fixture_selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "fixture_type_id",
+        "lv_description",
+        "lv_input_watts",
+        "compatibility_group",
+        "status",
+        "source_ref_ids",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "fixture_type_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "lv_description": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "lv_input_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "compatibility_group": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "status": {
+          "enum": [
+            "provisional",
+            "confirmed"
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        }
+      }
+    },
+    "fixture_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "fixture_id",
+        "disposition",
+        "reason",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "fixture_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "disposition": {
+          "enum": [
+            "included",
+            "excluded"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        }
+      }
+    },
+    "zone_assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "fixture_id",
+        "control_zone_id",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "fixture_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "control_zone_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        }
+      }
+    },
+    "lv_channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "control_zone_id",
+        "fixture_ids",
+        "power_node_id",
+        "nominal_rating_watts",
+        "design_limit_watts",
+        "compatibility_group",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "control_zone_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "fixture_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "power_node_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nominal_rating_watts": {
+          "const": 100
+        },
+        "design_limit_watts": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 90
+        },
+        "compatibility_group": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        }
+      }
+    },
+    "power_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "device_class",
+        "drawing_page_id",
+        "drawing_anchor",
+        "capacity_channels",
+        "aggregate_design_limit_watts",
+        "source_ref_ids",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "device_class": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "drawing_page_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "drawing_anchor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/point"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "capacity_channels": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "aggregate_design_limit_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        }
+      }
+    },
+    "control_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "device_class",
+        "drawing_page_id",
+        "drawing_anchor",
+        "source_ref_ids",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "device_class": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "drawing_page_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "drawing_anchor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/point"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "rationale",
+        "status",
+        "source_ref_ids",
+        "assumption_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "status": {
+          "enum": [
+            "provisional",
+            "confirmed"
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "assumption_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "source_ref_ids",
+        "invalidated_if",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "invalidated_if": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "status": {
+          "enum": [
+            "unverified",
+            "confirmed",
+            "invalidated"
+          ]
+        }
+      }
+    },
+    "cable_route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "drawing_page_id",
+        "points",
+        "channel_ids",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "drawing_page_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/point"
+          },
+          "minItems": 2
+        },
+        "channel_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        }
+      }
+    },
+    "open_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "affects_ids",
+        "source_ref_ids",
+        "blocking",
+        "status",
+        "resolution",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "affects_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "open",
+            "resolved"
+          ]
+        },
+        "resolution": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
