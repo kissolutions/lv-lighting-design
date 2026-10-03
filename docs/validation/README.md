@@ -1,5 +1,7 @@
 # Phase 1 Validation
 
+These rules and `validate_model` apply to v0.1 input. The [v0.2 draft](../ontology/canonical-model/device-hierarchy-v0.2.md) uses `python -m generators.model_hierarchy MODEL` to verify nested ownership, derived many-to-many loads, controller outputs, and declared outage signal/backup relationships. It retains the 100/90 W constraint only for the selected Class 2 baseline profile. Its checks do not certify electrical/code or emergency performance.
+
 The schema checks data shape. The validator checks IDs/references, traceability, geometry bounds, source reconciliation, engineering assignments, loads, confirmed decisions/assumptions, blocking open items, and node capacity. It returns every issue found at the current safe validation layer; fix structure/reference failures before downstream engineering checks run.
 
 - [Channel wattage](channel-wattage.md)

@@ -22,6 +22,8 @@ Knowledge structure follows meaning; workflow lives in playbooks. Do not import 
 
 ## Engineering invariants
 
+For the current v0.2 device hierarchy, read [device-hierarchy-v0.2.md](docs/ontology/canonical-model/device-hierarchy-v0.2.md) first. The owner has superseded the v0.1 one-zone-per-power-channel restriction: zones own light objects, each single-input light references one power channel, and many-to-many channel/zone views are derived. Branch circuits own power units and power units own channels. Controller output identity is separate from supply-channel identity. Preserve shared source schedule groups, normal operating state, emergency force-on inputs, and separate backup power provisions. Use class-specific output profiles rather than globally imposing 100/90 W or 0-56 V limits. The original invariants below describe the narrower v0.1 tools, which remain available until migration is complete.
+
 - Facts from sources, assumptions, engineering decisions, and generated presentation remain distinguishable.
 - Every source fact and consequential selection retains source references. Source revisions are explicit; never silently overwrite a fact when a plan changes.
 - Nominal 100 W channel baseline: design load <= 90 W, with any lower verified equipment limit honored. This is KIS design doctrine, not a universal code/listing claim.

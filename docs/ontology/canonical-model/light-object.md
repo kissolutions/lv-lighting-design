@@ -1,0 +1,21 @@
+---
+title: "Light Object"
+page_type: canonical_model
+page_status: draft
+confidence_level: medium
+domain_primary: low-voltage-lighting
+ai_role: model_contract
+invocation_triggers:
+  systems_present: [low_voltage_lighting]
+decision_axes: [device_hierarchy, source_traceability]
+related_pages:
+  - "device-hierarchy-v0.2.md"
+---
+
+# Light Object
+
+Location: `light_zones[].light_objects[]` in the draft v0.2 model.
+
+Represents one selected single-input LV lighting occurrence with stable internal identity. Preserves source type, branch/zone observations, page, optional anchor and annotation ID separately from selected LV load, compatibility, channel, backup provision, and selection/assignment decision. Load can be per fixture, per foot, or per reference length. Future split-input/segmented fixtures need an explicit extension; do not duplicate physical fixtures to work around it.
+
+The [device hierarchy contract](device-hierarchy-v0.2.md) defines fields, ownership, derived views, validation scope, and migration boundaries. The [v0.2 schema](../../../schemas/lighting-project-v0.2.schema.json) is the executable data shape. Unknown fields remain `null`; relevant source references and engineering decisions remain explicit. Owner: KIS Solutions; October 2026; draft.

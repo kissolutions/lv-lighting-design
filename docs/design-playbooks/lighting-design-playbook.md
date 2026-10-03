@@ -15,6 +15,8 @@ related_pages:
 
 # Low Voltage Lighting Design Playbook
 
+This playbook describes the initial v0.1 baseline. The owner-provided [v0.2 device hierarchy](../ontology/canonical-model/device-hierarchy-v0.2.md) now permits a power channel to supply multiple independently controlled LV light zones. Read that draft and the [emergency control intake](emergency-lighting-control-intake.md) for current modeling work; migrate the remaining baseline grouping steps after the revised relationships are reviewed.
+
 ## 1. Purpose and Use
 
 Use this playbook to turn an MEP lighting plan into a reviewable Phase 1 LV design and quantity basis. The first operator supplies source documents and performs a manual takeoff; the tools validate the model and generate schedules.

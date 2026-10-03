@@ -15,6 +15,8 @@ related_pages:
 
 # Control Zone
 
+This page records the v0.1 baseline. For current ownership and relationships, read [Device Hierarchy v0.2](device-hierarchy-v0.2.md). The v0.1 tools retain their original contract; new hierarchy data uses the dedicated v0.2 schema/checker.
+
 ## Purpose and Scope
 
 A source-defined or confirmed required room/area micro-zone.

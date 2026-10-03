@@ -39,3 +39,8 @@ Capture page size, crop/rotation transform, fixture anchors, and reliable node p
 Add route bundles, endpoints, branch topology, scale/calibration, installation allowances, and cable lengths after fixtures and nodes are reliable. Current `cable_routes` capture only projected points and channel membership. Do not present those points as a validated installed length.
 
 Add constrained grouping software only after one real project tests compatibility groups, emergency exclusions, zoning, and node capacities. Prefer fewer channels and compact groups after hard constraints pass. Vendor-specific BOM generation requires selected hardware facts and procurement basis.
+
+
+## Device hierarchy revision v0.2
+
+The current [hierarchy draft](../ontology/canonical-model/device-hierarchy-v0.2.md) adds source-grounded branch/unit/channel ownership, separate LV zones/controllers, linear load bases, and emergency signal/backup provisions. Its dedicated schema/checker and synthetic examples are available. Remaining migration work includes a complete source-occurrence disposition/segmentation register, v0.2 CSV outputs, source-to-design revisions, route endpoints, and detailed class/emergency performance checks. Preserve the original v0.1 examples/tools until that migration is reviewed.

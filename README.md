@@ -2,6 +2,8 @@
 
 KIS Solutions' low-voltage lighting design domain extension. It owns the reusable design method, canonical lighting model, grouping rules, validation, and generated-review conventions.
 
+The current device-model discussion is captured in the [v0.2 hierarchy draft](docs/ontology/canonical-model/device-hierarchy-v0.2.md). It separates power channels from LV light zones, nests power units under HV branches, and adds explicit emergency operation/signaling. Use its [schema](schemas/lighting-project-v0.2.schema.json), [seed](templates/lighting-project-v0.2.template.json), and [synthetic examples](docs/reference-implementations/synthetic-hierarchy/README.md). The original v0.1 tools below remain a runnable legacy baseline; they cannot express the new many-to-many hierarchy.
+
 The Phase 1 path is **source intake -> fixture takeoff -> canonical model -> LV selection and grouping -> validation -> review schedules and component quantities**. Phase 2 adds professional PDF markup and routing after the model is tested on real work.
 
 ## Start here
@@ -12,7 +14,7 @@ The Phase 1 path is **source intake -> fixture takeoff -> canonical model -> LV 
 4. Review the [synthetic example](docs/reference-implementations/synthetic-room/README.md). It contains no client data.
 5. Use the [first-project checklist](templates/first-project-checklist.md) to stress-test the foundation.
 
-## Working rules
+## Legacy v0.1 working rules
 
 - Preserve source facts independently from LV design decisions and generated views.
 - Use a 90 W design ceiling for this baseline's nominal 100 W channels; a verified lower product limit governs when applicable.

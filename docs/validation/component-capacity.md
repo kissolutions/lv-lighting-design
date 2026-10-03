@@ -15,6 +15,8 @@ related_pages:
 
 # Component Capacity
 
+This rule describes v0.1 input. The [v0.2 hierarchy](../ontology/canonical-model/device-hierarchy-v0.2.md) defines current nested ownership, class-specific capacity profiles, and independent power/control grouping; its dedicated checker reports the new rules.
+
 ## Purpose
 
 Gate Phase 1 design consistency for component capacity.

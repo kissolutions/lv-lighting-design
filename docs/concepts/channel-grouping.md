@@ -14,6 +14,8 @@ related_pages:
 
 # Channel Grouping as a Constrained Design Problem
 
+This page explains the original v0.1 baseline. The current [power-channel/LV-zone concept](power-channels-and-light-zones.md) supersedes its assumption that one power channel must have one zone. Electrical compatibility and required downstream functional boundaries remain constraints.
+
 ## Explanation
 
 Grouping is a partition of included fixtures subject to zoning, compatibility, and load constraints. The design belongs in the model; a PDF overlay is its presentation.

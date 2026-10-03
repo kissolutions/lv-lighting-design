@@ -19,4 +19,6 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - run: python -m unittest discover -s tests -v
       - run: python -m generators.validate_model docs/reference-implementations/synthetic-room/lighting-model.json
+      - run: python -m generators.model_hierarchy docs/reference-implementations/synthetic-hierarchy/lighting-model.json
+      - run: python -m generators.model_hierarchy docs/reference-implementations/synthetic-hierarchy/emergency-model.json
       - run: python -m generators.export_review docs/reference-implementations/synthetic-room/lighting-model.json --output-dir outputs/ci-review

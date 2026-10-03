@@ -1,5 +1,7 @@
 # Canonical Lighting Model v0.1.0
 
+The current draft is [Device Hierarchy v0.2](device-hierarchy-v0.2.md). This page documents the preserved v0.1 baseline. Its flat collections and one-zone-per-channel restriction are superseded for new device-hierarchy work; the v0.1 executable tools still enforce them on v0.1 input.
+
 The [JSON schema](../../../schemas/lighting-project.schema.json) is the machine-readable structure. These pages define its meaning. [Phase 1 validation](../../validation/README.md) checks relationships and engineering invariants beyond JSON Schema.
 
 ## Separation and relationships
@@ -30,3 +32,8 @@ Record arrays are normalized and connected by globally unique stable IDs. The lo
 ## Element pages
 
 [Project](project.md), [drawing page](drawing-page.md), [space](space.md), [control zone](control-zone.md), [fixture type](fixture-type.md), [fixture instance](fixture-instance.md), [LV fixture selection](fixture-selection.md), [LV channel](lv-channel.md), [power node](power-node.md), [control node](control-node.md), [cable route](cable-route.md), [open item](open-item.md), [source reference](source-reference.md), [decision and assumption](decision-and-assumption.md).
+
+
+## Current v0.2 element pages
+
+[HV branch circuit](branch-circuit.md), [power unit](power-unit.md), [LV light zone](lv-light-zone.md), [light object](light-object.md), [controller](controller.md), [control device/system](control-device.md), [shared control group](control-group.md), [backup supply](backup-supply.md). Power-channel fields and many-to-many derived membership are defined in [the hierarchy contract](device-hierarchy-v0.2.md).
