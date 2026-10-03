@@ -19,6 +19,8 @@ related_pages:
 
 A missing/conflicting fact or unresolved design question with stated consequences.
 
+The discrepancy list is a review view of these records, not a separate authoritative database. Include architectural floor/RCP/electrical room-label conflicts, missing architectural sources, uncertain boundary/use/served-space decisions, and unknown consequential mounting heights. Preserve both source observations and exact locators, affected IDs, required action, review status, and resolution/decision. Resolved discrepancies remain traceable history.
+
 ## Fields and Meaning
 
 Location: `open_items[]`

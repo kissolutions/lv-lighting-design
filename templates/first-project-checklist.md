@@ -1,18 +1,78 @@
-# First Real-Project Stress Test
+# First LV Project Workflow Checklist
 
-Keep this checklist and project data in approved project storage outside Git.
+Copy this template into approved project storage outside Git. Follow the [workflow/readiness map](../docs/design-playbooks/lv-project-workflow-and-readiness.md); this checklist records review gates, not schema `project.stage` values.
 
-- [ ] Record project/model revision, source filenames/revisions, drawing pages, actual page dimensions, rotation, and source references.
-- [ ] Extract all schedule marks and preserve original wattage/voltage/driver notes; flag missing/conflicting facts.
-- [ ] Count physical fixtures by sheet, space, and type. Resolve repeated/duplicate coverage.
-- [ ] Reconcile the takeoff independently against the PDF; only then set `takeoff_status: reconciled`.
-- [ ] Confirm each required room/micro-control zone, including keyed notes and independent controls distinctions.
-- [ ] Confirm selected LV load and compatibility for every included source type with evidence and a recorded decision.
-- [ ] Record an included/excluded scope disposition for every fixture; exclusions have a reason and decision.
-- [ ] Manually group one room, then the remaining spaces, without crossing required zones; check <=90 W or lower verified limits.
-- [ ] Assign channels to explicit nodes with verified channel and aggregate capacities; add actual separate control nodes.
-- [ ] Run validation; resolve blocking uncertainty and inspect every source/design discrepancy.
-- [ ] Export to a new revision directory in project storage; compare fixture/channel schedules and quantities against an independent manual check.
-- [ ] Review and save the checkpoint model, decisions, evidence, open items, and outputs together.
-- [ ] Capture reusable discrepancies here as doctrine/model/test improvements without copying client data.
-- [ ] Select one sheet for future coordinate/markup proof after Phase 1 data is stable.
+## Basis and authority
+
+- [ ] Register project/model revision, source filenames/revisions, sheet/page identities, actual displayed dimensions and rotation.
+- [ ] Resolve the source/revision basis used for architectural/electrical overlays; retain discrepancies and locators.
+- [ ] Record scope, project energy-code basis and the responsible review/approval parties. WikiJS supplies general electrical lighting guidance.
+- [ ] Preserve the MEP control scheme as the starting basis. Redesign only when authority exists and adoption of the proposed departure is approved.
+
+## M1: Architectural room inventory
+
+- [ ] Start with Architectural Floor Plan or Dimension Plan. If unavailable, flag the missing source and keep inventory provisional.
+- [ ] Have a separate agent build an independent simple Space inventory before comparing the initial list.
+- [ ] Flag omissions, unsupported entries, duplicates and label/level conflicts; owner-review corrections and omission causes, using “cause undetermined” where necessary.
+- [ ] No assumptions: every fact needs source evidence or identified owner confirmation. Preserve accepted owner corrections; unsupported values and untagged uses remain unknown.
+- [ ] Account for untagged rooms, circulation, stairs and unlit service areas. Describe location neutrally; do not infer purpose from shape.
+- [ ] Compare architectural floor/RCP/electrical labels and retain discrepancies. Relate open-to-below footprints to their occupied/served Space.
+
+## Boundary and area review
+
+- [ ] Capture clear architectural area labels with high-confidence transcription/association notes, units, locator and revision; use `area_basis: source_document`.
+- [ ] Trace editable closed polygons/rectangles for each scoped room/Space on the architectural floor/dimension plan, otherwise the applicable RCP; use ID-linked uncertainty callouts where a footprint cannot be resolved.
+- [ ] Follow enclosing walls for physical rooms. For open logical areas, propose approximate boundaries from observed furniture, circulation, partial walls, features and supported ceiling changes; clearly label proposals for owner vertex editing.
+- [ ] Preserve exact source names; identify proposed names/use explicitly without inventing room numbers or code/control classifications. Keep parent-area context and review overlaps/gaps without double counting parent and subdivision areas.
+- [ ] Put the room name in Subject, Space ID/boundary basis/review notes in Comments, actual author in `/T`, and unique annotation ID in `/NM`; retain the annotation-to-Space mapping and editable labels where needed.
+- [ ] Use the applicable view's printed architectural scale; verify PDF applicability against dimensions where available and resolve resizing/missing/conflicting scale before accepting measurements.
+- [ ] Preserve source area and later measured evidence separately; owner-review conflicts rather than overwriting them.
+- [ ] Prove annotation edit/save/readback before treating the owner-return loop as supported. Reconcile edits by ID and retain provenance.
+- [ ] Test native Bluebeam Area recognition, boundary editing, correct scale/units, automatic recalculation and ID/geometry readback before promising native output.
+- [ ] Describe consequential full/partial-wall/open edges narratively with evidence; discuss uncertain control consequences.
+
+## M2: Source lighting and controls
+
+- [ ] Initially complete Room Schedule, Lighting Schedule, Lighting Fixtures and Light Points; independently verify them against the registered source set.
+- [ ] Preserve all fixture schedule marks, description/load/driver notes and manufacturer options; flag missing/conflicting facts.
+- [ ] Give each physical occurrence a stable internal ID; count by sheet/Space/type and reconcile repeated/duplicate coverage and exclusions.
+- [ ] Assign lights to the occupied/served Space, retaining their independent source sheet. Keep numeric mounting height unknown where only qualitative high mounting is supported.
+- [ ] Extract source control symbols, legends, schedules, keyed notes, details and sequences; distinguish lighting from receptacle controls.
+- [ ] Preserve MEP group labels and source intent; inspect relevant notes/details before declaring no information. Do not fill gaps with a preferred room design.
+- [ ] Preserve normal and emergency observations; a fixture suffix/battery note alone does not establish a complete operating sequence.
+- [ ] Set `takeoff_status: reconciled` only after scoped source review. Software cannot detect fixtures/symbols that were never entered.
+
+## M3: Check the extracted scheme
+
+- [ ] Review actual use, area/basis, enclosure, independent building/energy classifications and the selected code/edition/amendment basis.
+- [ ] Check occupancy, daylight, manual-control and scheduling functions through applicable WikiJS guidance. Retain source/code/guide references, reasoning and review scope.
+- [ ] Record zone verification as not reviewed, compliant, deficient, ambiguous source or no information. These agreed status fields are not yet in the schema; retain them in project review records meanwhile.
+- [ ] Separately record implementation review as not reviewed, typical design or manual review required. Deficient findings always require manual review; compliant schemes can still have simpler implementation proposals.
+- [ ] Retain per-function findings where mixed; unknown source information does not receive an automatic compliant result.
+- [ ] Preserve proposals separately. Establish authority and approval before adopting a departure; confirmed model decision status alone is not external approval.
+
+## M4: LV implementation and first markup
+
+- [ ] Confirm selected LV load, driver/output compatibility and actual product limits; preserve original source AC watts separately.
+- [ ] Reproduce specified/approved operation in LV functional zones and controller outputs. Preserve MEP stair behavior; use shared zones only when supported.
+- [ ] Confirm relevant emergency signal source, monitored circuit, controller path, backup supply and outage operation independently.
+- [ ] Group one representative room manually with confirmed loads, auxiliary load and selected limits; preserve independent operation and one channel per modeled single-input light.
+- [ ] Check physical unit/channel/output capacities and aggregate budgets; distinguish integrated hardware from separate components.
+- [ ] Inspect checker findings without inventing later-stage data to force an early intake pass. Maintain separate scoped milestone evidence.
+- [ ] Produce one-room/one-sheet review markup with stable IDs, source/model revision, legend, source-versus-LV distinction and visible unresolved items.
+- [ ] Prove page placement, editable annotations and save/readback; reconcile model/table/PDF assignments. This is review approval, not construction release.
+- [ ] Use current-version review views; do not feed v0.3 input to the v0.1 CSV exporter. v0.3 schedule/PDF generation remains to be developed.
+
+## M5: Coordinated package and issue
+
+- [ ] Coordinate equipment/device locations, routes/endpoints, cable selection/length basis, output/device schedule, connections/configuration, quantities and sequences.
+- [ ] Resolve release-critical source, code-interpretation, product, emergency, routing and installation issues with the responsible reviewers.
+- [ ] Retain approval evidence and issue all scoped deliverables at the same reviewed revision.
+
+## M6: Field changes, commissioning and closeout
+
+- [ ] Record substitutions and field changes, authorization/approval and their affected loads, controls, routes and deliverables.
+- [ ] Reconcile accepted changes to the authoritative model and drawings without renumbering stable IDs.
+- [ ] Verify installed control functions, coverage/daylight response and normal/emergency operation under the applicable test basis; retain results and deficiency closure.
+- [ ] Save accepted configuration, final schedules/markups and as-built reconciliation with any accepted outstanding items.
+- [ ] Capture reusable lessons as framework instructions/synthetic tests without copying client material into Git.

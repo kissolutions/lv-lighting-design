@@ -1,5 +1,5 @@
 ---
-title: "Initial Sprint and Roadmap"
+title: "LV Workflow Development Roadmap"
 page_type: governance
 page_status: draft
 confidence_level: medium
@@ -7,40 +7,45 @@ domain_primary: low-voltage-lighting
 ai_role: authoring_rules
 invocation_triggers:
   systems_present: [low_voltage_lighting]
-decision_axes: [sprint_scope, phase2_readiness]
+decision_axes: [markup_readiness, source_intent, development_priority]
 related_pages:
+  - "../design-playbooks/lv-project-workflow-and-readiness.md"
   - "../design-playbooks/lighting-design-playbook.md"
 ---
 
-# Initial Sprint and Roadmap
+# LV Workflow Development Roadmap
 
-## Available foundation
+## Current Foundation
 
-- Repository boundary and agent guidance linked to the parent framework.
-- Draft Phase 1 playbook and minimum canonical-model pages.
-- JSON schema, manual-project seed, and synthetic four-fixture reference.
-- Channel-load, assignment, zone, schedule, evidence, uncertainty, and node-capacity checks.
-- Five CSV review views and a machine-readable validation report.
+Use the [full workflow/readiness map](../design-playbooks/lv-project-workflow-and-readiness.md) as the current audit, with the [project checklist](../../templates/first-project-checklist.md) for execution. WikiJS owns the general electrical lighting knowledge; LV work extracts MEP intent, checks it through WikiJS, and translates it into implementation. Authorized and approved departures are tracked separately from source intent.
 
-## Next: one real-project stress test
+Available: architectural intake/reconciliation directives; current v0.3.1 Space/device schema, seed and synthetic examples; stable fixture/source IDs; area/classification/evidence records; nested branch/unit/channel ownership; zones/controllers and declared emergency/backup relationships; reference, membership, load and capacity checks with derived JSON. Legacy v0.1 has five CSV outputs but cannot export v0.3 data.
 
-1. Add this repository alongside `knowledgebase_wikijs` in the existing VS Code workspace. Local workspace configuration remains on the engineering workstation.
-2. Select one representative MEP lighting plan and store its project model outside Git.
-3. Follow [first-project-checklist.md](../../templates/first-project-checklist.md), reconcile fixtures manually, and confirm LV selection/controls with evidence.
-4. Group one room, check <=90 W and exact assignment, then quantify explicit power/control nodes.
-5. Export review tables; compare against the PDF and a manual quantity check. Record discrepancies in the project and improve reusable rules here.
+These support supervised intake, manual source/code review and LV grouping. They do not demonstrate an editable PDF output, complete code evaluation, automatic extraction/grouping or an end-to-end installer package.
 
-## Then: spatial proof on one sheet
+## Next: First Review Markup
 
-Capture page size, crop/rotation transform, fixture anchors, and reliable node positions. Prove coordinate round-trip placement before drawing production markup. Establish label collisions, legend, revision identity, and readable channel graphics. The schema reserves anchors but no PDF writer is implemented yet.
+Prove one representative room or sheet using registered source revisions, stable IDs, traced/flagged boundaries, fixture anchors and documented MEP control groups. Include LV channel graphics only where selected load, compatibility and functional intent are supported. Label unresolved scope as provisional.
 
-## Later: routing and optimization
+Prove displayed-page crop/rotation placement, annotation editability, save/readback and identity preservation. Use accepted scale/geometry before claiming measured area. Test native Bluebeam Area recognition/editing/recalculation separately from standard editable polygons. Do not wait for a whole-building optimizer or a complete device ontology before this small experiment.
 
-Add route bundles, endpoints, branch topology, scale/calibration, installation allowances, and cable lengths after fixtures and nodes are reliable. Current `cable_routes` capture only projected points and channel membership. Do not present those points as a validated installed length.
+## Small Contract and Output Extensions
 
-Add constrained grouping software only after one real project tests compatibility groups, emergency exclusions, zoning, and node capacities. Prefer fewer channels and compact groups after hard constraints pass. Vendor-specific BOM generation requires selected hardware facts and procurement basis.
+1. Implement agreed zone verification and implementation-review statuses, with supporting assessment evidence and per-function findings.
+2. Separate original MEP scheme, applied LV implementation and proposed/approved departures; define authorization and approval records.
+3. Separate intake milestone readiness from later room/code/electrical requirements in the checker.
+4. Add current-version schedule/review exports and a complete source-occurrence disposition register. Preserve occurrence identity, source facts and shared-zone relationships.
 
+Schema/check changes require versioning, synchronized examples/docs, and meaningful tests. Merely documenting these features does not implement them.
 
-## Device hierarchy revision v0.2
+## Refine Grouping and Equipment From the Proof
 
-The current [hierarchy draft](../ontology/canonical-model/device-hierarchy-v0.2.md) adds source-grounded branch/unit/channel ownership, separate LV zones/controllers, linear load bases, and emergency signal/backup provisions. Its dedicated schema/checker and synthetic examples are available. Remaining migration work includes a complete source-occurrence disposition/segmentation register, v0.2 CSV outputs, source-to-design revisions, route endpoints, and detailed class/emergency performance checks. Preserve the original v0.1 examples/tools until that migration is reviewed.
+Verify actual product loads, output compatibility, unit budgets and independent controller behavior. Confirm emergency signaling and backup paths in the project. Review sensor/device configuration and coverage through WikiJS. Record real routing/grouping constraints before implementing optimization; source/control boundaries survive channel sharing.
+
+## Later Delivery Stages
+
+Develop route endpoints/topology, equipment locations, calibrated cable lengths and allowances; detailed connection/configuration output; selected hardware BOM; coordinated release checks; field-change/diff workflows; commissioning tests and as-built reconciliation. The v0.1 route-point object is not a current v0.3 route engine or an installed-length result.
+
+Keep real project PDFs, schedules, takeoffs, model instances, markups, decisions and results outside Git. Turn accepted findings into reusable instructions/synthetic tests without copying client identifiers.
+
+Owner: KIS Solutions. October 2026; draft priorities based on owner workflow and local capability audit.

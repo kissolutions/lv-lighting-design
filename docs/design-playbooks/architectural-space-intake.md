@@ -1,0 +1,132 @@
+---
+title: "Architectural Space Intake and Lighting Assignment"
+page_type: playbook
+page_status: draft
+confidence_level: medium
+domain_primary: low-voltage-lighting
+ai_role: prescriptive_standard
+invocation_triggers:
+  systems_present: [low_voltage_lighting]
+decision_axes: [source_reconciliation, space_inventory, fixture_membership, control_zoning]
+related_pages:
+  - "lighting-design-playbook.md"
+  - "../ontology/canonical-model/space-context-v0.3.md"
+  - "../validation/space-intake-reconciliation.md"
+---
+
+# Architectural Space Intake and Lighting Assignment
+
+## Required Starting Point
+
+Start room/Space extraction with the Architectural Floor Plan or Dimension Plan. Register source revisions and identify the architectural RCP, wall-type legend/details, sections, electrical lighting/RCP plans, schedules, and keyed notes. Reconcile discipline revisions before relying on overlaid geometry. If the required architectural starting plan is missing, record the missing source in the discrepancy list. Electrical-only extraction remains provisional and cannot establish a reconciled room inventory.
+
+Use architectural floor/dimension plans as the primary source for room names, numbers, occupied levels, and boundaries. RCP and electrical room labels are comparison evidence. A mismatch in name, number, or location between an architectural floor plan, architectural RCP, and electrical RCP/lighting plan must appear in the discrepancy list with both observations and exact locators. Do not silently select or overwrite one label. A reviewer resolves the identity while preserving the original evidence and stable internal IDs.
+
+## Inventory Before Takeoff
+
+Catalog tagged rooms and untagged enclosed areas, circulation, stairs, service voids, and chases. An absent room tag or absent luminaire does not justify omission. For an unnumbered area, use a stable internal ID, leave `room_number` null, and describe its observed level and grid/location neutrally. Purpose remains unknown unless supported by a source or identified owner confirmation; do not infer a chase or equipment-room use from its shape alone. Inventory-only unlit service areas may have empty light/zone lists; confirm their purpose before assigning a code type. Do not invent a source room number.
+
+An open-to-below footprint above an occupied room is part of that room unless architectural designation, distinct use, or a reviewed design decision establishes a separate Space. Preserve the opening and its location in the room description. Do not create a second room merely because its lights appear on an upper-level plan.
+
+## Milestone 1: Room Inventory and Source Verification
+
+First establish a simple, complete room/Space list. The initial extraction agent supplies exact source names/numbers, occupied levels, stable Space IDs, and source locators, together with the editable boundary review PDF described below. Missing room tags receive neutral location descriptions, not invented room names or uses. Boundary uncertainty does not justify dropping an observed area from the list.
+
+A separate verification agent builds an independent inventory from the architectural floor/dimension plans before comparing it with the original list. Apply the same source revisions and identified owner decisions, but do not use the original list as the checklist for finding spaces. Compare the two lists for missing spaces, unsupported entries, duplicates, and name/number/level conflicts. Flag every omission with evidence; review it with the owner to determine why it was missed and whether the extraction instructions need correction. If the cause is not established, record “cause undetermined” rather than inventing an explanation. Report discrepancies before changing the working inventory; incorporate accepted resolutions while preserving evidence and stable IDs.
+
+Only after room-list completeness is reviewed, verify the other captured source information against the drawings and identified owner confirmations. Explicit architectural area labels may be captured during the initial extraction; accepting calculated boundary areas follows boundary/scale review. Energy-code interpretation and final zoning are later steps, not reasons to guess missing facts at this gate.
+
+**Verification instruction: No assumptions are permitted in asserted source facts.** Every asserted fact must have a drawing reference or identified owner confirmation. The separately labeled logical-boundary proposals described below may use observed spatial clues for an approximate initial geometry; that limited permission does not convert inferred names, uses, boundaries or code classifications into source facts. Do not invent room numbers, infer the purpose of an untagged space, fill unsupported fields, or treat absent symbols as proof of absent installed equipment. Leave unknown values null/Unknown and flag the question. Keep owner decisions distinct from drawing facts. Existing owner-confirmed corrections must survive a new pass; a conflict with new evidence is a discrepancy for review, not a silent reversal.
+
+The milestone deliverables are the reconciled simple room list, boundary review PDF, and discrepancy list with omission causes/resolutions where established. Pass when every observed space is accounted for, the owner has reviewed omissions and proposed inventory corrections, and each checked fact is supported or explicitly unknown/flagged. Open factual questions remain visible; the affected downstream design cannot be finalized until consequential questions are resolved.
+
+## Architectural Room Areas
+
+During initial room extraction, look for square footage in architectural room tags and floor/dimension-plan annotations. When the printed value, units, and association with the room are clear, bring that area into the Room Schedule with high confidence. Use it as the preferred initial room-area source; do not defer an explicit architectural area until a separate measurement pass.
+
+Record the value in `area_sq_ft` with `area_basis: source_document`, and retain the sheet/revision and exact label locator through the Space's source references. Use `area_note` to identify the architectural area label and its high-confidence extraction; preserve any stated net/gross or other area convention. High confidence describes the source transcription and room association, not independent confirmation of the architect's calculation. Do not infer an unstated area convention or assign a nearby number to a room without clear evidence.
+
+An absent, illegible, ambiguously associated, or conflicting area remains unknown or explicitly flagged for review; no assumptions are permitted. Where no usable source area exists, leave the value null until a boundary takeoff with a verified view scale or an identified owner-confirmed estimate is available, with its own basis. The verification agent does not invent an estimate to fill the field. Later boundary measurements are comparison evidence: retain both observations and flag discrepancies rather than silently overwriting the architectural value. Do not treat an upper-level open-to-below footprint as additional occupied floor area.
+
+## Boundary Markups and Drawing Scale
+
+### Enclosed Rooms and Logical Open Areas
+
+The initial extraction pass must create an editable review boundary for every inventoried room/Space in the scoped plan views. Where a boundary cannot be resolved, provide a visibly provisional outline or uncertainty callout tied to its stable ID rather than omitting the area. Include untagged areas and inventory-only service spaces. Multi-level/disconnected representations may need several annotations for one Space; keep unique annotation IDs and the same Space association without duplicating the physical area or fixtures.
+
+**Fully enclosed room:** Follow the architectural walls forming the enclosed area, using a closed polygon or a rectangle where appropriate. Prefer the interior finished-face footprint for the takeoff and record the convention; if wall-face evidence or an existing source-area convention differs, flag it rather than claiming an exact reconciliation. Bridge ordinary door openings along the enclosing wall line so the room outline closes. Keep true open connections, alcoves and uncertain partitions visible for review rather than manufacturing a full-height wall. Vector linework can assist tracing but must be checked against the rendered plan; a detected closed region is not automatically a room. For raster/scanned plans, trace from the rendered image and retain the precision limitations.
+
+**Logical areas within a larger enclosure:** Distinct named uses such as reception, atrium, entry, seating, bar or elevator lobby may lack physical walls between them. Produce reasonable, approximate closed polygons or rectangles based on observed furniture layout, circulation paths, counters, partial-height walls, architectural features and documented ceiling-height changes. Use the floor plan as the base and consult RCPs/sections where needed to support ceiling or partition observations. A perfect dividing line is not expected; get close enough for owner review and vertex editing. Do not require a wall to create a proposed logical subdivision, or infer a mandatory lighting-control split from that subdivision alone.
+
+Keep an architectural label exactly as observed. If an agent proposes a logical area name/use or subdivision absent from the source, label it as a proposal, leave the source room number/type unknown where unsupported, and retain the source parent-area context. Do not invent a source designation or code classification. Proposals can be associated with stable candidate Space IDs, but only owner-reviewed accepted subdivisions become the finalized Space/membership basis. Preserve original names, accepted owner corrections and IDs during revision reconciliation.
+
+Distinguish wall-following boundaries from logical-boundary proposals in annotation comments and the PDF legend; record the observed clues and any uncertain edges. All initial boundaries are for review, including apparently clear enclosed rooms. Approximate logical boundaries are permitted at this stage without requiring a discussion before drawing them; owner review is required before finalizing consequential area, membership or zoning conclusions. Maintain separate room/Space boundaries and lighting-control boundaries.
+
+Account for parent/child open-area outlines explicitly. If a parent footprint is shown for context alongside logical subdivisions, do not sum its area again with the child areas. Flag overlaps, gaps or intentionally unallocated circulation for review; do not hide them to force an area total. Proposed-boundary areas remain provisional even with a valid scale. After geometry and measurement convention are accepted, retain their logical-boundary basis/limitations when recording a measured area; review uncertainty near any consequential threshold.
+
+Place room-boundary markups on the Architectural Floor Plan or Dimension Plan when available and calculate takeoff square footages from those markups. Use the applicable RCP view as the fallback when the architectural floor/dimension plan is unavailable for the takeoff. Record that fallback and preserve any unresolved architectural-inventory limitation; an RCP measurement does not by itself reconcile missing room identities or unclear boundaries. Explicit architectural room-area labels retain their preferred initial-source status above.
+
+Use the standard architectural scale printed with the applicable plan view, usually below the view, as the preferred source for converting markup geometry to real dimensions. Record the exact scale, its label locator, sheet/revision, and applicable view. Do not assume a customary scale from the room's appearance, reuse another view's scale, or treat one scale as applying to every view on a sheet.
+
+Verify that the printed scale applies to the actual PDF geometry before accepting measured areas. Check against a labeled architectural dimension when available. Resized/scanned PDFs, missing or illegible scales, not-to-scale views, or disagreement with dimension labels require a flag and verified calibration or reviewer resolution; do not silently replace the printed scale or invent one. A clear, applicable printed scale remains the preferred starting basis, with calibration used to resolve demonstrated scaling issues.
+
+Keep closed, editable room polygons or rectangles tied to stable Space IDs and source room labels, with their coordinates and scale basis retained for later recalculation. Flag uncertain boundary segments for visual review before accepting the area's measurement. Use `area_basis: measured` for accepted markup takeoffs, and retain the source view, scale, measurement convention, and review status in the evidence/area note. A lighting-zone boundary remains distinct from the room's floor-area boundary.
+
+## Editable PDF Review and Return
+
+### Annotation Type, Naming and Identity
+
+Use actual PDF `/Polygon` annotations for closed nonrectangular footprints and `/Square` annotations for rectangular footprints. `/Square` is the PDF subtype for rectangles as well as squares. Open `/PolyLine` annotations may mark uncertain edges or support notes but are not the primary closed room-area object. Do not flatten the review annotations or lock out boundary editing. Generate one clearly distinguishable primary footprint per contiguous area; additional context/labels do not become extra area-count objects.
+
+Use this default naming convention without asking for a choice on every project:
+
+| PDF field | Project convention |
+|---|---|
+| `/Subj` (Subject) | Exact source room name/number, or clearly prefixed proposed logical-area name |
+| `/Contents` (Comments) | Room name; stable Space ID; boundary kind (wall-following or logical proposal); source sheet/view/revision; observed basis; review status/uncertainties; scale/area basis where applicable |
+| `/T` | Actual author/organization responsible for creating the markup; do not claim owner review/approval here |
+| `/NM` | Persistent unique annotation ID, maintained separately from the display room name and mapped to the Space ID |
+
+These are standard annotation fields, not a dedicated PDF room-name property. Subject/comments do not by themselves draw a label on the page. Add a legible room label with an editable text annotation where the background label is absent, obscured or insufficient for identification; tie its unique annotation ID to the same Space and do not count the text box as area geometry. Keep labels and low-opacity fills clear of source text, dimensions and symbols. Include a small legend distinguishing physical boundary evidence, approximate logical proposals and uncertainty.
+
+Preserve annotation-to-Space mapping in the project markup register, with source/view, geometry and revision evidence. Keep the Space ID redundantly in comments, so a viewer changing `/NM` or the display name does not silently reassign the room. On return, match retained annotation IDs and cross-check Space IDs; if IDs were changed, copied or lost, reconcile the mapping explicitly rather than guessing from the Subject alone. Different annotations for one multi-level Space need distinct annotation IDs. Renaming a room does not renumber its stable Space ID.
+
+Source: Adobe *PDF Reference*, version 1.6, section 8.4, common annotation entries and markup annotation entries ([reference](https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/pdfreference1.6.pdf)); Adobe [Acrobat Annotation API](https://opensource.adobe.com/dc-acrobat-sdk-docs/library/jsapiref/JS_API_AcroJS.html?highlight=response). Retrieved reference excerpts establish the field meanings and annotation types; viewer presentation/edit behavior still needs the actual round-trip proof. These are output conventions, not new v0.3 schema attributes.
+
+Deliver actual editable PDF polygon/rectangle annotations, with a legible outline and light transparent fill, rather than a flattened image or page-content lines. Preserve the unflattened working PDF. Each boundary carries a stable Space ID as well as its source room label, so the owner can adjust corners/edges in a compatible editor and return the saved PDF without losing room association.
+
+On return, read the revised annotation geometry and reconcile it through the annotation-to-Space mapping above, including the Space ID recorded in comments. A moved label alone does not change the boundary geometry. Preserve the prior markup revision and owner-edit provenance; flag missing, duplicated, or unidentifiable boundaries for reconciliation. Use the revised geometry and verified view scale to recalculate measured areas and update the Room Schedule after review. Preserve explicit source-area labels separately and flag disagreement rather than replacing them silently. Retain accepted owner corrections when regenerating the next markup.
+
+Treat native Bluebeam Area measurements as a compatibility test, not established generator support. Before requiring them for production output, generate one representative room and have the owner test in Bluebeam that it is recognized as an Area measurement, its boundary is editable, its scale/units are correct, its area updates when edited, and its saved geometry/Space ID can be read back. Record the tested version and result. Until that round trip passes, editable standard polygons plus agent recalculation are the supported workflow target; do not promise automatic area updates inside Bluebeam for an ordinary polygon.
+
+## Served Space, Level, and Mounting Height
+
+Assign each physical light to exactly one primary Space according to the floor or working area it primarily illuminates. That Space's level is the level of useful lighting and occupancy, not the fixture's source sheet or ceiling elevation. Incidental spill into another area does not duplicate the light. If a fixture genuinely serves several levels or spaces, document the primary assignment and shared service in a description and request review rather than guessing ownership.
+
+For example, high-mounted lights above a two-story reception remain assigned to the Level 1 reception when they illuminate its floor. Keep the upper-level electrical sheet as the fixture source. Mounting height belongs to the individual Light Object, measured above the served floor. A qualitative high-mounting observation may be recorded with a verification note while numeric height stays null. A numerical estimate needs an explicit estimated basis and note; never insert an arbitrary large value as though measured. Use architectural RCPs/sections or verified dimensions to resolve height.
+
+## Boundaries and Review
+
+Inspect walls, partitions, counters, open edges, alcoves, and soffits before assigning lights and controls. Use wall legends and referenced details to distinguish full-height from partial-height construction where it affects zoning. Plan hatch or line weight alone may not establish height. Do not assign a fixture solely to its nearest text tag.
+
+Keep consequential boundaries in concise room/zone descriptions, such as “zone boundary ends at the west half-wall,” with a source locator. A wall-by-wall object catalog or new spreadsheet wall columns are not required. Unclear boundary extent, height, or control consequences require a discrepancy/open item and discussion before the affected zone is finalized. A half-wall does not itself prove that controls must be shared or separate.
+
+## Stairs and Shared Lighting Zones
+
+A physical stair may be recorded as one Space spanning levels, with its extent in the description, or as architectural level-specific Space records. Preserve architectural names/numbers in either view. Preserve the MEP-specified stair control scheme. KIS's one-zone-per-physical-stair convention is used only when documented behavior and reviewed independent-control constraints support shared operation. Level-specific Space records may reference that same zone; one Light Object is counted once in its primary served Space. Do not manufacture separate control zones merely to match floor rows or merge source-independent zones merely to follow the convention.
+
+A named lighting zone may serve multiple Spaces when their operation is compatible and reviewed. Capture the common zone identity, control area/basis, source controls, and decision. Preserve any demonstrated independent operation, emergency behavior, daylight requirement, or other conflicting constraint as a discrepancy for review before departing from the stair default or finalizing shared control. A shared zone does not predetermine its channels or controller outputs.
+
+## Electrical Overlay and Reconciliation
+
+After the architectural inventory, extract fixture types, physical occurrences, control symbols and text, home runs, and relevant notes. Use power-plan equipment/keynotes to inform apparent room use without silently selecting a code classification. Distinguish lighting controls from plug-load controls and resolve legend conflicts in context. Register actual drawing notes once and reference them from affected Spaces; reviewer comments are separate from source notes.
+
+Maintain separate locators for room-label/boundary evidence and fixture/control evidence. Check upper-level lighting against the floor below and inspect symbol-only items. Reconcile room/type summaries to individual assignments and the source plans. Then review the lighting zones associated with each Space. Extract the specified MEP control scheme first and check it through WikiJS against reviewed room conditions and the project code basis. Preserve unclear, absent and conflicting intent as findings, not invented control actions. Resolve consequential interpretation/implementation questions before finalizing affected channel/controller assignments; redesign needs authority and approval. See the [full workflow and readiness map](lv-project-workflow-and-readiness.md).
+
+## Discrepancy List and Handoff
+
+Use existing `open_items[]` and the review workbook's discrepancy list rather than a second database. Each item identifies conflicting or missing observations, affected IDs, source locators, consequence/action, review status, and resolution/decision. Preserve resolved discrepancies as history. Block finalization of the affected scope while a consequential issue remains open; do not stop unrelated verified work.
+
+Human review resolves ambiguous use, boundaries, shared service, and design consequences. A second extraction pass can independently check labels, complete area coverage, assignments, cross-level alignment, references, and counts. Accepted owner corrections are evidence for reconciliation and must survive refreshes. Source reconciliation is an engineering workflow; the current generators validate entered data and do not extract drawings.
+
+Owner: KIS Solutions. October 2026; owner-directed draft clarification to v0.3.

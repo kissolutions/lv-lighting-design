@@ -9,113 +9,69 @@ invocation_triggers:
   systems_present: [low_voltage_lighting]
 decision_axes: [source_reconciliation, fixture_selection, control_zoning, channel_grouping, component_quantities]
 related_pages:
-  - "../ontology/canonical-model/README.md"
+  - "lv-project-workflow-and-readiness.md"
+  - "architectural-space-intake.md"
+  - "../ontology/canonical-model/space-context-v0.3.md"
   - "../validation/README.md"
 ---
 
 # Low Voltage Lighting Design Playbook
 
-This playbook describes the initial v0.1 baseline. The owner-provided [v0.2 device hierarchy](../ontology/canonical-model/device-hierarchy-v0.2.md) now permits a power channel to supply multiple independently controlled LV light zones. Read that draft and the [emergency control intake](emergency-lighting-control-intake.md) for current modeling work; migrate the remaining baseline grouping steps after the revised relationships are reviewed.
+## Purpose and Authority
 
-## 1. Purpose and Use
+Extract the MEP lighting/control scheme, check it against the general electrical lighting workflow in `knowledgebase_wikijs`, and implement it with compatible LV equipment. WikiJS owns room/code analysis, vocabulary, control selection/configuration, decision trees and the application guide. This repository owns project intake, the LV canonical model, channel/equipment grouping, validation and output conventions. Follow the [full workflow and readiness map](lv-project-workflow-and-readiness.md) for milestones and implementation gaps.
 
-Use this playbook to turn an MEP lighting plan into a reviewable Phase 1 LV design and quantity basis. The first operator supplies source documents and performs a manual takeoff; the tools validate the model and generate schedules.
+The starting scheme is the MEP design. Missing or unclear instructions remain unknown and flagged. Do not replace them with a preferred control recipe. A deficiency or implementation opportunity may lead to a redesign only when authority exists and the proposed departure is approved; preserve the original intent and approval evidence.
 
-## 2. Design Intent
+## Current Model and Source Basis
 
-Preserve controls intent, obtain reliable quantities quickly, and make every design transformation traceable. Avoid missed fixtures, overloaded channels, lost micro-zones, guessed loads, and component quantities that assume unavailable device capacity.
+Use [Space context v0.3](../ontology/canonical-model/space-context-v0.3.md), the [v0.3 schema](../../schemas/lighting-project-v0.3.schema.json), and its seed/checker for new room-based work. The [v0.2 hierarchy](../ontology/canonical-model/device-hierarchy-v0.2.md) supplies device ownership. The original v0.1 schema/checker/CSV exporter remain supported only for v0.1 input; their one-zone-per-channel rule does not govern v0.3 projects.
 
-## 3. Space / System Definition (Decision-Oriented)
+Begin with [architectural space intake](architectural-space-intake.md). Architectural floor/dimension plans establish room identities, occupied/served levels and boundaries. Reconcile architectural RCP and electrical label/revision discrepancies. MEP lighting plans, schedules, symbols, legends, keyed notes and control details establish fixture/control intent. Assign overhead fixtures to the Space they primarily illuminate while preserving their source sheet and mounting context.
 
-The initial scope is discrete fixture instances in bounded spaces, each with a required control zone, mapped to selected compatible LV fixtures and nominal 100 W channels. A zone can use several channels; a channel belongs to one zone. Fixture type, control zone, channel, and physical power node are separate records.
+## Working Steps
 
-## 4. Constraint Envelope
+1. **Register sources and scope.** Record document/sheet revisions, displayed dimensions/rotation, governing revision questions and the project model revision. Preserve all project inputs outside Git.
+2. **Inventory Spaces.** Include tagged and untagged areas, unlit service areas and cross-level conditions. Perform [Milestone 1](architectural-space-intake.md#milestone-1-room-inventory-and-source-verification) independent room-list verification and owner review of omissions. No assumptions in source verification.
+3. **Capture area evidence.** Prefer clear architectural area labels with a high-confidence transcription note. Review editable boundaries and the applicable printed view scale before accepting measured areas; retain source-versus-measured conflicts.
+4. **Extract lighting.** Preserve schedule types and source loads/options. Give physical occurrences stable internal IDs, served Space membership and source locators. Reconcile sheet/room/type quantities, repeated coverage and exclusions independently.
+5. **Extract controls.** Preserve original MEP group labels, devices and sequences, including daylight/manual/occupancy/scheduling and normal/emergency distinctions. Check all relevant source notes/details before declaring no information. No prescribed sequence is inferred merely from a room type.
+6. **Review source intake.** Independently verify the initial Room Schedule, Lighting Schedule, Lighting Fixtures and Light Points. Preserve accepted owner corrections and unresolved source discrepancies. Set `takeoff_status: reconciled` only when the scoped takeoff has been reviewed, not because references pass software checks.
+7. **Check through WikiJS.** Confirm reviewed room/use/area/enclosure/code basis, evaluate the extracted scheme, and record compliant/deficient/ambiguous/no-information findings plus separate implementation-review opportunities. The [status contract discussion](lv-project-workflow-and-readiness.md#control-review-results) is agreed but not yet implemented in v0.3. Approved general design examples supply check criteria; they do not automatically replace MEP intent.
+8. **Select compatible LV components.** Confirm fixture/driver load at the supply-channel interface, output/driver compatibility, actual equipment limits and independent control capabilities. Preserve source AC watts separately. Reproduce documented sensor/switch/controller behavior, escalating system limitations and proposed departures.
+9. **Establish functional zones.** Preserve specified independent operation and approved corrections, including emergency override/backup behavior. Room-default zones have stable IDs. Shared stair/cross-room zones are used only when source behavior and reviewed constraints support common operation; physical stair identity alone does not override the MEP scheme.
+10. **Assign equipment and group channels.** Give each modeled single-input light one channel. Verify controller-output independence, compatibility, per-channel watts, auxiliary loads, unit channel count and aggregate budget. For the selected nominal Class 2 baseline, use the 100 W / <=90 W design profile; other equipment uses its verified profile. A shared supply is permitted only when valid downstream controls preserve the functional zones.
+11. **Produce scoped review markups.** Start with one room/sheet: boundaries, lights, source control intent, LV assignments where confirmed, labels/legend and unresolved items. Prove placement/edit/save/readback. Room-review markups may precede final electrical assignments. Follow [progressive markup readiness](lv-project-workflow-and-readiness.md#progressive-markup-readiness).
+12. **Coordinate and release later outputs.** Develop equipment locations, routes, connection/configuration details, quantities, sequences, installation coordination and approval evidence. Resolve release-critical questions before issuing. Record field changes, commissioning and as-built reconciliation under the full-cycle milestones.
 
-### 4.1 Hard constraints and design invariants
+## Design and Verification Gates
 
-Each fixture has exactly one explicit scope disposition. Each included fixture belongs to exactly one channel. Every channel load is <=90 W and obeys any verified lower design limit. Required micro/control-zone boundaries are preserved. Electrical and functional compatibility, power-node channel count, and aggregate budget are confirmed with evidence.
-
-The 90 W ceiling is KIS's initial design doctrine for the nominal 100 W baseline. Actual listing/Class 2 eligibility, wiring constraints, driver characteristics, and applicable code requirements must be verified for the selected system. A wattage check alone does not establish those facts.
-
-### 4.2 Soft constraints
-
-Prefer fewer unnecessary channels, compact geographic groups, useful spare capacity, simple routes, and easy-to-read schedules after the invariants pass.
-
-### 4.3 Hidden constraints
-
-Allow for substitutions, undocumented control notes, fixture symbols that resemble one another, repeated sheets, and node aggregate limits lower than the sum of nominal outputs. Do not let schedule pressure turn uncertainty into confirmed design data.
-
-## 5. Baseline / Default Design Pattern
-
-1. **Capture sources.** Register filename, revision, document ID, actual page index, sheet ID, displayed dimensions, and rotation. Set a stable model revision. Preserve the source set in project storage.
-2. **Extract the schedule.** Create source fixture types with original description/wattage/voltage/driver notes and source references. Use `null` for missing information.
-3. **Take off occurrences.** Create one fixture instance per physical fixture. Record type, space, source zone, drawing page, and locator. An anchor may be `null` during Phase 1; a locator remains mandatory through `source_ref_ids`.
-4. **Capture control intent.** Identify each required room, area, daylight, manual, occupancy, dimming, or other micro-zone from plans and notes. Conflicts become blocking open items. Assign `unknown` intent until evidence or an engineering decision confirms the boundary.
-5. **Reconcile sources.** Independently compare source types and occurrence totals by page/space/type against the PDF. Confirm exclusions and repeated drawings. Set `takeoff_status: reconciled` only after this review; software cannot detect symbols never entered into the model.
-6. **Normalize the LV schedule.** Create one LV selection per included source type. Verify actual load at the channel interface, driver/output behavior, control function, and compatibility group. Preserve original source wattage. Record selection evidence and a decision.
-7. **Declare scope.** Create one explicit included/excluded disposition per fixture. Exclusions require a reason and decision. Emergency/egress or special loads require project-specific review before inclusion; the baseline does not determine their architecture.
-8. **Group within boundaries.** Partition by effective control zone and confirmed compatibility group. Assign fixtures to channels using confirmed LV loads, staying at or below 90 W (or lower selected design limit). Record channel decisions. Iterate until each included fixture is assigned once.
-9. **Quantify nodes.** Assign channels to explicit power nodes using verified channel count and aggregate design budget. Add separate control nodes only when the selected architecture requires them; combined units are not counted twice.
-10. **Validate and export.** Run the validator, resolve blocking issues, and export review CSVs. Use provisional export only for a marked draft; it preserves failing status and lists unresolved checks.
-11. **Review the checkpoint.** Review tables against the PDF, source notes, selections, loads, node count, and open items. Save the reviewed model and outputs together in project storage, then set `stage: checkpoint`. Implemented checks passing do not constitute engineering approval.
-
-## 6. Typical Variants
-
-**Lower verified limit:** Reduce `design_limit_watts` below 90 W where equipment/installation constraints require it. Preserve exact assignment and zoning rules.
-
-**Documented source-zone correction:** Add a `zone_assignment` and a confirmed, traceable engineering decision when source intent changes or is clarified. Retain `source_control_zone_id` as the observed fact. Cross-space/zone-sharing systems require an explicit future rule and model extension; they are blocked by this baseline.
-
-**Special or excluded fixtures:** Retain the source occurrence, explicitly exclude it with a reason, and coordinate its separate design. Do not silently drop it from the count.
-
-## 7. Decision Gates
-
-| Gate | Yes | No |
+| Question | Supported scope can proceed when | Otherwise |
 |---|---|---|
-| Source set/revisions and takeoff reconciled? | Continue | Resolve discrepancies |
-| LV load and compatibility confirmed? | Group fixtures | Open a blocking item; keep provisional |
-| Required control intent confirmed? | Preserve boundaries | Obtain clarification |
-| Fixture exceeds design limit by itself? | Review alternate fixture/architecture | Group normally |
-| Selected node has sufficient channel and aggregate capacity? | Quantify explicit nodes | Revise hardware/nodes and regroup |
-| Validation and source review complete? | Save the Phase 1 checkpoint | Revise and recheck |
+| Is room/source identity supported? | Architectural inventory and applicable revisions are reviewed | Flag identity/revision ambiguity; retain provisional inventory |
+| Is MEP behavior documented? | Relevant symbols, legends, schedules, notes and details establish the behavior | Record ambiguous source or no information; seek clarification |
+| Is a change proposed? | Authority and approval are documented before adopting the departure | Keep it a proposal; preserve the specified basis |
+| Are LV load and compatibility known? | Selected interface load and product evidence are confirmed | Keep assignments provisional; do not issue quantified grouping |
+| Are functional controls preserved? | Source/approved behavior, output capacity and applicable emergency paths are reviewed | Flag conflict and revise the affected scope |
+| Can the markup be reviewed and returned? | IDs, page placement and annotation edit/readback have been proved for the output type | Perform the small proof before production use |
+| Is the package ready for issue? | Coordinated deliverables and release-critical evidence/approvals are complete | Continue review; a validator pass alone is insufficient |
 
-## 8. Design Zoning / Grouping Strategy
+## Electrical Grouping
 
-Within each confirmed zone and compatibility group, use a manual load ledger and compact fixture groups. A 20 W fixture group of four is 80 W; adding a fifth is 100 W and fails the 90 W ceiling. Two channels may serve one zone while maintaining coordinated control. Do not merge required zones to improve channel utilization.
+Functional zones and power channels have separate identities. A zone may use several channels; a channel may serve several zones only when confirmed downstream architecture preserves independent operation. The Light Objects establish the many-to-many relationship without duplicate wattage. Sharing a controller output is a separate decision and cannot collapse independent zones.
 
-## 9. Common Failure Modes
+Use confirmed LV input load and any required linear length/reference-length basis. Channel load includes confirmed auxiliary load. Compare against the selected design and rated limits; check power-unit aggregate and channel capacities separately. Original AC fixture wattage, nameplate input wattage and connected LV output wattage are distinct quantities. Grouping remains manual in the current tools.
 
-Design-time: replacing unknown loads with zero; using AC source wattage for an unverified LV conversion; equating watts with driver compatibility; ignoring node aggregate capacity.
+## Review Records and Outputs
 
-Documentation: missing occurrences, duplicate IDs, broken source links, silently edited source zones, stale calculated totals, and unlabeled provisional exports.
+Keep source observations, code-check findings, LV implementation, proposals and approved changes distinguishable. Record consequential uncertainties in `open_items[]` with affected IDs and source evidence. A confirmed `decision` means the recorded engineering basis has been confirmed; it does not establish external change/release approval by itself.
 
-Construction/operation: incompatible output/driver combinations, controls that no longer preserve intent, and installer-facing cable lengths inferred without calibrated geometry.
+The current v0.3 checker emits derived JSON for counts, loads, membership and labels. A v0.3 schedule/markup generator is not implemented; do not send v0.3 data to the v0.1 exporter or hand-restructure it into v0.1 in a way that loses source intent or shared zones. Source occurrence dispositions/exclusions need a reviewed project ledger until their current-version register is developed.
 
-## 10. Safe Assumptions (and Limits)
+Every review output identifies source/model revision, scope, legend, unresolved items and review status. Keep editable annotations and stable IDs. Native Bluebeam Area behavior requires a successful one-room compatibility test. Owner-returned edits are reconciled to the authoritative model, with evidence/review before regeneration; the round trip is not yet implemented.
 
-The initial 100/90 W baseline applies only while the chosen product and installation support it. Record assumptions with an `invalidated_if` condition. Substitution, driver change, reduced device output, revised zoning, or updated plan invalidates dependent decisions and triggers review.
+## Limits and Stewardship
 
-## 11. Documentation Expectations
+Entered relationships and arithmetic are checkable today. Architectural/fixture extraction, complete code interpretation, equipment coverage, electrical/emergency suitability, routes, release, commissioning and as-built acceptance remain source/engineering review or development work. Unknown values stay unknown. Passing later engineering checks is not required merely to inventory rooms or prepare an explicitly provisional review markup.
 
-Phase 1: original and LV fixture schedules, every fixture's disposition/assignment, effective zone, channel load/margin, node counts/capacity basis, source references, and open items. Exported views carry model revision and review status.
-
-Phase 2: source PDF revision, stable page transforms, identifiers, node locations, channel graphics, projected bundle paths, legend, and coordinated installer notes. The PDF remains a rendering of the model.
-
-## 12. When to Go Deeper / Exit This Playbook
-
-Exit for emergency/egress architecture, unsupported shared control boundaries, fixtures needing split power interfaces, unverified electrical behavior, systems outside the 100 W baseline, or cable/routing constraints that invalidate Phase 1 grouping. Resolve with project-specific engineering before extending reusable rules.
-
-## 13. Cross-Links to Supporting Knowledge
-
-- [Model overview](../ontology/canonical-model/README.md)
-- [Channel grouping concept](../concepts/channel-grouping.md)
-- [Product constraint intake](../product-classes/class2-power-control-systems.md)
-- [Validation rules](../validation/README.md)
-- [Parent framework](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/AI/AGENT-FRAMEWORK-GUIDE.md)
-
-## 14. Status and Stewardship
-
-Draft; owner KIS Solutions; last review October 2026. Software behavior is tested on synthetic data. Real-project takeoff and engineering review are the next validation step.
-
-## 15. Author Notes (Institutional Context)
-
-The initial handoff prioritizes usable quantities before polished markup. Keep the first implementation narrow and improve it from one representative project rather than adding unused lighting conditions.
+Owner: KIS Solutions. October 2026; draft current workflow. Legacy v0.1 tools/examples remain available for their original contracts.

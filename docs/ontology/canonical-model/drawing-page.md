@@ -29,6 +29,8 @@ Location: `drawing_pages[]`
 
 References a registered document. Spaces, fixture instances, anchors, and source references use this ID.
 
+A page's displayed floor/level is source context, not the occupied level of every Space it depicts. An upper-level lighting page may show lights serving a lower-floor room through an open-to-below volume. Preserve distinct references for architectural room-label/boundary evidence and fixture/control evidence. Reconcile floor-plan, architectural RCP, and electrical room-label conflicts in the discrepancy list before affected identities are finalized.
+
 ## Constraints and Validation
 
 Measure actual page geometry; the template dimensions are placeholders. Units are points (72/in), displayed upper-left origin after crop/rotation. Future PDF transforms and drawing-scale calibration must be explicit.

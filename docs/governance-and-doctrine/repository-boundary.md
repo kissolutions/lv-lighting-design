@@ -19,15 +19,17 @@ related_pages:
 
 | Repository or storage | Owns |
 |---|---|
-| `knowledgebase_wikijs` | Shared taxonomy, templates, reasoning vocabulary, and physical product facts |
-| `lv-lighting-design` | Lighting-specific method, canonical project contract, channel/grouping doctrine, spatial conventions, validation, generators |
+| `knowledgebase_wikijs` | General electrical engineering workflow; shared taxonomy/templates/vocabulary/product facts; room-by-room lighting energy-code analysis; sensor/switch/controller selection and configuration; decision trees and lighting application guide |
+| `lv-lighting-design` | MEP/architectural extraction and reconciliation for LV projects; canonical project contract; LV implementation/grouping, spatial and markup conventions; validation and generators |
 | Approved project storage | Real client PDFs, source schedules, fixture takeoffs, model instances, decisions, markups, and generated deliverables |
 
 The hierarchy is inherited from the [Framework Extension Doctrine](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/governance-and-doctrine/framework-extension-doctrine.md). Folder names represent knowledge roles, not process steps.
 
 ## Design information boundaries
 
-Source facts record what is shown. `design` records selections, scope, channel assignments, node choices, assumptions, and decisions. CSVs and future PDF overlays are derived views. Change the authoritative model and regenerate views.
+Source facts record what is shown. LV implementation records selections, channel/output assignments and decisions needed to reproduce the MEP scheme. WikiJS provides the engineering check. Preserve source intent, verification findings, implementation proposals and approved departures separately. Redesign only under established authority with approval evidence; a confirmed model decision does not by itself authorize a departure. Local general application-guide/code drafts are material for alignment with WikiJS and must not create a competing authority.
+
+Review tables and PDF overlays are derived views. Editable owner-returned annotations are reconciled by stable ID, with accepted changes incorporated into the authoritative model before regeneration. This PDF round trip remains to be implemented/proven. The current schema does not yet structure all source/applied/proposed control sequences or the agreed review-status attributes. See the [workflow/readiness map](../design-playbooks/lv-project-workflow-and-readiness.md).
 
 Product facts stay upstream. This repository records the engineering use of a verified limit, along with the project evidence reference, rather than creating competing manufacturer specifications.
 

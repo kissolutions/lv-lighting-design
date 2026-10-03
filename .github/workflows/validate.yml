@@ -21,4 +21,6 @@ jobs:
       - run: python -m generators.validate_model docs/reference-implementations/synthetic-room/lighting-model.json
       - run: python -m generators.model_hierarchy docs/reference-implementations/synthetic-hierarchy/lighting-model.json
       - run: python -m generators.model_hierarchy docs/reference-implementations/synthetic-hierarchy/emergency-model.json
+      - run: python -m generators.model_spaces docs/reference-implementations/synthetic-spaces/lighting-model.json
+      - run: python -m generators.model_spaces docs/reference-implementations/synthetic-spaces/emergency-model.json
       - run: python -m generators.export_review docs/reference-implementations/synthetic-room/lighting-model.json --output-dir outputs/ci-review

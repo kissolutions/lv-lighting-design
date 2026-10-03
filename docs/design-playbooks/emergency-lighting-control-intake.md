@@ -15,7 +15,7 @@ related_pages:
 
 # Emergency Lighting Control Intake
 
-For every source emergency/nightlight/standby indication, preserve the observed fixture type, notes, original branch label, and source control intent before deciding how the LV system will reproduce the function.
+For every source emergency/nightlight/standby indication, preserve the observed fixture type, notes, original branch label, and source control intent before deciding how the LV system will reproduce the function. This is implementation of the specified/approved behavior: unclear or missing instructions stay flagged, and any departure requires established authority and approval. General electrical design checks come from WikiJS; the LV workflow does not silently create a replacement source sequence.
 
 1. Determine normal behavior: controlled, always on, or normally off/standby. A battery-pack notation alone does not settle that question.
 2. Identify which lights require an emergency force-on response. Place them in LV strings/zones with a controllable output that can execute that response.

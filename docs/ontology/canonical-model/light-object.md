@@ -14,6 +14,10 @@ related_pages:
 
 # Light Object
 
+In v0.3, optional `mounting` contains nullable `height_above_served_floor_ft`, `height_basis` (source_document/measured/estimated/unknown), nullable `note`, and `source_ref_ids`. Height is measured above the primary served floor. Keep the source drawing page independent of the Space's occupied level. A light over an open-to-below reception belongs to the reception floor it primarily illuminates. Qualitative high mounting leaves height null with a verification note; numerical estimates require an estimated basis and note. Mounting evidence references registered sources and does not promote unknown heights to measurements.
+
+In [v0.3](space-context-v0.3.md), each light is also referenced by exactly one Space. Keep its internal ID stable when changing a room name, zone, or channel. Derive room fixture-type quantities from those references; a visible fixture label is optional.
+
 Location: `light_zones[].light_objects[]` in the draft v0.2 model.
 
 Represents one selected single-input LV lighting occurrence with stable internal identity. Preserves source type, branch/zone observations, page, optional anchor and annotation ID separately from selected LV load, compatibility, channel, backup provision, and selection/assignment decision. Load can be per fixture, per foot, or per reference length. Future split-input/segmented fixtures need an explicit extension; do not duplicate physical fixtures to work around it.
