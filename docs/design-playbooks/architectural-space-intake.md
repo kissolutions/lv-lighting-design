@@ -58,6 +58,8 @@ Run this pass after drawing the initial room boundaries. The independent verific
 4. Flag uncertain endpoints, boundaries, finish transitions or Space associations for owner review. Use neutral proposal labels such as “Corridor – North/East”; do not convert a proposal into a source room designation or code classification.
 5. Check the boundary review PDF for unexplained gaps and overlaps, including circulation between otherwise complete room outlines. A passage described as included in another Space must actually be inside its marked boundary; unassigned floor area remains an explicit discrepancy rather than being described as absorbed.
 
+For each corridor endpoint and internal tracking split, record its boundary basis in the existing description or annotation Comments: wall/partition, finish transition, source-named use transition, or proposed open-area division. Retain the source locator and identify any approximate dividing line where the passage opens into a larger Space. A well-supported corridor does not make its open endpoints exact. Owner acceptance resolves the tracking choice; retain that decision and the original basis without turning the proposed line into a source wall or requiring separate lighting controls.
+
 Record the result in the existing room descriptions, boundary review PDF and discrepancy list. Before M1 is complete, every observed circulation area must have an explicit Space association or a visible unresolved item. The owner may accept, split or merge proposed tracking Spaces while preserving their evidence and stable-ID history. These decisions do not create lighting zones; logical control zoning comes later.
 
 ## Architectural Room Areas
@@ -81,12 +83,21 @@ As an initial tracking heuristic, consider whether the area has a distinct archi
 | Observed condition | Initial Space treatment |
 |---|---|
 | Untagged three-sided door alcove opening onto a larger Space | Include in that Space; describe the recess and doors served |
+| Distinct bounded pocket beyond an alcove's closing wall | Inventory separately even without a tag, door or luminaire; leave purpose unknown until supported |
 | Traffic passage between opposing walls connecting larger Spaces | Propose its own corridor Space, lit or unlit |
 | Finish/material transition within a corridor | Propose separate tracking Spaces at the transition; preserve the finish-plan locator |
 | Unlabeled floor with no architectural evidence of separation | Include with the adjacent labeled Space sharing its finish/ceiling; flag unclear association |
 | Short opposing wall segments that could be a cased opening | Flag interpretation; no arbitrary minimum length or aspect-ratio rule is established |
 
 Untagged corridor names/extents remain logical-boundary proposals until owner review. Use neutral proposal labels; unsupported source room number/type remain null. A tracking split does not impose independent lighting control. Lights in an alcove belong to its served Space, with no automatic zone assignment.
+
+### Check Behind Absorbed Alcoves
+
+Before including an untagged door alcove in its surrounding Space, trace each wall closing the recess and inspect the area on the other side. The accessible recess and a distinct bounded pocket beyond its wall must not be combined merely because both lack tags. Limit the absorbed alcove footprint to the supported recess boundary; do not extend it through a separating wall.
+
+Within the confirmed project scope, inventory a distinct pocket even when no room tag, door or luminaire is depicted. Use a stable Space ID and neutral location description; leave its purpose, room number and code classifications unknown until supported by drawings or identified owner confirmation. Do not call it a chase solely from shape or lack of access. Distinguish a depicted pocket from wall thickness, a symbol or uncertain linework by consulting architectural plans, wall details and applicable RCP/finish evidence. If that distinction or boundary cannot be resolved, retain a visible candidate outline/question in the boundary PDF and discrepancy list rather than silently absorbing or omitting it.
+
+The independent verification pass repeats this check for absorbed alcoves. When a missed pocket is accepted as a separate Space, correct the surrounding footprint, check for gaps/overlaps and revisit any affected area or light membership. Preserve the earlier geometry and correction basis in the review history; retain unaffected IDs. Owner-confirmed purpose may then be recorded with its confirmation provenance. This physical-inventory correction does not create a default lighting zone.
 
 ### Enclosed Rooms and Logical Open Areas
 
@@ -106,9 +117,27 @@ Place room-boundary markups on the Architectural Floor Plan or Dimension Plan wh
 
 Use the standard architectural scale printed with the applicable plan view, usually below the view, as the preferred source for converting markup geometry to real dimensions. Record the exact scale, its label locator, sheet/revision, and applicable view. Do not assume a customary scale from the room's appearance, reuse another view's scale, or treat one scale as applying to every view on a sheet.
 
-Verify that the printed scale applies to the actual PDF geometry before accepting measured areas. Check against a labeled architectural dimension when available. Resized/scanned PDFs, missing or illegible scales, not-to-scale views, or disagreement with dimension labels require a flag and verified calibration or reviewer resolution; do not silently replace the printed scale or invent one. A clear, applicable printed scale remains the preferred starting basis, with calibration used to resolve demonstrated scaling issues.
+Verify that the printed scale applies to the actual PDF geometry before accepting measured areas. Compare against labeled architectural dimensions when available, but do not assume that dimension text is correct when it conflicts with corroborating geometry. Resized/scanned PDFs, missing or illegible scales, not-to-scale views, or disagreement with dimension labels require a flag and verified calibration or reviewer resolution; do not silently replace the printed scale or invent one. A clear, applicable printed scale remains the preferred starting basis, with calibration used to resolve demonstrated scaling issues.
 
 Keep closed, editable room polygons or rectangles tied to stable Space IDs and source room labels, with their coordinates and scale basis retained for later recalculation. Flag uncertain boundary segments for visual review before accepting the area's measurement. Use `area_basis: measured` for accepted markup takeoffs, and retain the source view, scale, measurement convention, and review status in the evidence/area note. A lighting-zone boundary remains distinct from the room's floor-area boundary.
+
+### Scale Verification Using Repeated Architectural Features
+
+**Verify questionable drawing scale using repeated architectural features.** When printed dimensions, room-area labels or the stated view scale conflict with drawn geometry, retain the conflicting observations and investigate the measurement basis before accepting calculated areas. PDF page properties establish the digital sheet size; they do not prove that a plan view retained its intended architectural scale.
+
+Use clearly depicted suspended-ceiling grid modules as a scale check. First identify the ceiling region and its project-specific type from the RCP tags, legend or schedule, then establish the module dimensions applicable to that region. Source- or owner-confirmed sizes take precedence over typical-size hypotheses, including larger modules such as 4-foot by 4-foot where supported. Type letters such as B or C have no universal size meaning; never transfer one project's type mapping or an adjacent region's module size to another region.
+
+Where size is not established, initially test nominal 2-foot by 2-foot or 2-foot by 4-foot modules only where the depicted ceiling system supports that interpretation. Measure several full modules between suspension-grid centerlines in both axes and at multiple locations within the applicable view. Distinguish actual suspension-grid lines from decorative panel scoring and partial perimeter tiles. Do not force an unidentified or nonstandard ceiling system to fit those nominal sizes. Record the ceiling type/region, module dimensions, their evidence and whether the size is source-confirmed, owner-confirmed or a provisional interpretation. Repeated agreement strengthens the evidence but does not turn an assumed module size into a source fact; do not assign an unsupported statistical probability such as 99 percent.
+
+Use doors as a secondary plausibility check, preferring scheduled or explicitly dimensioned leaf widths. A nominal 36-inch leaf may be tested as an initial hypothesis for an ordinary commercial office door; it is not an asserted width for every small enclosed room. Keep leaf width, frame/opening width and clear passage width distinct. An assumed typical door width must not independently establish measurement scale.
+
+Compare these checks with the printed view scale and available dimensions. Record the measured spans, module counts or door identifiers, tested real dimensions, resulting scale and source locators. Determine whether disagreement is consistent throughout the view, confined to particular text labels, or different between drawing axes. A consistent factor can suggest a scale mismatch; isolated or unrelated disagreements can suggest incorrect dimension text. Neither pattern alone proves the cause. As a diagnostic example, confusing 1/4-inch and 3/16-inch architectural scales produces reciprocal linear factors of 4/3 and 3/4, and area factors of 16/9 and 9/16. Do not require errors to follow a standard-scale ratio or be an order of magnitude apart.
+
+An RCP grid check applies to that RCP view. Before using it to calibrate architectural floor-plan boundaries, verify registration and relative scale between the views using matching architectural geometry; do not copy one sheet's scale to another without that check. Different horizontal and vertical factors require a distortion discrepancy and separate resolution before accepting areas.
+
+Preserve original dimension/area text alongside the measurement result. Document the selected calibration, supporting evidence and source locators, alternatives rejected with their reasons, reviewer decision and affected Spaces in the existing area notes, markup register and discrepancy list. Unsupported calibration and its calculated areas remain provisional; do not silently replace source values. Once calibration is supported by source evidence or identified owner confirmation and reviewed, recalculate the affected boundary areas while retaining the original observations and review history. No new default lighting zones or code classifications follow from a scale decision.
+
+Reference basis: Armstrong's [ceiling layout calculator](https://www.armstrong.com/drop-ceiling-calculator/en-us) uses nominal 24-inch by 24-inch and 24-inch by 48-inch layouts; its [SAHARA product information](https://www.armstrongceilings.com/residential/en-us/project-ideas-and-installation/sahara.html) describes scored panels that can create smaller visual subdivisions. The U.S. Access Board's [door guidance](https://www.access-board.gov/ada/guides/chapter-4-entrances-doors-and-gates/) distinguishes clear opening measurements from door-leaf dimensions. These references support the checks, not a project's actual module size, door width or scale. The procedure is owner-directed KIS intake guidance, not a statistical or code-derived calibration rule.
 
 ## Editable PDF Review and Return
 
