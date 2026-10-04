@@ -36,8 +36,9 @@ Copy this template into approved project storage outside Git. Follow the [workfl
 - [ ] Initially complete Room Schedule, Lighting Schedule, Lighting Fixtures and Light Points; independently verify them against the registered source set.
 - [ ] Preserve all fixture schedule marks, description/load/driver notes and manufacturer options; flag missing/conflicting facts.
 - [ ] Give each physical occurrence a stable internal ID; count by sheet/Space/type and reconcile repeated/duplicate coverage and exclusions.
-- [ ] Assign lights to the occupied/served Space, retaining their independent source sheet. Keep numeric mounting height unknown where only qualitative high mounting is supported.
+- [ ] Assign lights to the occupied/served Space, retaining their independent source sheet. Keep numeric mounting height unknown where only qualitative high mounting or an unassociated ceiling tag is supported. Create no default zones; run the served-Space sanity check after boundary derivation/counting.
 - [ ] Extract source control symbols, legends, schedules, keyed notes, details and sequences; distinguish lighting from receptacle controls.
+- [ ] Confirm substantial gray/hatched scope exclusions; inspect finish plans and review alcove/corridor/finish-transition boundary proposals.
 - [ ] Preserve MEP group labels and source intent; inspect relevant notes/details before declaring no information. Do not fill gaps with a preferred room design.
 - [ ] Preserve normal and emergency observations; a fixture suffix/battery note alone does not establish a complete operating sequence.
 - [ ] Set `takeoff_status: reconciled` only after scoped source review. Software cannot detect fixtures/symbols that were never entered.
@@ -61,7 +62,7 @@ Copy this template into approved project storage outside Git. Follow the [workfl
 - [ ] Inspect checker findings without inventing later-stage data to force an early intake pass. Maintain separate scoped milestone evidence.
 - [ ] Produce one-room/one-sheet review markup with stable IDs, source/model revision, legend, source-versus-LV distinction and visible unresolved items.
 - [ ] Prove page placement, editable annotations and save/readback; reconcile model/table/PDF assignments. This is review approval, not construction release.
-- [ ] Use current-version review views; do not feed v0.3 input to the v0.1 CSV exporter. v0.3 schedule/PDF generation remains to be developed.
+- [ ] Use current-version review views; do not feed v0.3 input to the v0.1 CSV exporter. Use `generators.export_intake` for v0.4/v0.3 source-review tables. PDF generation remains to be developed.
 
 ## M5: Coordinated package and issue
 

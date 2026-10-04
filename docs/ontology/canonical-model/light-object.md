@@ -14,6 +14,8 @@ related_pages:
 
 # Light Object
 
+Current [v0.4](physical-intake-v0.4.md) stores each physical light once in root `light_objects[]`. It has exactly one primary served Space at intake and may have no zone yet. Later zones reference its ID; do not duplicate or move the authoritative physical record merely to change logical grouping. The nested location below describes legacy v0.2/v0.3 only.
+
 In v0.3, optional `mounting` contains nullable `height_above_served_floor_ft`, `height_basis` (source_document/measured/estimated/unknown), nullable `note`, and `source_ref_ids`. Height is measured above the primary served floor. Keep the source drawing page independent of the Space's occupied level. A light over an open-to-below reception belongs to the reception floor it primarily illuminates. Qualitative high mounting leaves height null with a verification note; numerical estimates require an estimated basis and note. Mounting evidence references registered sources and does not promote unknown heights to measurements.
 
 In [v0.3](space-context-v0.3.md), each light is also referenced by exactly one Space. Keep its internal ID stable when changing a room name, zone, or channel. Derive room fixture-type quantities from those references; a visible fixture label is optional.

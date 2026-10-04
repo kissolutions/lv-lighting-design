@@ -16,6 +16,8 @@ related_pages:
 
 # Lighting Device Hierarchy v0.2
 
+This is the preserved v0.2 device contract. Current [v0.4](physical-intake-v0.4.md) retains branch/unit/channel ownership but stores physical lights separately from later zone membership. Legacy zone-owned light storage does not require placeholder zones in new projects.
+
 The additive [v0.3 Space extension](space-context-v0.3.md) adds room conditions and reference membership without changing this device ownership. Use its schema/checker for new work that includes Spaces; this v0.2 contract remains supported.
 
 This draft implements the owner-provided device hierarchy. It supersedes the v0.1 assumption that each power channel has one control zone. The existing v0.1 schema, validator, and CSV exporter remain available for the original narrow baseline; they do not consume this v0.2 structure.

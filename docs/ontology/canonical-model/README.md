@@ -1,10 +1,12 @@
 # Canonical Lighting Model v0.1.0
 
+The current contract is [Physical Intake v0.4](physical-intake-v0.4.md). Root light records have served Spaces before zones exist. Use its phase checker and current review exporter; the v0.1/v0.2/v0.3 descriptions below preserve their historical executable contracts.
+
 Current Space intake follows the [architectural-first workflow](../../design-playbooks/architectural-space-intake.md). Draft 0.3.1 distinguishes occupied level from fixture mounting height, accounts for unlit service areas, and supports reviewed named zones spanning Spaces/levels. Shared stair zoning preserves specified MEP behavior and applicable independent-control constraints. Consequential boundary details remain narrative evidence and review items.
 
 Follow the [full LV workflow and readiness map](../../design-playbooks/lv-project-workflow-and-readiness.md): extract MEP intent, check through WikiJS, preserve it in LV implementation, and adopt departures only with authority/approval. The agreed zone review statuses are documented but not yet schema fields.
 
-The current draft is [Space Context v0.3](space-context-v0.3.md), extending [Device Hierarchy v0.2](device-hierarchy-v0.2.md). Read [Space](space.md) for room conditions and independent code classifications, and [fixture identity](../../concepts/fixture-identity-and-summary-counts.md) for occurrence IDs and derived quantities. This page otherwise documents the preserved v0.1 baseline. Its flat collections and one-zone-per-channel restriction are superseded for new work; the v0.1 executable tools still enforce them on v0.1 input.
+The preserved Space extension is [Space Context v0.3](space-context-v0.3.md), extending [Device Hierarchy v0.2](device-hierarchy-v0.2.md). Read [Space](space.md) for room conditions and independent code classifications, and [fixture identity](../../concepts/fixture-identity-and-summary-counts.md) for occurrence IDs and derived quantities. This page otherwise documents the preserved v0.1 baseline. Its flat collections and one-zone-per-channel restriction are superseded for new work; the v0.1 executable tools still enforce them on v0.1 input.
 
 The [JSON schema](../../../schemas/lighting-project.schema.json) is the machine-readable structure. These pages define its meaning. [Phase 1 validation](../../validation/README.md) checks relationships and engineering invariants beyond JSON Schema.
 

@@ -14,6 +14,8 @@ related_pages:
 
 # LV Light Zone
 
+Current [v0.4](physical-intake-v0.4.md) uses `light_object_ids[]` to reference the physical registry. A lighting zone is a later logical control artifact, never a default container created during room-boundary or fixture extraction. Empty zone lists are valid at intake. Whole-Space display mode is `room`; the `room_default` term below belongs to legacy v0.3.
+
 In [v0.3](space-context-v0.3.md), Spaces reference their existing zones. A whole-room zone has a stable internal ID even when no distinct drawing label is used (`label_mode: room_default`). Named zones may display labels such as `$z109` and record their control area/basis. Space membership derives from explicit Space zone references, cross-checked against each light's primary served Space; legacy `space_labels` text is presentation context.
 
 A reviewed named zone may span multiple rooms or levels. Preserve the specified stair-control scheme; the one-zone-per-physical-stair convention applies only when documented behavior and reviewed independent-control requirements support common operation, whether using one Space or separate level records. Describe shared operation and preserve source constraints/emergency behavior; conflicting independent-control requirements require discussion before finalizing a split or common zone. Do not duplicate a physical light across floor rows. Review room-to-zone associations before assigning channels/controllers.

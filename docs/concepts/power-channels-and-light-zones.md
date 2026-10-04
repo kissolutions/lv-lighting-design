@@ -18,7 +18,7 @@ A power channel describes a supply output. An LV light zone describes lights ope
 
 Zone A can contain a 20 W light on Channel 1 and a 25 W light on Channel 2. Zone B can contain a 30 W light on Channel 1. Zone A totals 45 W; Zone B totals 30 W; Channel 1 totals 50 W; Channel 2 totals 25 W. Overall light load is 75 W when viewed through either grouping.
 
-The light objects establish the relationship. Each is stored once, inside its zone, and references its power channel. Channel-zone lists and zone-channel lists are derived. This avoids duplicating fixtures or charging all of a zone's watts to every associated channel.
+The light objects establish the relationship. Each is stored once in the v0.4 physical registry and later referenced by its functional zone; it references its power channel when assigned. Physical intake can finish with no lighting zones. Legacy v0.2/v0.3 nested records remain supported by their own tools. Channel-zone lists and zone-channel lists are derived. This avoids duplicating fixtures or charging all of a zone's watts to every associated channel.
 
 Sharing a supply output still requires compatible electrical behavior and valid downstream control paths. Controller capacity is measured in independent control outputs; power-unit capacity is measured in power outputs and aggregate watts. The two output counts need not match.
 

@@ -1,0 +1,467 @@
+{
+  "schema_version": "0.4.0",
+  "project": {
+    "id": "SYNTHETIC-V02",
+    "name": "Synthetic space and device hierarchy; no client data",
+    "model_revision": "DEMO-03",
+    "stage": "checkpoint",
+    "takeoff_status": "reconciled",
+    "energy_code_basis": {
+      "standard": "other",
+      "edition": "SYNTHETIC",
+      "jurisdiction": "SYNTHETIC TEST ONLY",
+      "amendments_status": "none_identified",
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "decision_id": "DEC-SYNTHETIC"
+    }
+  },
+  "source_documents": [
+    {
+      "id": "DOC-SYNTHETIC",
+      "filename": "SYNTHETIC-NO-ACTUAL-PDF",
+      "revision": "DEMO-02",
+      "storage_uri": null
+    }
+  ],
+  "drawing_pages": [
+    {
+      "id": "PAGE-SYNTHETIC",
+      "source_document_id": "DOC-SYNTHETIC",
+      "sheet_id": "SYNTHETIC",
+      "revision": "DEMO-02",
+      "page_index": 0,
+      "width_pt": 2592,
+      "height_pt": 1728,
+      "pdf_rotation_deg": 0
+    }
+  ],
+  "source_references": [
+    {
+      "id": "REF-SYNTHETIC",
+      "source_document_id": "DOC-SYNTHETIC",
+      "drawing_page_id": "PAGE-SYNTHETIC",
+      "locator": "Synthetic assumptions for contract tests only",
+      "statement": "All ratings, device capacities, compatibility, and controls are invented for software tests."
+    }
+  ],
+  "fixture_types": [
+    {
+      "id": "TYPE-SYNTHETIC",
+      "source_mark": "SYNTHETIC",
+      "description": "Synthetic original fixture",
+      "source_load": {
+        "basis": "per_fixture",
+        "watts": 20,
+        "length_ft": null,
+        "reference_length_ft": null
+      },
+      "manufacturer_options": [],
+      "source_emergency_provision": null,
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    }
+  ],
+  "branch_circuits": [
+    {
+      "id": "BRANCH-SYNTHETIC",
+      "panel_ref": "SYNTHETIC-PANEL",
+      "circuit_label": "1",
+      "voltage_v": 120,
+      "phases": 1,
+      "breaker_amps": 20,
+      "backup_supply_id": null,
+      "decision_id": "DEC-SYNTHETIC",
+      "power_units": [
+        {
+          "id": "PU-SYNTHETIC",
+          "label": "Synthetic PDU",
+          "input_voltage_v": 120,
+          "input_phases": 1,
+          "lv_power_type": "class_2",
+          "rated_output_watts": 200,
+          "rated_input_watts": 240,
+          "design_input_watts": 100,
+          "aggregate_design_limit_watts": 180,
+          "number_of_channels": 2,
+          "backup_supply_id": null,
+          "connected_controls": [
+            {
+              "target_id": "CTRL-SYNTHETIC",
+              "interface": "SYNTHETIC",
+              "role": "Zone control"
+            }
+          ],
+          "channels": [
+            {
+              "id": "CH-SYNTHETIC-1",
+              "label": "CH-SYNTHETIC-1",
+              "power_class": "class_2",
+              "validation_profile": "class2_100w_90w_design",
+              "voltage": {
+                "current_type": "dc",
+                "nominal_v": 48,
+                "min_v": null,
+                "max_v": null
+              },
+              "rated_output_watts": 100,
+              "design_limit_watts": 90,
+              "auxiliary_load_watts": 0,
+              "compatibility_group": "SYNTHETIC-COMPATIBLE",
+              "decision_id": "DEC-SYNTHETIC",
+              "source_ref_ids": [
+                "REF-SYNTHETIC"
+              ]
+            },
+            {
+              "id": "CH-SYNTHETIC-2",
+              "label": "CH-SYNTHETIC-2",
+              "power_class": "class_2",
+              "validation_profile": "class2_100w_90w_design",
+              "voltage": {
+                "current_type": "dc",
+                "nominal_v": 48,
+                "min_v": null,
+                "max_v": null
+              },
+              "rated_output_watts": 100,
+              "design_limit_watts": 90,
+              "auxiliary_load_watts": 0,
+              "compatibility_group": "SYNTHETIC-COMPATIBLE",
+              "decision_id": "DEC-SYNTHETIC",
+              "source_ref_ids": [
+                "REF-SYNTHETIC"
+              ]
+            }
+          ],
+          "decision_id": "DEC-SYNTHETIC",
+          "source_ref_ids": [
+            "REF-SYNTHETIC"
+          ]
+        }
+      ],
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    }
+  ],
+  "light_zones": [
+    {
+      "id": "ZONE-SYNTHETIC-A",
+      "label": null,
+      "space_labels": [
+        "Synthetic room"
+      ],
+      "control_group_ids": [
+        "GROUP-SYNTHETIC"
+      ],
+      "controller_id": "CTRL-SYNTHETIC",
+      "controller_output": 1,
+      "driver_type": "dimming",
+      "control_types": [
+        "occupancy",
+        "timeswitch"
+      ],
+      "on_off_type": "vacancy",
+      "normal_behavior": "controlled",
+      "egress_type": "normal",
+      "emergency_behavior": "not_required",
+      "emergency_input_id": null,
+      "decision_id": "DEC-SYNTHETIC",
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "label_mode": "room",
+      "control_area_sq_ft": 88,
+      "control_area_basis": "estimated",
+      "light_object_ids": [
+        "LIGHT-SYNTHETIC-1",
+        "LIGHT-SYNTHETIC-3"
+      ]
+    },
+    {
+      "id": "ZONE-SYNTHETIC-B",
+      "label": null,
+      "space_labels": [
+        "Synthetic room"
+      ],
+      "control_group_ids": [
+        "GROUP-SYNTHETIC"
+      ],
+      "controller_id": "CTRL-SYNTHETIC",
+      "controller_output": 2,
+      "driver_type": "dimming",
+      "control_types": [
+        "occupancy",
+        "timeswitch"
+      ],
+      "on_off_type": "vacancy",
+      "normal_behavior": "controlled",
+      "egress_type": "normal",
+      "emergency_behavior": "not_required",
+      "emergency_input_id": null,
+      "decision_id": "DEC-SYNTHETIC",
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "label_mode": "room",
+      "control_area_sq_ft": 100,
+      "control_area_basis": "estimated",
+      "light_object_ids": [
+        "LIGHT-SYNTHETIC-2"
+      ]
+    }
+  ],
+  "controllers": [
+    {
+      "id": "CTRL-SYNTHETIC",
+      "label": "Synthetic four-output controller",
+      "device_class": "Synthetic 4-output controller",
+      "number_of_control_outputs": 4,
+      "integrated_power_unit_id": null,
+      "control_power_backup_supply_id": null,
+      "connected_control_device_ids": [
+        "DEV-OCC",
+        "DEV-TIME"
+      ],
+      "emergency_inputs": [],
+      "decision_id": "DEC-SYNTHETIC",
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    }
+  ],
+  "control_devices": [
+    {
+      "id": "DEV-OCC",
+      "label": "Synthetic occupancy sensor",
+      "kind": "occupancy_sensor",
+      "asset_type": "hardware",
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    },
+    {
+      "id": "DEV-TIME",
+      "label": "Synthetic timeswitch",
+      "kind": "timeswitch",
+      "asset_type": "software",
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    }
+  ],
+  "control_systems": [],
+  "control_groups": [
+    {
+      "id": "GROUP-SYNTHETIC",
+      "label": "Synthetic MEP business-hours intent",
+      "normal_schedule_intent": "Business hours",
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    }
+  ],
+  "backup_supplies": [],
+  "decisions": [
+    {
+      "id": "DEC-SYNTHETIC",
+      "statement": "Use this synthetic topology only to test the draft contract.",
+      "rationale": "Invented evidence for relationship and load checks, not a real product or engineering approval.",
+      "status": "confirmed",
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "assumption_ids": []
+    }
+  ],
+  "assumptions": [],
+  "open_items": [],
+  "spaces": [
+    {
+      "id": "SPACE-SYNTHETIC-A",
+      "name": "Synthetic enclosed office A",
+      "room_number": null,
+      "description": "Invented conditions for software checks; no real code approval.",
+      "area_sq_ft": 88,
+      "area_basis": "estimated",
+      "area_note": "Synthetic area estimate.",
+      "source_room_type": "Office",
+      "building_code_space_type": null,
+      "energy_code_space_type": "enclosed_office",
+      "energy_classification_basis": "owner_classification",
+      "energy_classification_note": "Synthetic owner classification.",
+      "energy_classification_decision_id": "DEC-SYNTHETIC",
+      "enclosure": "enclosed",
+      "has_windows": false,
+      "has_daylight_zone": false,
+      "daylight_control_required": false,
+      "daylight_assessment_note": "Synthetic interior room with no daylight zone.",
+      "building_code_occupancy_group": null,
+      "code_references": [
+        {
+          "standard": "SYNTHETIC",
+          "edition": "TEST",
+          "section": "TEST-ROOM",
+          "reason": "Synthetic constraint reference, not a code provision.",
+          "url": null,
+          "applicability_status": "confirmed",
+          "decision_id": "DEC-SYNTHETIC"
+        }
+      ],
+      "drawing_page_ids": [
+        "PAGE-SYNTHETIC"
+      ],
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "light_object_ids": [
+        "LIGHT-SYNTHETIC-1",
+        "LIGHT-SYNTHETIC-3"
+      ],
+      "light_zone_ids": [
+        "ZONE-SYNTHETIC-A"
+      ],
+      "decision_id": "DEC-SYNTHETIC"
+    },
+    {
+      "id": "SPACE-SYNTHETIC-B",
+      "name": "Synthetic enclosed office B",
+      "room_number": null,
+      "description": "Invented conditions for software checks; no real code approval.",
+      "area_sq_ft": 100,
+      "area_basis": "estimated",
+      "area_note": "Synthetic area estimate.",
+      "source_room_type": "Office",
+      "building_code_space_type": null,
+      "energy_code_space_type": "enclosed_office",
+      "energy_classification_basis": "owner_classification",
+      "energy_classification_note": "Synthetic owner classification.",
+      "energy_classification_decision_id": "DEC-SYNTHETIC",
+      "enclosure": "enclosed",
+      "has_windows": false,
+      "has_daylight_zone": false,
+      "daylight_control_required": false,
+      "daylight_assessment_note": "Synthetic interior room with no daylight zone.",
+      "building_code_occupancy_group": null,
+      "code_references": [
+        {
+          "standard": "SYNTHETIC",
+          "edition": "TEST",
+          "section": "TEST-ROOM",
+          "reason": "Synthetic constraint reference, not a code provision.",
+          "url": null,
+          "applicability_status": "confirmed",
+          "decision_id": "DEC-SYNTHETIC"
+        }
+      ],
+      "drawing_page_ids": [
+        "PAGE-SYNTHETIC"
+      ],
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "light_object_ids": [
+        "LIGHT-SYNTHETIC-2"
+      ],
+      "light_zone_ids": [
+        "ZONE-SYNTHETIC-B"
+      ],
+      "decision_id": "DEC-SYNTHETIC"
+    }
+  ],
+  "light_objects": [
+    {
+      "id": "LIGHT-SYNTHETIC-1",
+      "label": null,
+      "source": {
+        "fixture_type_id": "TYPE-SYNTHETIC",
+        "drawing_page_id": "PAGE-SYNTHETIC",
+        "source_branch_label": "SOURCE-CIRCUIT",
+        "source_control_group_labels": [
+          "SOURCE-SCHEDULE-GROUP"
+        ],
+        "source_annotation_id": null,
+        "drawing_anchor": null
+      },
+      "design": {
+        "lv_description": "Synthetic selected LV light",
+        "load": {
+          "basis": "per_fixture",
+          "watts": 20,
+          "length_ft": null,
+          "reference_length_ft": null
+        },
+        "compatibility_group": "SYNTHETIC-COMPATIBLE",
+        "channel_id": "CH-SYNTHETIC-1",
+        "backup_supply_id": null,
+        "decision_id": "DEC-SYNTHETIC"
+      },
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    },
+    {
+      "id": "LIGHT-SYNTHETIC-3",
+      "label": null,
+      "source": {
+        "fixture_type_id": "TYPE-SYNTHETIC",
+        "drawing_page_id": "PAGE-SYNTHETIC",
+        "source_branch_label": "SOURCE-CIRCUIT",
+        "source_control_group_labels": [
+          "SOURCE-SCHEDULE-GROUP"
+        ],
+        "source_annotation_id": null,
+        "drawing_anchor": null
+      },
+      "design": {
+        "lv_description": "Synthetic selected LV light",
+        "load": {
+          "basis": "per_fixture",
+          "watts": 25,
+          "length_ft": null,
+          "reference_length_ft": null
+        },
+        "compatibility_group": "SYNTHETIC-COMPATIBLE",
+        "channel_id": "CH-SYNTHETIC-2",
+        "backup_supply_id": null,
+        "decision_id": "DEC-SYNTHETIC"
+      },
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    },
+    {
+      "id": "LIGHT-SYNTHETIC-2",
+      "label": null,
+      "source": {
+        "fixture_type_id": "TYPE-SYNTHETIC",
+        "drawing_page_id": "PAGE-SYNTHETIC",
+        "source_branch_label": "SOURCE-CIRCUIT",
+        "source_control_group_labels": [
+          "SOURCE-SCHEDULE-GROUP"
+        ],
+        "source_annotation_id": null,
+        "drawing_anchor": null
+      },
+      "design": {
+        "lv_description": "Synthetic selected LV light",
+        "load": {
+          "basis": "per_fixture",
+          "watts": 30,
+          "length_ft": null,
+          "reference_length_ft": null
+        },
+        "compatibility_group": "SYNTHETIC-COMPATIBLE",
+        "channel_id": "CH-SYNTHETIC-1",
+        "backup_supply_id": null,
+        "decision_id": "DEC-SYNTHETIC"
+      },
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    }
+  ]
+}

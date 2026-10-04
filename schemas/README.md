@@ -1,6 +1,8 @@
 # Schema Contract
 
-`lighting-project-v0.3.schema.json` is the current [Space extension](../docs/ontology/canonical-model/space-context-v0.3.md), checked by `generators.model_spaces`. It adds room conditions, code classifications/basis, light/zone reference lists, and zone label/area context to the nested hierarchy.
+`lighting-project-v0.4.schema.json` is current for new projects. Root `light_objects[]` separates physical intake from later `light_zones[].light_object_ids[]`. Use `generators.model_intake` with inventory/intake/design phases and `generators.export_intake` for review CSVs. Empty zones are valid at intake; served-Space membership is required for every entered light. Older version schemas/checkers remain unchanged and supported. See [v0.4](../docs/ontology/canonical-model/physical-intake-v0.4.md).
+
+`lighting-project-v0.3.schema.json` is the preserved v0.3 [Space extension](../docs/ontology/canonical-model/space-context-v0.3.md), checked by `generators.model_spaces`. It adds room conditions, code classifications/basis, light/zone reference lists, and zone label/area context to the nested hierarchy.
 
 Draft revision 0.3.1 adds optional `Space.level`, `Space.inventory_only`, and `LightObject.mounting` with height above the served floor, basis, note, and evidence. The same v0.3 schema accepts existing `schema_version: 0.3.0` models without these optional fields. The seed uses 0.3.1. Shared zone references are checked against light ownership and reviewed additional served Spaces. Inventory-only service areas require descriptions and empty lighting lists.
 

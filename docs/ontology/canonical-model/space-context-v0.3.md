@@ -17,6 +17,8 @@ related_pages:
 
 # Space Context and Fixture Identity v0.3
 
+This is the preserved v0.3 contract. New physical-first projects use [v0.4](physical-intake-v0.4.md), where lights exist without zones, phase checks separate intake/design, and current review CSVs are available. Do not follow legacy nested ownership as a reason to invent placeholder zones.
+
 Draft revision 0.3.1 adds optional served-level, inventory-only, and fixture mounting context plus reviewed shared-zone membership. Existing 0.3.0 models remain supported by the v0.3 schema/checker.
 
 This additive draft extends the [v0.2 device hierarchy](device-hierarchy-v0.2.md). New projects can use `lighting-project-v0.3.schema.json` and `python -m generators.model_spaces MODEL`. Existing v0.2 data and its checker remain supported. No automatic conversion invents rooms, code classifications, areas, or daylight conclusions.

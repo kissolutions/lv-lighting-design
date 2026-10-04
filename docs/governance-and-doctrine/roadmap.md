@@ -19,7 +19,7 @@ related_pages:
 
 Use the [full workflow/readiness map](../design-playbooks/lv-project-workflow-and-readiness.md) as the current audit, with the [project checklist](../../templates/first-project-checklist.md) for execution. WikiJS owns the general electrical lighting knowledge; LV work extracts MEP intent, checks it through WikiJS, and translates it into implementation. Authorized and approved departures are tracked separately from source intent.
 
-Available: architectural intake/reconciliation directives; current v0.3.1 Space/device schema, seed and synthetic examples; stable fixture/source IDs; area/classification/evidence records; nested branch/unit/channel ownership; zones/controllers and declared emergency/backup relationships; reference, membership, load and capacity checks with derived JSON. Legacy v0.1 has five CSV outputs but cannot export v0.3 data.
+Available: architectural intake/reconciliation directives; current v0.4 physical-first schema, seed, phase checker and synthetic examples; stable fixture/source IDs; area/classification/evidence records; nested branch/unit/channel ownership; zones/controllers and declared emergency/backup relationships; reference, membership, load and capacity checks with derived JSON. Current source-review export supports v0.4 and read-only v0.3; legacy v0.1 keeps its dedicated outputs.
 
 These support supervised intake, manual source/code review and LV grouping. They do not demonstrate an editable PDF output, complete code evaluation, automatic extraction/grouping or an end-to-end installer package.
 
@@ -33,8 +33,8 @@ Prove displayed-page crop/rotation placement, annotation editability, save/readb
 
 1. Implement agreed zone verification and implementation-review statuses, with supporting assessment evidence and per-function findings.
 2. Separate original MEP scheme, applied LV implementation and proposed/approved departures; define authorization and approval records.
-3. Separate intake milestone readiness from later room/code/electrical requirements in the checker.
-4. Add current-version schedule/review exports and a complete source-occurrence disposition register. Preserve occurrence identity, source facts and shared-zone relationships.
+3. Inventory/intake/design data phases are implemented; continue developing source/owner milestone evidence and later code evaluation.
+4. Five source-review CSVs are implemented. Develop later engineering schedules, spreadsheet reconciliation and a complete source-occurrence disposition register. Preserve occurrence identity, source facts and shared-zone relationships.
 
 Schema/check changes require versioning, synchronized examples/docs, and meaningful tests. Merely documenting these features does not implement them.
 
