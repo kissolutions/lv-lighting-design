@@ -45,6 +45,15 @@ Copy this template into approved project storage outside Git. Follow the [workfl
 
 ## M3: Check the extracted scheme
 
+- [ ] Retrieve proposed room-type/synonym matches from WikiJS; preserve source names and independently propose building/energy classifications with supporting use evidence and alternatives.
+- [ ] Record owner-confirmed classifications, owner/date/basis and remaining unknowns before final classification-dependent conclusions.
+- [ ] Identify source gaps by dimming, manual control, on/off behavior, occupancy/vacancy sensing and time switches, plus relevant daylight/emergency interaction; preserve known functions and supported not-applicable findings.
+- [ ] For affected rooms/functions, retain scoped owner authorization for narrative development, a supplied owner narrative, or deferral; confirmation of room type alone is insufficient. Reuse authorization already covering the scope.
+- [ ] Assess WikiJS guidance readiness. For missing/unfinished/ambiguous guidance, use the selected-code primary-source fallback; retain exact sections, conditions, options, exception evidence and unavailable text as unresolved.
+- [ ] Flag source-text interpretations and the proposed narrative for owner approval before adoption. Permission to draft and approval to adopt are separate; preserve source, applied and proposed behavior.
+- [ ] Confirm LV-system compatibility preserves reviewed requirements and operation; record system conflicts without weakening the requirement.
+
+
 - [ ] Review actual use, area/basis, enclosure, independent building/energy classifications and the selected code/edition/amendment basis.
 - [ ] Check occupancy, daylight, manual-control and scheduling functions through applicable WikiJS guidance. Retain source/code/guide references, reasoning and review scope.
 - [ ] Record zone verification as not reviewed, compliant, deficient, ambiguous source or no information. These agreed status fields are not yet in the schema; retain them in project review records meanwhile.

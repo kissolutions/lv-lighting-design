@@ -10,7 +10,7 @@ The model and documented method are sufficient to attempt a supervised one-room/
 
 ## Start here
 
-WikiJS owns room definitions, code analysis, controls selection/configuration, decision trees and the application guide. Local [application-guide](docs/design-playbooks/lighting-control-application-guide.md) and [IECC profile](docs/design-playbooks/iecc-occupant-sensor-directives.md) drafts are support material for alignment upstream, not a separate design authority.
+WikiJS owns room definitions, code analysis, controls selection/configuration, decision trees and the application guide. General [application-guide](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/lighting-control-application-guide.md) and [IECC draft profile](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/iecc-occupant-sensor-directives.md) content now lives there; the old local paths are navigation-only pointers. Follow the [classification/narrative handoff](docs/design-playbooks/lv-project-workflow-and-readiness.md#room-classification-and-controls-narrative-handoff) for owner-confirmed room types, authorized source-gap filling and reviewed primary-source fallback when WikiJS guidance is unfinished. Local system constraints narrow compatible selections while preserving required behavior.
 
 1. Read [repository guidance](CLAUDE.md) and the [repository boundary](docs/governance-and-doctrine/repository-boundary.md).
 2. Follow the [Lighting Design Playbook](docs/design-playbooks/lighting-design-playbook.md).
