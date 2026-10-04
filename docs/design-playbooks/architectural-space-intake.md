@@ -46,6 +46,20 @@ Only after room-list completeness is reviewed, verify the other captured source 
 
 The milestone deliverables are the reconciled simple room list, boundary review PDF, and discrepancy list with omission causes/resolutions where established. Pass when every observed space is accounted for, the owner has reviewed omissions and proposed inventory corrections, and each checked fact is supported or explicitly unknown/flagged. Open factual questions remain visible; the affected downstream design cannot be finalized until consequential questions are resolved.
 
+### Circulation Reconciliation Before Completing M1
+
+**Before completing M1, reconcile circulation separately from labeled rooms.** Explicitly account for untagged passages connecting rooms or primary Spaces. A distinct architectural corridor receives a proposed Space even without a room tag or depicted lighting. Use a neutral proposed name, preserve boundary evidence, and leave unsupported room numbers and code classifications null. Record unresolved identity, extent or association in the discrepancy list. Circulation included within another Space must lie within that Space's boundary and be described there.
+
+Run this pass after drawing the initial room boundaries. The independent verification agent also performs it against the architectural plan, rather than relying on the extracted room list:
+
+1. Trace circulation connecting rooms and primary open areas, including bends and connections into larger Spaces.
+2. Identify distinct traffic passages bounded by walls or partitions. Apply [the untagged-area rules](#when-an-untagged-area-is-its-own-space); do not absorb a distinct corridor merely because its ends open into named Spaces.
+3. Account for each passage as a proposed corridor Space or an explicitly documented part of a surrounding Space. Workstation aisles may remain within an open-office Space, and door alcoves may remain within the surrounding Space. Preserve the architectural evidence for the chosen treatment.
+4. Flag uncertain endpoints, boundaries, finish transitions or Space associations for owner review. Use neutral proposal labels such as “Corridor – North/East”; do not convert a proposal into a source room designation or code classification.
+5. Check the boundary review PDF for unexplained gaps and overlaps, including circulation between otherwise complete room outlines. A passage described as included in another Space must actually be inside its marked boundary; unassigned floor area remains an explicit discrepancy rather than being described as absorbed.
+
+Record the result in the existing room descriptions, boundary review PDF and discrepancy list. Before M1 is complete, every observed circulation area must have an explicit Space association or a visible unresolved item. The owner may accept, split or merge proposed tracking Spaces while preserving their evidence and stable-ID history. These decisions do not create lighting zones; logical control zoning comes later.
+
 ## Architectural Room Areas
 
 A width-by-depth label such as `10' X 15'` is dimension evidence, not an explicit square-footage label. Preserve it verbatim with its source in `area_note`; leave `area_sq_ft` null at initial extraction unless a separate supported area is available. A reviewed calculation or boundary takeoff may establish area later with its own basis. Do not silently turn nominal room labels into accepted measured areas.
