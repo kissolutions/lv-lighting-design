@@ -43,7 +43,7 @@ These are presentation sequences, not channel IDs, control groups, LV load group
 
 ## Clockwise Within Each Room and Type
 
-Use the accepted upright plan-view orientation: top-left means page top-left in that view, not assumed geographic northwest. Consider only the physical lights of the current type assigned to the current primary served Space. For a linear run, use its reviewed representative anchor and count the physical run once under the established takeoff convention.
+Use the accepted upright plan-view orientation: top-left means page top-left in that view, not assumed geographic northwest. Consider only the physical lights of the current type assigned to the current primary served Space. For a linear run, apply [linear extraction](m2-linear-fixture-extraction.md), use its reviewed representative anchor and count the source run once. Connected corners and repeated type labels do not add display numbers; clearly separate runs do. Record ambiguous continuity rather than treating the display path as proof of manufacturing/electrical topology.
 
 Start with the upper-left fixture in the uppermost visible row of that room/type group. For a clear rectangular grid, follow the outer ring clockwise: across the top toward the right, down the right edge, across the bottom toward the left, and up the left edge. Then repeat on the next inward ring until all fixtures are labeled. A single row proceeds left-to-right; a single column proceeds top-to-bottom. These degenerate cases do not require an artificial circular path.
 

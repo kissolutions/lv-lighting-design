@@ -25,7 +25,7 @@ Use matching revisions. Keep the markup documents separate for now. Missing revi
 - [ ] Display numbers follow the [numbering rule](../docs/design-playbooks/m2-fixture-numbering.md): one consecutive block per schedule type, each room's same-type lights together, clockwise from top-left. The type-block register matches the counts; unclear paths or revisions are flagged. Permanent internal IDs are preserved.
 - [ ] Room/type counts agree with the marked plan and review tables. The verification summary identifies its checked sheets and remaining count questions.
 - [ ] Lights are not counted twice because they appear on multiple plans. Existing, excluded and out-of-scope items have an explicit treatment.
-- [ ] Linear lighting is described consistently as fixtures or runs. Uncertain lengths, label-to-fixture matches and counting conventions are flagged.
+- [ ] [Linear lighting counts](../docs/design-playbooks/m2-linear-fixture-extraction.md) are consistent: one continuous/apparently continuous same-type path is one run, including corners and repeated labels; clearly disconnected paths are separate runs. The agent checked source linework beneath overlays and flagged uncertain continuity/lengths. Run counts are distinguished from manufactured sections and electrical feeds.
 
 Questions / discrepancy IDs: __________
 

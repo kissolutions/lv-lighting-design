@@ -31,6 +31,8 @@ Begin with [architectural space intake](architectural-space-intake.md). Architec
 
 ## Working Steps
 
+During M2, apply [linear lighting run extraction](m2-linear-fixture-extraction.md): one continuous or apparently continuous same-type path counts as one source run, including corners and repeated labels; clearly disconnected paths count separately. Flag ambiguous continuity and preserve full-path length/load evidence without inferring section, feed or channel count.
+
 1. **Register sources and scope.** Record document/sheet revisions and roles including finish plans, displayed dimensions/rotation, governing revision questions and the project model revision. Confirm whether substantial gray/hatched areas are out of scope during this step; retain the answer and source locator. Preserve all project inputs outside Git.
 2. **Inventory Spaces.** Include in-scope tagged/untagged areas, unlit corridors/service areas and cross-level conditions. Apply the [untagged-area rules](architectural-space-intake.md#when-an-untagged-area-is-its-own-space): door alcoves may belong to their surrounding Space, corridors are proposed tracking Spaces, and architectural evidence sets boundaries. Never move an edge to fit a fixture. Perform [Milestone 1](architectural-space-intake.md#milestone-1-room-inventory-and-source-verification) independent room-list verification and owner review of omissions. No assumptions in source verification.
 3. **Capture area evidence.** Prefer clear architectural area labels with a high-confidence transcription note. Review editable boundaries and the applicable printed view scale before accepting measured areas; retain source-versus-measured conflicts.

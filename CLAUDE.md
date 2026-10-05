@@ -44,6 +44,8 @@ Use WikiJS for general room/control design knowledge. General [application-guide
 
 For M2 fixture labeling, follow [display numbering](docs/design-playbooks/m2-fixture-numbering.md): consecutive project-wide numeric blocks by Fixture Schedule Type in source schedule order, consistent reviewed room order, and clockwise from top-left within each room/type. Store L001-style numbers in the existing Light Object `label`, keep internal `id` and source marks unchanged, and reconcile label maps/type-block counts across review PDFs and tables. Flag ambiguous traversal and sequence impacts from revisions; do not silently renumber accepted/owner-returned markups. The exporter displays entered labels; automatic allocation and clockwise detection remain unimplemented.
 
+For linear M2 extraction, follow [source-run counting](docs/design-playbooks/m2-linear-fixture-extraction.md): one continuous/apparently continuous same-type path counts once through corners or repeated labels; clearly disconnected paths are separate runs. Inspect original linework beneath overlays and distinguish ceiling/detail annotations from fixture marks. Flag continuity and length/load/topology uncertainty. A source-run count does not establish one manufactured section, electrical feed or channel; retain stable identity and avoid duplicating full paths/loads to bypass current single-input modeling.
+
 ## Storage and publication
 
 Keep real source PDFs, schedules, takeoffs, client identifiers, storage credentials, project-instance JSON, and generated client files outside Git. Only synthetic examples and approved anonymized precedent belong here. `.gitignore` is a convenience, not a privacy review. Inspect the staged files before publication.
