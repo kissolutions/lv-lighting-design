@@ -13,10 +13,12 @@ from jsonschema import Draft202012Validator
 from .model_hierarchy import load_watts
 from .model_spaces import check_model as check_spaces
 from .model_voltage import interface_issues, voltage_shape_issues
+from .model_m4_electrical import m4_interface_issues, voltage_shape_issues_v06
 from .validate_model import read_model
 
 SCHEMA = Path(__file__).resolve().parents[1] / 'schemas/lighting-project-v0.4.schema.json'
 SCHEMA_V05 = SCHEMA.with_name('lighting-project-v0.5.schema.json')
+SCHEMA_V06 = SCHEMA.with_name('lighting-project-v0.6.schema.json')
 PHASES = ('inventory', 'intake', 'design')
 
 
@@ -86,6 +88,32 @@ def upgrade_v05(model):
     return upgraded
 
 
+
+def upgrade_v06(model):
+    """Upgrade v0.3-v0.5 electrical data without changing physical fixture identity."""
+    if model.get('schema_version') in ('0.3.0', '0.3.1', '0.4.0'):
+        model = upgrade_v05(model)
+    if model.get('schema_version') != '0.5.0':
+        raise ValueError('M4 electrical upgrade requires a v0.3-v0.5 model.')
+    upgraded = copy.deepcopy(model)
+    upgraded['schema_version'] = '0.6.0'
+    for fixture in upgraded['fixture_types']:
+        voltage = fixture['source_voltage']
+        fixture['source_power_type'] = voltage.pop('current_type', None)
+        fixture['source_dimming_capability'] = None
+    for light in upgraded['light_objects']:
+        design = light['design']
+        design['input_power_type'] = design['input_voltage'].pop('current_type', None)
+        design['dimming_capability'] = None
+    for branch in upgraded['branch_circuits']:
+        for unit in branch['power_units']:
+            for channel in unit['channels']:
+                channel['output_power_type'] = channel['voltage'].pop('current_type', None)
+                channel['light_zone_id'] = None
+                channel['controller_id'] = None
+                channel['controller_output'] = None
+    return upgraded
+
 def check_model(model, phase='intake'):
     if phase not in PHASES:
         raise ValueError(f'Unknown phase: {phase}')
@@ -99,14 +127,17 @@ def check_model(model, phase='intake'):
                     deferred_issues=deferred, derived=derived,
                     review_note='Checks verify entered data; independent source and owner review remain required.')
 
-    electrical_version = model.get('schema_version') == '0.5.0'
-    schema = json.loads((SCHEMA_V05 if electrical_version else SCHEMA).read_text())
+    version = model.get('schema_version')
+    electrical_version = version in ('0.5.0', '0.6.0')
+    m4_version = version == '0.6.0'
+    schema_path = SCHEMA_V06 if m4_version else (SCHEMA_V05 if electrical_version else SCHEMA)
+    schema = json.loads(schema_path.read_text())
     for error in Draft202012Validator(schema).iter_errors(model):
         fail('schema', '/'.join(map(str, error.absolute_path)) or 'model', error.message)
     if issues:
         return result()
     if electrical_version:
-        issues.extend(voltage_shape_issues(model))
+        issues.extend(voltage_shape_issues_v06(model) if m4_version else voltage_shape_issues(model))
         if issues:
             return result()
 
@@ -225,7 +256,8 @@ def check_model(model, phase='intake'):
                    engineering_views_available=False,
                    electrical_interface_checks_available=electrical_version)
     if electrical_version:
-        (issues if phase == 'design' else deferred).extend(interface_issues(model))
+        electrical_issues = m4_interface_issues(model) if m4_version else interface_issues(model)
+        (issues if phase == 'design' else deferred).extend(electrical_issues)
     if not spaces:
         fail('space-completeness', model['project']['id'], 'Register the observed Spaces.')
     if phase != 'inventory' and not lights:
@@ -245,19 +277,25 @@ def check_model(model, phase='intake'):
         projection.pop('light_objects')
         if electrical_version:
             for fixture in projection['fixture_types']:
-                for key in ('source_voltage', 'source_power_mode', 'source_current_ma',
-                            'source_voltage_basis', 'source_voltage_note', 'source_driver_type', 'source_driver_note'):
+                for key in ('source_voltage', 'source_power_type', 'source_power_mode', 'source_current_ma',
+                            'source_voltage_basis', 'source_voltage_note', 'source_driver_type', 'source_driver_note',
+                            'source_dimming_capability'):
                     fixture.pop(key)
             for branch in projection['branch_circuits']:
                 for unit in branch['power_units']:
                     for channel in unit['channels']:
                         channel.pop('output_power_mode')
                         channel.pop('output_current_ma')
+                        channel.pop('output_power_type', None)
+                        channel.pop('light_zone_id', None)
+                        channel.pop('controller_id', None)
+                        channel.pop('controller_output', None)
         for zone in projection['light_zones']:
             zone['light_objects'] = [copy.deepcopy(lights[lid]) for lid in zone.pop('light_object_ids')]
             if electrical_version:
                 for light in zone['light_objects']:
-                    for key in ('input_voltage', 'input_power_mode', 'input_current_ma', 'driver_type', 'driver_note'):
+                    for key in ('input_voltage', 'input_power_type', 'input_power_mode', 'input_current_ma', 'driver_type', 'driver_note',
+                                'dimming_capability'):
                         light['design'].pop(key)
             if zone['label_mode'] == 'room':
                 zone['label_mode'] = 'room_default'

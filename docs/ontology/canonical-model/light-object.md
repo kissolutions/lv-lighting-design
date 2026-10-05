@@ -14,6 +14,8 @@ related_pages:
 
 # Light Object
 
+For M4, see [v0.6 electrical attributes](m4-electrical-attributes-v0.6.md): AC/DC power type is a peer of numeric voltage, min/max voltage remain explicit, and selected fixture dimming capability is physical rather than inferred from zone behavior.
+
 The [v0.5 extension](electrical-interfaces-v0.5.md) adds selected `design.input_voltage`, `input_power_mode` and `input_current_ma` at the assigned supply-channel interface. Preserve source fixture/type voltage independently; a replacement or verified downstream interface can differ. Voltage/mode/current checks supplement watts and compatibility groups without changing physical identity or Space/zone membership.
 
 Selected `design.driver_type`/`driver_note` describe driver/driverless/other architecture, independently of source type and dimming/CV-CC mode. Unknown selected architecture is a later-design blocker; other requires a description. Legacy zone `driver_type` retains its dimming/non-dimming meaning.

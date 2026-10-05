@@ -119,7 +119,7 @@ def build_v06_schema():
     }
 
     # Selected fixture interface/capability at the channel interface.
-    design = defs["light_object"]["properties"]["design"]
+    design = defs["light"]["properties"]["design"]
     insert_after(design["required"], "input_voltage", "input_power_type")
     if "dimming_capability" not in design["required"]:
         design["required"].append("dimming_capability")
@@ -204,22 +204,30 @@ def patch_model_intake():
 def patch_exporter():
     path = GENERATORS / "export_intake.py"
     text = path.read_text(encoding="utf-8")
-    text = text.replace(
-        "source_voltage_current_type=voltage.get('current_type'),",
-        "source_power_type=t.get('source_power_type', voltage.get('current_type')), source_voltage_current_type=voltage.get('current_type'),",
-    )
-    text = text.replace(
-        "'source_voltage_current_type', 'source_power_mode'",
-        "'source_power_type', 'source_voltage_current_type', 'source_power_mode'",
-    )
-    text = text.replace(
-        "lv_input_current_type=voltage.get('current_type'),",
-        "lv_input_power_type=l['design'].get('input_power_type', voltage.get('current_type')), lv_input_current_type=voltage.get('current_type'),",
-    )
-    text = text.replace(
-        "'lv_input_voltage', 'lv_input_voltage_min_v', 'lv_input_voltage_max_v', 'lv_input_current_type',",
-        "'lv_input_voltage', 'lv_input_voltage_min_v', 'lv_input_voltage_max_v', 'lv_input_power_type', 'lv_input_current_type',",
-    )
+    if "source_power_type=t.get('source_power_type'" not in text:
+        text = text.replace(
+            "source_voltage_current_type=voltage.get('current_type'),",
+            "source_power_type=t.get('source_power_type', voltage.get('current_type')), source_voltage_current_type=voltage.get('current_type'),",
+            1,
+        )
+    if "'source_power_type', 'source_voltage_current_type'" not in text:
+        text = text.replace(
+            "'source_voltage_current_type', 'source_power_mode'",
+            "'source_power_type', 'source_voltage_current_type', 'source_power_mode'",
+            1,
+        )
+    if "lv_input_power_type=l['design'].get('input_power_type'" not in text:
+        text = text.replace(
+            "lv_input_current_type=voltage.get('current_type'),",
+            "lv_input_power_type=l['design'].get('input_power_type', voltage.get('current_type')), lv_input_current_type=voltage.get('current_type'),",
+            1,
+        )
+    if "'lv_input_power_type', 'lv_input_current_type'" not in text:
+        text = text.replace(
+            "'lv_input_voltage', 'lv_input_voltage_min_v', 'lv_input_voltage_max_v', 'lv_input_current_type',",
+            "'lv_input_voltage', 'lv_input_voltage_min_v', 'lv_input_voltage_max_v', 'lv_input_power_type', 'lv_input_current_type',",
+            1,
+        )
     path.write_text(text, encoding="utf-8")
 
 

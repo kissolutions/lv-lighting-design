@@ -53,7 +53,7 @@ def export_intake(model, output_dir, allow_provisional=False):
         type_rows.append(dict(fixture_type_id=tid, source_mark=t['source_mark'], description=t['description'],
                               source_load_basis=t['source_load']['basis'], source_watts=t['source_load']['watts'],
                               source_voltage=voltage.get('nominal_v'), source_voltage_min_v=voltage.get('min_v'),
-                              source_voltage_max_v=voltage.get('max_v'), source_voltage_current_type=voltage.get('current_type'),
+                              source_voltage_max_v=voltage.get('max_v'), source_power_type=t.get('source_power_type', voltage.get('current_type')), source_voltage_current_type=voltage.get('current_type'),
                               source_power_mode=t.get('source_power_mode'), source_current_ma=t.get('source_current_ma'),
                               source_voltage_basis=t.get('source_voltage_basis'), source_voltage_note=t.get('source_voltage_note'),
                               source_driver_type=t.get('source_driver_type'), source_driver_note=t.get('source_driver_note'),
@@ -61,7 +61,7 @@ def export_intake(model, output_dir, allow_provisional=False):
                               source_ref_ids=';'.join(t['source_ref_ids'])))
     emit('fixture_type_schedule.csv', ['fixture_type_id', 'source_mark', 'description', 'source_load_basis',
          'source_watts', 'source_voltage', 'source_voltage_min_v', 'source_voltage_max_v',
-         'source_voltage_current_type', 'source_power_mode', 'source_current_ma', 'source_voltage_basis',
+         'source_power_type', 'source_voltage_current_type', 'source_power_mode', 'source_current_ma', 'source_voltage_basis',
          'source_voltage_note', 'source_driver_type', 'source_driver_note', 'occurrence_or_run_count',
          'manufacturer_options', 'source_ref_ids'], type_rows)
     summary_rows = []
@@ -81,7 +81,7 @@ def export_intake(model, output_dir, allow_provisional=False):
                                quantity_basis=types[tid]['source_load']['basis'],
                                length_ft=l['design']['load']['length_ft'], lv_watts=l['design']['load']['watts'],
                                lv_input_voltage=voltage.get('nominal_v'), lv_input_voltage_min_v=voltage.get('min_v'),
-                               lv_input_voltage_max_v=voltage.get('max_v'), lv_input_current_type=voltage.get('current_type'),
+                               lv_input_voltage_max_v=voltage.get('max_v'), lv_input_power_type=l['design'].get('input_power_type', voltage.get('current_type')), lv_input_current_type=voltage.get('current_type'),
                                lv_input_power_mode=l['design'].get('input_power_mode'),
                                lv_input_current_ma=l['design'].get('input_current_ma'),
                                lv_driver_type=l['design'].get('driver_type'), lv_driver_note=l['design'].get('driver_note'),
@@ -99,7 +99,7 @@ def export_intake(model, output_dir, allow_provisional=False):
     point_rows.sort(key=label_order)  # Stable for unlabeled/nonstandard labels and ties.
     emit('light_points.csv', ['light_label', 'light_id', 'fixture_type_id', 'source_mark', 'space_id', 'zone_id',
          'drawing_page_id', 'x_pt', 'y_pt', 'quantity_basis', 'length_ft', 'lv_watts',
-         'lv_input_voltage', 'lv_input_voltage_min_v', 'lv_input_voltage_max_v', 'lv_input_current_type',
+         'lv_input_voltage', 'lv_input_voltage_min_v', 'lv_input_voltage_max_v', 'lv_input_power_type', 'lv_input_current_type',
          'lv_input_power_mode', 'lv_input_current_ma', 'lv_driver_type', 'lv_driver_note', 'channel_id',
          'mounting_height_ft', 'height_basis', 'mounting_note', 'source_ref_ids'], point_rows)
     emit('discrepancy_list.csv', ['id', 'description', 'affects_ids', 'source_ref_ids', 'blocking',

@@ -1,0 +1,49 @@
+LV Lighting M4 Framework Post-Build Report
+==========================================
+Source repository: kissolutions/lv-lighting-design
+Source branch: main
+Source commit: 5a292a48a36080bc605f30ca07183ce2c5953d67
+Source commit message: Beta M4 testing - Controller Channel ontology updates and more
+Date: 2026-10-05
+
+Updater execution
+-----------------
+The pushed overlay was detected on the source commit. The M4 updater was executed locally against exact snapshots of the files it modifies.
+
+Two defects were found and corrected before packaging:
+1. Schema definition lookup used $defs.light_object, while the live v0.5 schema uses $defs.light.
+2. The exporter patch was not actually idempotent; a second updater run duplicated source_power_type / lv_input_power_type fields. The updater now guards those edits and a second run leaves the files unchanged.
+
+Validation performed
+--------------------
+PASS - v0.6 JSON Schema parses and Draft 2020-12 schema validation succeeds.
+PASS - voltage object contains numeric nominal_v/min_v/max_v only; AC/DC is a peer power-type attribute.
+PASS - source_power_type and source_dimming_capability are first-class fixture attributes.
+PASS - input_power_type and dimming_capability are first-class selected-fixture attributes.
+PASS - class2_100w_95w_design exists with a 95 W maximum on a 100 W rated channel.
+PASS - corrected updater is syntactically valid and stable on a second run.
+PASS - generated/modified Python modules compile.
+PASS - v0.5 -> v0.6 migration preserves numeric nominal/min/max voltage and moves AC/DC to peer fields without mutating the source model.
+PASS - dimmable fixture in a non-dimming zone is accepted without changing the physical fixture interface.
+PASS - non-dimmable fixture in a dimming-required zone is rejected.
+PASS - AC/DC mismatch is rejected independently of numeric voltage.
+PASS - CC fixture voltage range outside channel compliance range is rejected.
+PASS - one Micro LV Control Channel spanning multiple functional zones is rejected.
+PASS - duplicate 1:1 controller/output claims are rejected.
+PASS - 95 W M4 profile consistency check rejects a 96 W design limit.
+
+Environment limitation
+----------------------
+The execution container cannot make a direct GitHub network checkout, and the connected GitHub integration in this session is read-only for branch/file writes. Therefore the full legacy repository test suite was not run from a complete checkout. The updater, generated schema, migration behavior, Python syntax, idempotency, and the new M4 electrical/channel behaviors were exercised directly against the source commit snapshots.
+
+Files in this ZIP
+-----------------
+schemas/lighting-project-v0.6.schema.json
+templates/lighting-project-v0.6.template.json
+generators/model_m4_electrical.py
+generators/model_intake.py
+generators/export_intake.py
+docs/design-playbooks/lighting-design-playbook.md
+docs/ontology/canonical-model/light-object.md
+tools/apply_m4_framework_update.py
+BUILD_REPORT.txt
