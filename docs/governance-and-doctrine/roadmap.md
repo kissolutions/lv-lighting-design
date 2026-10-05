@@ -48,4 +48,12 @@ Develop route endpoints/topology, equipment locations, calibrated cable lengths 
 
 Keep real project PDFs, schedules, takeoffs, model instances, markups, decisions and results outside Git. Turn accepted findings into reusable instructions/synthetic tests without copying client identifiers.
 
+## Deferred Feature: Layered Master Review PDF
+
+**Status: Future feature; not part of the current workflow.** Keep room-boundary, fixture/source-control, device/design and cabling markup documents separate for now, as their information becomes available. Identify source/model revision and review scope on each document, retain stable object/annotation IDs, and preserve accepted milestone copies. Do not consolidate current deliverables or require PDF layers to complete a milestone.
+
+The future concept is one editable master PDF per source-background revision with separately visible Rooms, Fixtures, Source Controls, Lighting Zones, Devices, Cabling and Review layers. Preserve architectural and RCP page identities and their independent scale/registration evidence. Source intent remains distinct from proposed/adopted implementation, and functional zones still come later from supported operation; a layer does not establish an object identity or approval status.
+
+Before adopting the feature, prove visibility controls, boundary/device editing, saved layer membership, stable IDs and geometry readback in Bluebeam and any other supported editors. Keep the working master unflattened and retain milestone snapshots. Record tested editor/version behavior and delivery visibility settings. This roadmap entry neither implements layer generation/readback nor establishes compatibility; schedule it after the separate-document workflow is working reliably.
+
 Owner: KIS Solutions. October 2026; draft priorities based on owner workflow and local capability audit.
