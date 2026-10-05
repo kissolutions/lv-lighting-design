@@ -20,6 +20,8 @@ In v0.3, optional `mounting` contains nullable `height_above_served_floor_ft`, `
 
 In [v0.3](space-context-v0.3.md), each light is also referenced by exactly one Space. Keep its internal ID stable when changing a room name, zone, or channel. Derive room fixture-type quantities from those references; a visible fixture label is optional.
 
+When producing M2 fixture-ID markups, use [fixture display numbering](../../design-playbooks/m2-fixture-numbering.md). The existing `label` stores the readable L001-style number; `id` remains the permanent reference identity. Project-wide type blocks and room-local clockwise order are presentation rules, not source marks, zones or power-channel assignments. Keep revision crosswalks and annotation mappings when display labels change.
+
 Location: `light_zones[].light_objects[]` in the draft v0.2 model.
 
 Represents one selected single-input LV lighting occurrence with stable internal identity. Preserves source type, branch/zone observations, page, optional anchor and annotation ID separately from selected LV load, compatibility, channel, backup provision, and selection/assignment decision. Load can be per fixture, per foot, or per reference length. Future split-input/segmented fixtures need an explicit extension; do not duplicate physical fixtures to work around it.

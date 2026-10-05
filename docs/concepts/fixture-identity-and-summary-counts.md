@@ -17,6 +17,8 @@ related_pages:
 
 Maintain one stable internal occurrence ID per physical light once grouping begins. Display room quantities by fixture type, e.g. a synthetic room with Type A x3 and Type AE x1. An occurrence establishes assignment/revision identity; a summary communicates quantity. Visible per-fixture labels are optional.
 
+When labeling fixtures for M2, apply the [display-numbering playbook](../design-playbooks/m2-fixture-numbering.md): one global consecutive block per source Fixture Schedule Type, room subsets together, clockwise from top-left within each room/type. The Light Object's `label` is the display number; its permanent `id` remains the relationship/revision identity. Readable ordering complements room/type summaries without silently reassigning identities.
+
 Type-and-quantity intake is useful before individual grouping, but cannot identify which light moved to another channel, which subset is in a daylight zone, or which emergency fixture requires a distinct response. Coarse counts remain preliminary evidence until reconciled with physical occurrences. There is no bulk-count object in the current design schema.
 
 Keep drawings readable with room/zone/channel labels and grouped counts. Add per-fixture labels where commissioning, troubleshooting, special selection, or ambiguity makes them useful. Preserve a source locator or reviewed geometry even when the identifier is hidden; automated fixture-center detection and overlays remain future work.

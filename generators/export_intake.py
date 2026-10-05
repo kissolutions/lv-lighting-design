@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 from .export_review import write_csv
@@ -73,7 +74,15 @@ def export_intake(model, output_dir, allow_provisional=False):
                                mounting_height_ft=mounting.get('height_above_served_floor_ft'),
                                height_basis=mounting.get('height_basis'), mounting_note=mounting.get('note'),
                                source_ref_ids=';'.join(l['source_ref_ids'])))
-    emit('light_points.csv', ['light_id', 'fixture_type_id', 'source_mark', 'space_id', 'zone_id',
+    # Display numbering is entered/reviewed separately; exporting never assigns or changes identity.
+    def label_order(row):
+        match = re.fullmatch(r'L([0-9]+)', row['light_label'] or '')
+        return (0, int(match.group(1))) if match else (1, 0)
+
+    for row in point_rows:
+        row['light_label'] = lights[row['light_id']]['label']
+    point_rows.sort(key=label_order)  # Stable for unlabeled/nonstandard labels and ties.
+    emit('light_points.csv', ['light_label', 'light_id', 'fixture_type_id', 'source_mark', 'space_id', 'zone_id',
          'drawing_page_id', 'x_pt', 'y_pt', 'quantity_basis', 'length_ft', 'lv_watts', 'channel_id',
          'mounting_height_ft', 'height_basis', 'mounting_note', 'source_ref_ids'], point_rows)
     emit('discrepancy_list.csv', ['id', 'description', 'affects_ids', 'source_ref_ids', 'blocking',

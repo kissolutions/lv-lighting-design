@@ -4,6 +4,8 @@ Current tools: `python -m generators.model_intake MODEL --phase inventory|intake
 
 The capability statements below describe legacy tools; they do not limit the current physical-intake/export implementation.
 
+Current Light Points export includes `light_label` before the permanent `light_id`. Entered L-number labels sort numerically (including labels above L999); unlabeled/nonstandard labels retain their relative input order after numbered rows. The exporter never allocates labels or changes model identity. Follow [M2 fixture numbering](../docs/design-playbooks/m2-fixture-numbering.md) for type blocks, room-local clockwise paths and reviewed label maps; assignment, uniqueness review and the type-block register are manual/agent workflow tasks.
+
 For v0.3 draft data, use `python -m generators.model_spaces MODEL`. It checks Space references and room/zone readiness, delegates electrical hierarchy checks to the v0.2 checker, and derives fixture quantities by type, Space loads/channels, and zone display labels/control areas. It does not determine local code adoption or certify energy-code compliance. See the [Space contract](../docs/ontology/canonical-model/space-context-v0.3.md).
 
 The overall v0.3 result includes later code/area/mounting and electrical-assignment readiness. It is not an early room-inventory gate. Keep unknowns and all findings; do not invent design data to make intake pass. Separate milestone checking and v0.3 CSV/PDF export remain development work. See the [workflow/readiness audit](../docs/design-playbooks/lv-project-workflow-and-readiness.md).

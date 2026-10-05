@@ -134,6 +134,38 @@ class IntakeTests(unittest.TestCase):
         next(z for z in emergency['light_zones'] if z['egress_type'] != 'normal')['emergency_behavior'] = 'not_required'
         self.assertIn('emergency-intent', {i['rule'] for i in check_model(emergency, 'design')['issues']})
 
+    def test_display_numbers_export_in_numeric_order_without_changing_identity(self):
+        self.physical_only()
+        labels = ['L1000', 'L010', 'L009']
+        for light, label in zip(self.model['light_objects'], labels):
+            light['label'] = label
+        expected = {l['label']: l['id'] for l in self.model['light_objects']}
+        before = copy.deepcopy(self.model)
+        with tempfile.TemporaryDirectory() as d:
+            export_intake(self.model, Path(d))
+            with (Path(d) / 'light_points.csv').open(encoding='utf-8-sig', newline='') as f:
+                reader = csv.DictReader(f)
+                self.assertEqual(reader.fieldnames[3:5], ['light_label', 'light_id'])
+                rows = list(reader)
+            self.assertEqual([r['light_label'] for r in rows], ['L009', 'L010', 'L1000'])
+            self.assertEqual({r['light_label']: r['light_id'] for r in rows}, expected)
+            self.assertTrue(all(r['zone_id'] == '' for r in rows))
+        self.assertEqual(self.model, before)
+
+    def test_unknown_and_nonstandard_labels_are_not_invented_and_stay_csv_safe(self):
+        self.physical_only()
+        for light, label in zip(self.model['light_objects'], [None, '=1+1', 'L001']):
+            light['label'] = label
+        original_ids = [l['id'] for l in self.model['light_objects']]
+        before = copy.deepcopy(self.model)
+        with tempfile.TemporaryDirectory() as d:
+            export_intake(self.model, Path(d))
+            with (Path(d) / 'light_points.csv').open(encoding='utf-8-sig', newline='') as f:
+                rows = list(csv.DictReader(f))
+            self.assertEqual([r['light_id'] for r in rows], [original_ids[2], original_ids[0], original_ids[1]])
+            self.assertEqual([r['light_label'] for r in rows], ['L001', '', "'=1+1"])
+        self.assertEqual(self.model, before)
+
     def test_unknown_selected_load_does_not_pass_full_design(self):
         self.model['light_objects'][0]['design']['load']['watts'] = None
         self.assertIn('light-load', self.rules('design'))

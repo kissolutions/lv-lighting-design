@@ -33,9 +33,12 @@ Copy this template into approved project storage outside Git. Follow the [workfl
 
 ## M2: Source lighting and controls
 
+Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human review meeting and scoped acceptance. The technical checks below remain the extraction/verification basis.
+
 - [ ] Initially complete Room Schedule, Lighting Schedule, Lighting Fixtures and Light Points; independently verify them against the registered source set.
 - [ ] Preserve all fixture schedule marks, description/load/driver notes and manufacturer options; flag missing/conflicting facts.
 - [ ] Give each physical occurrence a stable internal ID; count by sheet/Space/type and reconcile repeated/duplicate coverage and exclusions.
+- [ ] Apply [M2 fixture display numbering](../docs/design-playbooks/m2-fixture-numbering.md): consecutive type blocks across the project, room subsets together, clockwise from top-left within room/type; retain unique labels, a type-block register and label-to-permanent-ID mapping. Review ambiguous traversal and coordinate any display-label revision across tables/PDFs.
 - [ ] Assign lights to the occupied/served Space, retaining their independent source sheet. Keep numeric mounting height unknown where only qualitative high mounting or an unassociated ceiling tag is supported. Create no default zones; run the served-Space sanity check after boundary derivation/counting.
 - [ ] Extract source control symbols, legends, schedules, keyed notes, details and sequences; distinguish lighting from receptacle controls.
 - [ ] Confirm substantial gray/hatched scope exclusions; inspect finish plans and review alcove/corridor/finish-transition boundary proposals.
