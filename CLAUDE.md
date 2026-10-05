@@ -46,13 +46,17 @@ For M2 fixture labeling, follow [display numbering](docs/design-playbooks/m2-fix
 
 For linear M2 extraction, follow [source-run counting](docs/design-playbooks/m2-linear-fixture-extraction.md): one continuous/apparently continuous same-type path counts once through corners or repeated labels; clearly disconnected paths are separate runs. Inspect original linework beneath overlays and distinguish ceiling/detail annotations from fixture marks. Flag continuity and length/load/topology uncertainty. A source-run count does not establish one manufactured section, electrical feed or channel; retain stable identity and avoid duplicating full paths/loads to bypass current single-input modeling.
 
+Current electrical extension: [v0.5](docs/ontology/canonical-model/electrical-interfaces-v0.5.md), retaining v0.4 physical-first ownership. Capture source voltage as a peer of source wattage, with AC/DC, nominal/range, CV/CC/current evidence and explicit interface basis. Preserve it separately from selected light input/channel output. Confirm fixed-voltage and mode compatibility independently of watts/group labels; verify single-input CC current/compliance ranges and flag multi-input CC topology. Do not infer electrical values during upgrade or assume controller count from watt totals. v0.5 checker/exporter support is implemented; older schemas/tools remain available without claiming the new checks.
+
+Record source driver/driverless/other architecture and its note separately from the selected LV architecture. Other requires an explanatory description; unknown remains null. CV/CC regulation, dimming and legacy zone `driver_type` are different meanings. Unknown selected driver architecture is a design blocker; do not infer it from source description, watts or a zone's dimming label.
+
 ## Storage and publication
 
 Keep real source PDFs, schedules, takeoffs, client identifiers, storage credentials, project-instance JSON, and generated client files outside Git. Only synthetic examples and approved anonymized precedent belong here. `.gitignore` is a convenience, not a privacy review. Inspect the staged files before publication.
 
 ## Scope and verification
 
-The current v0.4 tools validate entered physical inventory/intake/design phases and export five source-review CSVs plus validation JSON; read-only v0.3 export is supported. Legacy v0.2/v0.3 emit full engineering JSON and v0.1 retains its dedicated exporter. Phase checks support review milestones but do not independently extract missing source items or establish owner approval. Never invent later design inputs to make an early intake pass. They do not extract plans, optimize channels, certify compatibility, design emergency lighting, or approve construction documents.
+The current v0.5 tools validate entered physical inventory/intake/design phases and selected electrical interfaces, and export five source-review CSVs plus validation JSON; v0.4 and read-only v0.3 export are supported. Legacy v0.2/v0.3 emit full engineering JSON and v0.1 retains its dedicated exporter. Phase checks support review milestones but do not independently extract missing source items or establish owner approval. Never invent later design inputs to make an early intake pass. They do not extract plans, optimize channels, certify compatibility, design emergency lighting, or approve construction documents.
 
 When changing the contract or engineering checks, update documentation, schema version as appropriate, synthetic fixtures, and meaningful boundary/failure tests together. Run:
 
@@ -61,6 +65,8 @@ python -m unittest discover -s tests -v
 python -m generators.validate_model docs/reference-implementations/synthetic-room/lighting-model.json
 python -m generators.model_intake docs/reference-implementations/synthetic-intake/lighting-model.json --phase intake
 python -m generators.model_intake docs/reference-implementations/synthetic-intake/design-model.json --phase design
+python -m generators.model_intake docs/reference-implementations/synthetic-voltage/intake-model.json --phase intake
+python -m generators.model_intake docs/reference-implementations/synthetic-voltage/design-model.json --phase design
 ```
 
 Use [extension page templates](templates/README.md) and retain required framework metadata. All initial domain pages are draft pending real-project review. Treat examples as precedent, never standards.

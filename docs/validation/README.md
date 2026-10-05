@@ -1,5 +1,7 @@
 # Phase 1 Validation
 
+The current [v0.5 electrical-interface extension](../ontology/canonical-model/electrical-interfaces-v0.5.md) uses `generators.model_intake`. It adds source-voltage shape and selected AC/DC, CV/CC, fixed-voltage and single-input CC current/range checks. Incompatible/unknown selected interfaces defer at intake and block design; contradictory numbers block every phase. Matching watts/group labels cannot bypass these checks. Multiple CC inputs on one output remain topology-review blockers. Older contracts remain unchanged and do not perform the new interface checks.
+
 The [v0.3 Space extension](../ontology/canonical-model/space-context-v0.3.md) uses `python -m generators.model_spaces MODEL`. It adds unique Space ownership of each light, consistent light/zone references, classification/evidence readiness, estimated-area notes, daylight assessment, and room-default versus named-zone checks. Counts derive from referenced lights. Energy-code thresholds, daylight geometry, sensor coverage, and building-code classification are engineering inputs, not automatically certified results.
 
 Use the [milestone/readiness map](../design-playbooks/lv-project-workflow-and-readiness.md) for early intake and first-markup review. The v0.3 checker is not a separate M1/M2 evaluator: it also requires later engineering inputs. The zone verification/implementation-review statuses and a complete code-check engine remain unimplemented.

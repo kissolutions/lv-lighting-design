@@ -18,7 +18,7 @@ related_pages:
 
 # Physical Intake and Logical Zoning v0.4
 
-The current draft is `schema_version: 0.4.0`. Physical extraction precedes logical zoning. Do not create default or placeholder zones to satisfy an intake container requirement.
+This page describes `schema_version: 0.4.0`, retained for compatibility. The current [v0.5 extension](electrical-interfaces-v0.5.md) adds source and selected electrical interfaces without changing physical ownership. Physical extraction precedes logical zoning. Do not create default or placeholder zones to satisfy an intake container requirement.
 
 ## Ownership and Relationships
 

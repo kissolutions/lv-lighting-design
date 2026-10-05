@@ -40,6 +40,8 @@ Schema/check changes require versioning, synchronized examples/docs, and meaning
 
 ## Refine Grouping and Equipment From the Proof
 
+[v0.5 source/selected electrical interfaces](../ontology/canonical-model/electrical-interfaces-v0.5.md) are implemented: source voltage beside watts, selected AC/DC and fixed-voltage/mode checks, and single-input CC current/range checks. Source-voltage capture does not infer replacement input voltage. Multi-input CC topology, product verification, actual output ratings and automatic grouping/count optimization remain development/review work. Older model passes do not prove these new checks.
+
 Verify actual product loads, output compatibility, unit budgets and independent controller behavior. Confirm emergency signaling and backup paths in the project. Review sensor/device configuration and coverage through WikiJS. Record real routing/grouping constraints before implementing optimization; source/control boundaries survive channel sharing.
 
 ## Pending Directive: Fixture Product Research Before M4

@@ -1,0 +1,296 @@
+{
+  "schema_version": "0.5.0",
+  "project": {
+    "id": "SYNTHETIC-V02",
+    "name": "Synthetic physical-only intake; no controls provided",
+    "model_revision": "SYNTHETIC-INTAKE-01",
+    "stage": "takeoff",
+    "takeoff_status": "reconciled",
+    "energy_code_basis": {
+      "standard": null,
+      "edition": null,
+      "jurisdiction": null,
+      "amendments_status": "unreviewed",
+      "source_ref_ids": [],
+      "decision_id": null
+    }
+  },
+  "source_documents": [
+    {
+      "id": "DOC-SYNTHETIC",
+      "filename": "SYNTHETIC-NO-ACTUAL-PDF",
+      "revision": "DEMO-02",
+      "storage_uri": null
+    }
+  ],
+  "drawing_pages": [
+    {
+      "id": "PAGE-SYNTHETIC",
+      "source_document_id": "DOC-SYNTHETIC",
+      "sheet_id": "SYNTHETIC",
+      "revision": "DEMO-02",
+      "page_index": 0,
+      "width_pt": 2592,
+      "height_pt": 1728,
+      "pdf_rotation_deg": 0
+    }
+  ],
+  "source_references": [
+    {
+      "id": "REF-SYNTHETIC",
+      "source_document_id": "DOC-SYNTHETIC",
+      "drawing_page_id": "PAGE-SYNTHETIC",
+      "locator": "Synthetic assumptions for contract tests only",
+      "statement": "All ratings, device capacities, compatibility, and controls are invented for software tests."
+    }
+  ],
+  "fixture_types": [
+    {
+      "id": "TYPE-SYNTHETIC",
+      "source_mark": "SYNTHETIC",
+      "description": "Synthetic original fixture",
+      "source_load": {
+        "basis": "per_fixture",
+        "watts": 20,
+        "length_ft": null,
+        "reference_length_ft": null
+      },
+      "manufacturer_options": [],
+      "source_emergency_provision": null,
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "source_voltage": {
+        "current_type": null,
+        "nominal_v": null,
+        "min_v": null,
+        "max_v": null
+      },
+      "source_power_mode": null,
+      "source_current_ma": null,
+      "source_voltage_basis": "unknown",
+      "source_voltage_note": null,
+      "source_driver_type": null,
+      "source_driver_note": null
+    }
+  ],
+  "branch_circuits": [],
+  "light_zones": [],
+  "controllers": [],
+  "control_devices": [],
+  "control_systems": [],
+  "control_groups": [],
+  "backup_supplies": [],
+  "decisions": [],
+  "assumptions": [],
+  "open_items": [],
+  "spaces": [
+    {
+      "id": "SPACE-SYNTHETIC-A",
+      "name": "Synthetic enclosed office A",
+      "room_number": null,
+      "description": "Invented conditions for software checks; no real code approval.",
+      "area_sq_ft": null,
+      "area_basis": "unknown",
+      "area_note": "Synthetic boundary review complete; numerical area takeoff pending.",
+      "source_room_type": "Office",
+      "building_code_space_type": null,
+      "energy_code_space_type": null,
+      "energy_classification_basis": "unknown",
+      "energy_classification_note": null,
+      "energy_classification_decision_id": null,
+      "enclosure": null,
+      "has_windows": null,
+      "has_daylight_zone": null,
+      "daylight_control_required": null,
+      "daylight_assessment_note": null,
+      "building_code_occupancy_group": null,
+      "code_references": [],
+      "drawing_page_ids": [
+        "PAGE-SYNTHETIC"
+      ],
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "light_object_ids": [
+        "LIGHT-SYNTHETIC-1",
+        "LIGHT-SYNTHETIC-3"
+      ],
+      "light_zone_ids": [],
+      "decision_id": null
+    },
+    {
+      "id": "SPACE-SYNTHETIC-B",
+      "name": "Synthetic enclosed office B",
+      "room_number": null,
+      "description": "Invented conditions for software checks; no real code approval.",
+      "area_sq_ft": null,
+      "area_basis": "unknown",
+      "area_note": "Synthetic boundary review complete; numerical area takeoff pending.",
+      "source_room_type": "Office",
+      "building_code_space_type": null,
+      "energy_code_space_type": null,
+      "energy_classification_basis": "unknown",
+      "energy_classification_note": null,
+      "energy_classification_decision_id": null,
+      "enclosure": null,
+      "has_windows": null,
+      "has_daylight_zone": null,
+      "daylight_control_required": null,
+      "daylight_assessment_note": null,
+      "building_code_occupancy_group": null,
+      "code_references": [],
+      "drawing_page_ids": [
+        "PAGE-SYNTHETIC"
+      ],
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "light_object_ids": [
+        "LIGHT-SYNTHETIC-2"
+      ],
+      "light_zone_ids": [],
+      "decision_id": null
+    }
+  ],
+  "light_objects": [
+    {
+      "id": "LIGHT-SYNTHETIC-1",
+      "label": null,
+      "source": {
+        "fixture_type_id": "TYPE-SYNTHETIC",
+        "drawing_page_id": "PAGE-SYNTHETIC",
+        "source_branch_label": "SOURCE-CIRCUIT",
+        "source_control_group_labels": [
+          "SOURCE-SCHEDULE-GROUP"
+        ],
+        "source_annotation_id": null,
+        "drawing_anchor": null
+      },
+      "design": {
+        "lv_description": null,
+        "load": {
+          "basis": "per_fixture",
+          "watts": null,
+          "length_ft": null,
+          "reference_length_ft": null
+        },
+        "compatibility_group": null,
+        "channel_id": null,
+        "backup_supply_id": null,
+        "decision_id": null,
+        "input_voltage": {
+          "current_type": null,
+          "nominal_v": null,
+          "min_v": null,
+          "max_v": null
+        },
+        "input_power_mode": null,
+        "input_current_ma": null,
+        "driver_type": null,
+        "driver_note": null
+      },
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "mounting": {
+        "height_above_served_floor_ft": null,
+        "height_basis": "unknown",
+        "note": "Synthetic mounting review pending.",
+        "source_ref_ids": []
+      }
+    },
+    {
+      "id": "LIGHT-SYNTHETIC-3",
+      "label": null,
+      "source": {
+        "fixture_type_id": "TYPE-SYNTHETIC",
+        "drawing_page_id": "PAGE-SYNTHETIC",
+        "source_branch_label": "SOURCE-CIRCUIT",
+        "source_control_group_labels": [
+          "SOURCE-SCHEDULE-GROUP"
+        ],
+        "source_annotation_id": null,
+        "drawing_anchor": null
+      },
+      "design": {
+        "lv_description": null,
+        "load": {
+          "basis": "per_fixture",
+          "watts": null,
+          "length_ft": null,
+          "reference_length_ft": null
+        },
+        "compatibility_group": null,
+        "channel_id": null,
+        "backup_supply_id": null,
+        "decision_id": null,
+        "input_voltage": {
+          "current_type": null,
+          "nominal_v": null,
+          "min_v": null,
+          "max_v": null
+        },
+        "input_power_mode": null,
+        "input_current_ma": null,
+        "driver_type": null,
+        "driver_note": null
+      },
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "mounting": {
+        "height_above_served_floor_ft": null,
+        "height_basis": "unknown",
+        "note": "Synthetic mounting review pending.",
+        "source_ref_ids": []
+      }
+    },
+    {
+      "id": "LIGHT-SYNTHETIC-2",
+      "label": null,
+      "source": {
+        "fixture_type_id": "TYPE-SYNTHETIC",
+        "drawing_page_id": "PAGE-SYNTHETIC",
+        "source_branch_label": "SOURCE-CIRCUIT",
+        "source_control_group_labels": [
+          "SOURCE-SCHEDULE-GROUP"
+        ],
+        "source_annotation_id": null,
+        "drawing_anchor": null
+      },
+      "design": {
+        "lv_description": null,
+        "load": {
+          "basis": "per_fixture",
+          "watts": null,
+          "length_ft": null,
+          "reference_length_ft": null
+        },
+        "compatibility_group": null,
+        "channel_id": null,
+        "backup_supply_id": null,
+        "decision_id": null,
+        "input_voltage": {
+          "current_type": null,
+          "nominal_v": null,
+          "min_v": null,
+          "max_v": null
+        },
+        "input_power_mode": null,
+        "input_current_ma": null,
+        "driver_type": null,
+        "driver_note": null
+      },
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "mounting": {
+        "height_above_served_floor_ft": null,
+        "height_basis": "unknown",
+        "note": "Synthetic mounting review pending.",
+        "source_ref_ids": []
+      }
+    }
+  ]
+}

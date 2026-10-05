@@ -12,9 +12,11 @@ from jsonschema import Draft202012Validator
 
 from .model_hierarchy import load_watts
 from .model_spaces import check_model as check_spaces
+from .model_voltage import interface_issues, voltage_shape_issues
 from .validate_model import read_model
 
 SCHEMA = Path(__file__).resolve().parents[1] / 'schemas/lighting-project-v0.4.schema.json'
+SCHEMA_V05 = SCHEMA.with_name('lighting-project-v0.5.schema.json')
 PHASES = ('inventory', 'intake', 'design')
 
 
@@ -58,6 +60,32 @@ def migrate_v03(model):
     return result
 
 
+def upgrade_v05(model):
+    """Explicit copy upgrade: preserve IDs/facts and add unknown electrical fields."""
+    if model.get('schema_version') in ('0.3.0', '0.3.1'):
+        model = migrate_v03(model)
+    if model.get('schema_version') != '0.4.0':
+        raise ValueError('Electrical upgrade requires a v0.3 or v0.4 model.')
+    error = next(Draft202012Validator(json.loads(SCHEMA.read_text())).iter_errors(model), None)
+    if error is not None:
+        raise ValueError(f'Invalid physical-intake structure: {error.message}')
+    upgraded = copy.deepcopy(model)
+    upgraded['schema_version'] = '0.5.0'
+    unknown_voltage = dict(current_type=None, nominal_v=None, min_v=None, max_v=None)
+    for fixture in upgraded['fixture_types']:
+        fixture.update(source_voltage=copy.deepcopy(unknown_voltage), source_power_mode=None,
+                       source_current_ma=None, source_voltage_basis='unknown', source_voltage_note=None,
+                       source_driver_type=None, source_driver_note=None)
+    for light in upgraded['light_objects']:
+        light['design'].update(input_voltage=copy.deepcopy(unknown_voltage),
+                               input_power_mode=None, input_current_ma=None, driver_type=None, driver_note=None)
+    for branch in upgraded['branch_circuits']:
+        for unit in branch['power_units']:
+            for channel in unit['channels']:
+                channel.update(output_power_mode=None, output_current_ma=None)
+    return upgraded
+
+
 def check_model(model, phase='intake'):
     if phase not in PHASES:
         raise ValueError(f'Unknown phase: {phase}')
@@ -71,11 +99,16 @@ def check_model(model, phase='intake'):
                     deferred_issues=deferred, derived=derived,
                     review_note='Checks verify entered data; independent source and owner review remain required.')
 
-    schema = json.loads(SCHEMA.read_text())
+    electrical_version = model.get('schema_version') == '0.5.0'
+    schema = json.loads((SCHEMA_V05 if electrical_version else SCHEMA).read_text())
     for error in Draft202012Validator(schema).iter_errors(model):
         fail('schema', '/'.join(map(str, error.absolute_path)) or 'model', error.message)
     if issues:
         return result()
+    if electrical_version:
+        issues.extend(voltage_shape_issues(model))
+        if issues:
+            return result()
 
     def records(value):
         if isinstance(value, dict):
@@ -189,7 +222,10 @@ def check_model(model, phase='intake'):
                    space_fixture_counts={sid: counts(s['light_object_ids']) for sid, s in spaces.items()},
                    space_connected_watts={sid: watts(s['light_object_ids']) for sid, s in spaces.items()},
                    zone_fixture_counts={zid: counts(z['light_object_ids']) for zid, z in zones.items()},
-                   engineering_views_available=False)
+                   engineering_views_available=False,
+                   electrical_interface_checks_available=electrical_version)
+    if electrical_version:
+        (issues if phase == 'design' else deferred).extend(interface_issues(model))
     if not spaces:
         fail('space-completeness', model['project']['id'], 'Register the observed Spaces.')
     if phase != 'inventory' and not lights:
@@ -207,8 +243,22 @@ def check_model(model, phase='intake'):
         projection = copy.deepcopy(model)
         projection['schema_version'] = '0.3.1'
         projection.pop('light_objects')
+        if electrical_version:
+            for fixture in projection['fixture_types']:
+                for key in ('source_voltage', 'source_power_mode', 'source_current_ma',
+                            'source_voltage_basis', 'source_voltage_note', 'source_driver_type', 'source_driver_note'):
+                    fixture.pop(key)
+            for branch in projection['branch_circuits']:
+                for unit in branch['power_units']:
+                    for channel in unit['channels']:
+                        channel.pop('output_power_mode')
+                        channel.pop('output_current_ma')
         for zone in projection['light_zones']:
             zone['light_objects'] = [copy.deepcopy(lights[lid]) for lid in zone.pop('light_object_ids')]
+            if electrical_version:
+                for light in zone['light_objects']:
+                    for key in ('input_voltage', 'input_power_mode', 'input_current_ma', 'driver_type', 'driver_note'):
+                        light['design'].pop(key)
             if zone['label_mode'] == 'room':
                 zone['label_mode'] = 'room_default'
         for item in projection['open_items']:
@@ -230,17 +280,21 @@ def main():
     parser.add_argument('model', type=Path)
     parser.add_argument('--phase', choices=PHASES, default='intake')
     parser.add_argument('--migrate-output', type=Path, help='Write a v0.3-to-v0.4 copy; preserves all existing zones.')
+    parser.add_argument('--upgrade-output', type=Path, help='Write a v0.3/v0.4-to-v0.5 copy with unknown electrical fields.')
     args = parser.parse_args()
     try:
         model = read_model(args.model)
-        if args.migrate_output:
-            model = migrate_v03(model)
-            if args.migrate_output.exists():
+        if args.migrate_output and args.upgrade_output:
+            raise ValueError('Choose one migration/upgrade output.')
+        output = args.upgrade_output or args.migrate_output
+        if output:
+            model = upgrade_v05(model) if args.upgrade_output else migrate_v03(model)
+            if output.exists():
                 raise ValueError('Migration output already exists.')
             report = check_model(model, args.phase)
             if report['derived'] is None:
                 raise ValueError('Migration is structurally invalid; review the legacy input before migrating.')
-            args.migrate_output.write_text(model_json(model) + '\n')
+            output.write_text(model_json(model) + '\n')
         else:
             report = check_model(model, args.phase)
     except (OSError, ValueError) as error:

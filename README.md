@@ -2,7 +2,7 @@
 
 KIS Solutions' LV lighting implementation workspace. WikiJS owns the general electrical lighting workflow and design knowledge. This repository extracts/reconciles the MEP scheme, checks it through that knowledgebase, and records the LV model, grouping, validation and markup/output conventions.
 
-The current draft is [Physical intake v0.4](docs/ontology/canonical-model/physical-intake-v0.4.md). Store physical lights once with primary served Space membership; logical lighting zones come later and no default zones are created. It retains room classifications, code evidence and device hierarchy from earlier versions. Use the [v0.4 schema](schemas/lighting-project-v0.4.schema.json), [seed](templates/lighting-project-v0.4.template.json), and [synthetic examples](docs/reference-implementations/synthetic-intake/README.md). Fixture quantities are derived from stable internal light IDs; drawing labels are optional. The v0.2 checker and original v0.1 tools remain available for their respective contracts.
+The current draft is [Electrical interfaces v0.5](docs/ontology/canonical-model/electrical-interfaces-v0.5.md), retaining [physical intake v0.4](docs/ontology/canonical-model/physical-intake-v0.4.md). Store physical lights once with primary served Space membership; logical lighting zones come later and no default zones are created. Use the [v0.5 schema](schemas/lighting-project-v0.5.schema.json), [seed](templates/lighting-project-v0.5.template.json), and [synthetic examples](docs/reference-implementations/synthetic-voltage/README.md). Source voltage is a peer of source wattage, separate from selected LV input. Design checks include fixed-voltage, AC/DC, power-mode and single-input CC current/range compatibility. Older contracts/tools remain available; an older pass does not perform these new checks.
 
 The current path is **architectural inventory -> lighting/control source intake -> check MEP intent through WikiJS -> compatible LV implementation -> zones/controllers/channels -> review markups -> coordinated issue -> field changes, commissioning and as-built reconciliation**. Follow the [workflow and readiness map](docs/design-playbooks/lv-project-workflow-and-readiness.md) for outputs, six review milestones, implemented capabilities and remaining development. Redesign is conditional on authority and approval; source ambiguity is not resolved by inventing controls.
 
@@ -14,8 +14,8 @@ WikiJS owns room definitions, code analysis, controls selection/configuration, d
 
 1. Read [repository guidance](CLAUDE.md) and the [repository boundary](docs/governance-and-doctrine/repository-boundary.md).
 2. Follow the [Lighting Design Playbook](docs/design-playbooks/lighting-design-playbook.md).
-3. Use the [current model overview](docs/ontology/canonical-model/physical-intake-v0.4.md), [v0.4 schema](schemas/lighting-project-v0.4.schema.json), and [project template](templates/lighting-project-v0.4.template.json).
-4. Review the [current synthetic examples](docs/reference-implementations/synthetic-intake/README.md). They contain no client data.
+3. Use the [current model overview](docs/ontology/canonical-model/electrical-interfaces-v0.5.md), [v0.5 schema](schemas/lighting-project-v0.5.schema.json), and [project template](templates/lighting-project-v0.5.template.json).
+4. Review the [current synthetic examples](docs/reference-implementations/synthetic-voltage/README.md). They contain no client data.
 5. Use the [first-project checklist](templates/first-project-checklist.md) to stress-test the foundation.
 
 ## Legacy v0.1 working rules
@@ -30,12 +30,12 @@ WikiJS owns room definitions, code analysis, controls selection/configuration, d
 ## Run the current checker
 
 ```bash
-python -m generators.model_intake PATH_TO_V04_MODEL --phase intake
-python -m generators.model_intake PATH_TO_V04_MODEL --phase design
-python -m generators.export_intake PATH_TO_V04_MODEL --output-dir NEW_REVIEW_DIRECTORY --allow-provisional
+python -m generators.model_intake PATH_TO_V05_MODEL --phase intake
+python -m generators.model_intake PATH_TO_V05_MODEL --phase design
+python -m generators.export_intake PATH_TO_V05_MODEL --output-dir NEW_REVIEW_DIRECTORY --allow-provisional
 ```
 
-This emits phase checks/derived JSON and repeatable Room, Fixture-Type, Lighting by Space, Light Points and Discrepancy CSVs. Read-only v0.3 export is also supported. It does not extract plans, evaluate the complete code/application guide, generate editable PDF markups, or import spreadsheet edits automatically.
+This emits phase checks/derived JSON and repeatable Room, Fixture-Type, Lighting by Space, Light Points and Discrepancy CSVs. v0.4 and read-only v0.3 export remain supported with blank new electrical columns. Explicitly upgrade an existing model with `--upgrade-output NEW_PATH`; new source/selected electrical fields start unknown. It does not extract plans, evaluate the complete code/application guide, generate editable PDF markups, or import spreadsheet edits automatically.
 
 ## Run the legacy v0.1 tools
 

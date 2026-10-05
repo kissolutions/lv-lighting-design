@@ -1,4 +1,4 @@
-"""Repeatable source-review CSVs for v0.3/v0.4; no model or spreadsheet writeback."""
+"""Repeatable source-review CSVs for v0.3/v0.4/v0.5; no model or spreadsheet writeback."""
 from __future__ import annotations
 
 import argparse
@@ -49,12 +49,21 @@ def export_intake(model, output_dir, allow_provisional=False):
     type_rows = []
     for tid, t in types.items():
         count = sum(l['source']['fixture_type_id'] == tid for l in lights.values())
+        voltage = t.get('source_voltage', {})
         type_rows.append(dict(fixture_type_id=tid, source_mark=t['source_mark'], description=t['description'],
                               source_load_basis=t['source_load']['basis'], source_watts=t['source_load']['watts'],
+                              source_voltage=voltage.get('nominal_v'), source_voltage_min_v=voltage.get('min_v'),
+                              source_voltage_max_v=voltage.get('max_v'), source_voltage_current_type=voltage.get('current_type'),
+                              source_power_mode=t.get('source_power_mode'), source_current_ma=t.get('source_current_ma'),
+                              source_voltage_basis=t.get('source_voltage_basis'), source_voltage_note=t.get('source_voltage_note'),
+                              source_driver_type=t.get('source_driver_type'), source_driver_note=t.get('source_driver_note'),
                               occurrence_or_run_count=count, manufacturer_options=';'.join(t['manufacturer_options']),
                               source_ref_ids=';'.join(t['source_ref_ids'])))
     emit('fixture_type_schedule.csv', ['fixture_type_id', 'source_mark', 'description', 'source_load_basis',
-         'source_watts', 'occurrence_or_run_count', 'manufacturer_options', 'source_ref_ids'], type_rows)
+         'source_watts', 'source_voltage', 'source_voltage_min_v', 'source_voltage_max_v',
+         'source_voltage_current_type', 'source_power_mode', 'source_current_ma', 'source_voltage_basis',
+         'source_voltage_note', 'source_driver_type', 'source_driver_note', 'occurrence_or_run_count',
+         'manufacturer_options', 'source_ref_ids'], type_rows)
     summary_rows = []
     for s in model['spaces']:
         for r in derived['space_fixture_counts'][s['id']]:
@@ -64,12 +73,18 @@ def export_intake(model, output_dir, allow_provisional=False):
     for lid, l in lights.items():
         mounting = l.get('mounting', {})
         point = l['source']['drawing_anchor'] or {}
+        voltage = l['design'].get('input_voltage', {})
         tid = l['source']['fixture_type_id']
         point_rows.append(dict(light_id=lid, fixture_type_id=tid, source_mark=types[tid]['source_mark'],
                                space_id=derived['light_space_ids'][lid], zone_id=derived['light_zone_ids'][lid],
                                drawing_page_id=l['source']['drawing_page_id'], x_pt=point.get('x_pt'), y_pt=point.get('y_pt'),
                                quantity_basis=types[tid]['source_load']['basis'],
                                length_ft=l['design']['load']['length_ft'], lv_watts=l['design']['load']['watts'],
+                               lv_input_voltage=voltage.get('nominal_v'), lv_input_voltage_min_v=voltage.get('min_v'),
+                               lv_input_voltage_max_v=voltage.get('max_v'), lv_input_current_type=voltage.get('current_type'),
+                               lv_input_power_mode=l['design'].get('input_power_mode'),
+                               lv_input_current_ma=l['design'].get('input_current_ma'),
+                               lv_driver_type=l['design'].get('driver_type'), lv_driver_note=l['design'].get('driver_note'),
                                channel_id=l['design']['channel_id'],
                                mounting_height_ft=mounting.get('height_above_served_floor_ft'),
                                height_basis=mounting.get('height_basis'), mounting_note=mounting.get('note'),
@@ -83,7 +98,9 @@ def export_intake(model, output_dir, allow_provisional=False):
         row['light_label'] = lights[row['light_id']]['label']
     point_rows.sort(key=label_order)  # Stable for unlabeled/nonstandard labels and ties.
     emit('light_points.csv', ['light_label', 'light_id', 'fixture_type_id', 'source_mark', 'space_id', 'zone_id',
-         'drawing_page_id', 'x_pt', 'y_pt', 'quantity_basis', 'length_ft', 'lv_watts', 'channel_id',
+         'drawing_page_id', 'x_pt', 'y_pt', 'quantity_basis', 'length_ft', 'lv_watts',
+         'lv_input_voltage', 'lv_input_voltage_min_v', 'lv_input_voltage_max_v', 'lv_input_current_type',
+         'lv_input_power_mode', 'lv_input_current_ma', 'lv_driver_type', 'lv_driver_note', 'channel_id',
          'mounting_height_ft', 'height_basis', 'mounting_note', 'source_ref_ids'], point_rows)
     emit('discrepancy_list.csv', ['id', 'description', 'affects_ids', 'source_ref_ids', 'blocking',
          'blocking_phases', 'status', 'resolution', 'decision_id'],

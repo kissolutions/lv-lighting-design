@@ -33,6 +33,8 @@ Questions / discrepancy IDs: __________
 
 - [ ] Fixture marks match the source schedule/legend. Similar marks, suffixes and unresolved matches are preserved rather than silently combined.
 - [ ] Available descriptions, wattages, driver/dimming information, options and notes were copied with their source references.
+- [ ] Source driver type is recorded as driver, driverless, other with a description, or unknown. Driver architecture is kept separate from CV/CC regulation and dimming capability; unfamiliar descriptions are retained for review.
+- [ ] Source voltage is shown beside source watts, with AC/DC, any range and CV/CC/current evidence where supplied. Its terminal/interface is identified; unknowns remain blank, and source voltage is not automatically the selected LV input. See [electrical interfaces](../docs/ontology/canonical-model/electrical-interfaces-v0.5.md).
 - [ ] Missing schedules or conflicting values are flagged. Unknown values stay blank/unknown, and original source wattages are not presented as confirmed LV loads.
 
 Questions / discrepancy IDs: __________

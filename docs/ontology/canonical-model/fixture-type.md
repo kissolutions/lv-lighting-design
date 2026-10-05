@@ -15,6 +15,10 @@ related_pages:
 
 # Fixture Type
 
+For the current schedule, use [v0.5 electrical interfaces](electrical-interfaces-v0.5.md). Root `fixture_types[]` retains `source_load` and now has peer `source_voltage` (nominal/range volts and AC/DC), source CV/CC mode/current, voltage-interface basis and notes. Unknown values remain null. The exporter displays source voltage beside source watts. Original source voltage does not establish the selected LV channel-interface voltage.
+
+`source_driver_type` records driver/driverless/other/null with `source_driver_note`; other requires a description. This architecture is independent of power-regulation mode and dimming capability. Preserve original and separately selected LV driver types independently.
+
 This page records the v0.1 baseline. For current ownership and relationships, read [Device Hierarchy v0.2](device-hierarchy-v0.2.md). The v0.1 tools retain their original contract; new hierarchy data uses the dedicated v0.2 schema/checker.
 
 ## Purpose and Scope

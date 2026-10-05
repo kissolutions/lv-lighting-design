@@ -60,6 +60,10 @@ During M2, apply [linear lighting run extraction](m2-linear-fixture-extraction.m
 
 ## Electrical Grouping
 
+Record source driver/driverless/other architecture during schedule intake, retaining unfamiliar descriptions and supported integral/remote details. Confirm the selected LV driver architecture independently during selection. Keep architecture, CV/CC regulation and dimming as separate dimensions; no driver or voltage compatibility is inferred from a generic label.
+
+Capture source voltage alongside source wattage during fixture-schedule intake, with AC/DC, nominal/range, CV/CC/current evidence and interface basis. At LV selection, establish the separate selected electrical input powered by the channel. Follow [v0.5 electrical interfaces](../ontology/canonical-model/electrical-interfaces-v0.5.md): separate incompatible selected voltages/modes before watt grouping, verify CC current/range/topology, and preserve source facts. Original AC/driver/module voltage does not automatically become channel voltage. Channel/controller counts depend on compatible electrical groups and independent operation as well as watts; no automatic count optimizer is implemented.
+
 Functional zones and power channels have separate identities. A zone may use several channels; a channel may serve several zones only when confirmed downstream architecture preserves independent operation. The Light Objects establish the many-to-many relationship without duplicate wattage. Sharing a controller output is a separate decision and cannot collapse independent zones.
 
 Use confirmed LV input load and any required linear length/reference-length basis. Channel load includes confirmed auxiliary load. Compare against the selected design and rated limits; check power-unit aggregate and channel capacities separately. Original AC fixture wattage, nameplate input wattage and connected LV output wattage are distinct quantities. Grouping remains manual in the current tools.

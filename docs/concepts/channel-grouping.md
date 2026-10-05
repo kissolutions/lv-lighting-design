@@ -18,6 +18,8 @@ This page explains the original v0.1 baseline. The current [power-channel/LV-zon
 
 ## Explanation
 
+The current [v0.5 electrical interface](../ontology/canonical-model/electrical-interfaces-v0.5.md) makes voltage/mode constraints explicit. Partition direct fixed-voltage loads by confirmed selected voltage and compatible output/controls before fitting watt budgets; preserve source voltage separately. Even two low-wattage loads can require separate supply outputs when one requires 12 V and the other 24 V. CC grouping requires current and operating-range/topology evidence. Supply-channel count and controller count remain distinct equipment-capacity decisions.
+
 Grouping is a partition of included fixtures subject to zoning, compatibility, and load constraints. The design belongs in the model; a PDF overlay is its presentation.
 
 For channel c, connected watts = sum of each assigned fixture's confirmed LV input watts. Under the baseline, connected watts <= design limit <=90 W. The unused margin is design limit minus connected watts.

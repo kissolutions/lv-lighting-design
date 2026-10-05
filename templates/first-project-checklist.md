@@ -37,6 +37,8 @@ Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human r
 
 - [ ] Initially complete Room Schedule, Lighting Schedule, Lighting Fixtures and Light Points; independently verify them against the registered source set.
 - [ ] Preserve all fixture schedule marks, description/load/driver notes and manufacturer options; flag missing/conflicting facts.
+- [ ] Record source driver architecture (driver/driverless/other/unknown), with descriptions for other and source notes for supported integral/remote arrangements. Preserve the selected LV driver architecture separately; do not substitute CV/CC or dimming labels for this classification.
+- [ ] Capture [source voltage beside source wattage](../docs/ontology/canonical-model/electrical-interfaces-v0.5.md), with AC/DC, nominal/range, CV/CC mode and drive current where supported. Identify fixture-input versus module-input/driver-output evidence; retain ambiguous wording and unknowns rather than inferring from watts.
 - [ ] Give each physical occurrence a stable internal ID; count by sheet/Space/type and reconcile repeated/duplicate coverage and exclusions.
 - [ ] Apply [linear run extraction](../docs/design-playbooks/m2-linear-fixture-extraction.md): connected/apparently continuous same-type paths count once through corners/repeated marks; clearly disconnected paths count separately. Check source linework beneath overlays, describe quantities as runs, and flag uncertain continuity, full-path length/load and feed/section topology.
 - [ ] Apply [M2 fixture display numbering](../docs/design-playbooks/m2-fixture-numbering.md): consecutive type blocks across the project, room subsets together, clockwise from top-left within room/type; retain unique labels, a type-block register and label-to-permanent-ID mapping. Review ambiguous traversal and coordinate any display-label revision across tables/PDFs.
@@ -68,6 +70,7 @@ Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human r
 ## M4: LV implementation and first markup
 
 - [ ] Confirm selected LV load, driver/output compatibility and actual product limits; preserve original source AC watts separately.
+- [ ] Confirm selected supply-channel input/output voltage, AC/DC and CV/CC mode independently of source voltage. Separate incompatible fixed-voltage groups before watt grouping; verify CC current/range and flag unmodeled multi-input CC topology. Review actual controller output capabilities rather than deriving controller count from watts alone.
 - [ ] Reproduce specified/approved operation in LV functional zones and controller outputs. Preserve MEP stair behavior; use shared zones only when supported.
 - [ ] Confirm relevant emergency signal source, monitored circuit, controller path, backup supply and outage operation independently.
 - [ ] Group one representative room manually with confirmed loads, auxiliary load and selected limits; preserve independent operation and one channel per modeled single-input light.
