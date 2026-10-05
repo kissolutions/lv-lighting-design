@@ -1,0 +1,27 @@
+LV Lighting M4 Framework Update - 2026-10-05
+
+Adds/creates after apply:
+- schemas/lighting-project-v0.6.schema.json
+- templates/lighting-project-v0.6.template.json
+- generators/model_m4_electrical.py
+- docs/ontology/canonical-model/m4-electrical-attributes-v0.6.md
+- docs/concepts/micro-lv-control-channels.md
+- docs/validation/fixture-capability-vs-zone-requirement.md
+- tests/test_m4_framework.py
+
+Patches after apply:
+- generators/model_intake.py
+- generators/export_intake.py
+- docs/design-playbooks/lighting-design-playbook.md
+- docs/ontology/canonical-model/light-object.md
+
+Key decisions encoded:
+- AC/DC is a peer power-type attribute; voltage stays numeric.
+- nominal/min/max voltage remain explicit numeric attributes.
+- physical fixture dimming capability is separate from zone-applied dimming behavior.
+- dimmable fixture in non-dimming zone is valid and does not mutate physical electrical data.
+- non-dimmable fixture in dimming-required zone is blocked.
+- micro LV channel serves one functional zone; one zone may use many channels.
+- physical controller/output claims are 1:1 with micro LV channels when assigned.
+- new M4 Class 2 profile is 100 W rated / 95 W max design load.
+- legacy v0.5 and 90 W profile are retained rather than overwritten.
