@@ -50,6 +50,8 @@ This is an October 2026 audit of the local documentation and tools, not a declar
 
 ## Milestone Review Points
 
+For the M2 owner review, use the [plain-language checklist](../../templates/m2-user-review-checklist.md). Extraction/verification agents prepare the evidence and reconciliation; the owner reviews findings and records scoped acceptance. It supplements the milestone below without moving code/design approval into M2.
+
 | Milestone | Evidence to review | Pass condition for the scoped work |
 |---|---|---|
 | M1. Room inventory | Independent architectural inventory, omission/identity discrepancies, boundary review | Every observed Space is accounted for; omissions reviewed and causes established or explicitly undetermined; unsupported facts remain unknown. Boundary and area acceptance can remain pending |
@@ -72,6 +74,14 @@ Follow the [WikiJS classification and controls review playbook](https://github.c
 5. Adopt only the reviewed, scoped approved narrative within established project authority. Preserve original source intent, owner direction, source/guide revisions and approval history. Narrow compatible LV sensors, switches, controllers, drivers, interfaces and configurations while preserving the required/approved operation. System incompatibility is a review conflict, not permission to weaken the requirement. Establish functional zones and channel/controller assignments only from supported operation.
 
 Retain classification confirmation, narrative-development authorization and narrative/interpretation adoption as separate review evidence. Use existing Space descriptions, references, decisions, project narratives and `open_items[]`; no new unversioned schema fields are introduced. Missing source controls, incomplete WikiJS guidance and unresolved code interpretation remain distinct findings. M2 may finish source intake with documented gaps; M3 cannot finalize affected controls until consequential classification, authorization, interpretation and narrative questions are resolved. Manual/agent source-text review is documented method, not an implemented code matcher or narrative generator.
+
+## On-Demand Owner Decision Review
+
+Owner decisions remain recorded where they belong in the project: model decisions and references, discrepancy resolutions, room/fixture notes, review checklists, controls narratives and other retained review evidence. An owner-decision record/report is an on-demand analysis of that project information, not a separate primary document or mandatory duplicate register.
+
+At any stage, the owner may request a sweep of the available project records for confirmations, corrections, subjective judgments, explicit overrides and directions. Identify the reviewed files/revisions and milestone scope. For each finding, show the affected stable IDs, original interpretation where available, adopted owner instruction, rationale, owner/date when recorded, current status and an exact source-record locator. Distinguish current decisions from superseded decisions, unanswered proposals and conflicts; leave missing metadata unknown rather than inferring approval from an agent statement. Link repeated mentions to the same underlying decision and flag inconsistent records for review. State retrieval gaps so an incomplete sweep is not presented as a complete project inventory.
+
+The report may filter to explicit overrides or group the wider decision set by milestone, Space, fixture, controls topic or follow-up. Closing a discrepancy does not remove its decision history. Refactor accepted findings into clearer project records or propose reusable guidance when requested, preserving the original evidence and supersession links. A generated report does not change decisions or promote project-specific field judgment into framework doctrine. No new schema fields, automatic sweep or report exporter are implemented by this directive.
 
 ## Control Review Results
 
