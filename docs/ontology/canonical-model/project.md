@@ -36,3 +36,8 @@ Use takeoff -> provisional -> checkpoint. Set reconciled only after independentl
 ## Sources and Stewardship
 
 Derived from the October 2026 LV lighting handoff; field shape and validation details are draft implementation decisions. Owner: KIS Solutions. Validate against one real project before treating this contract as stable.
+
+
+## Early authority and equipment-placement facts
+
+Capture explicit AHJ and area-specific return-air-plenum status during basis/intake through the [topology companion](controller-power-topology-v1.md). Keep existing energy-code basis authoritative; unknown plenum status is not false.

@@ -1,0 +1,94 @@
+{
+  "repository": "lv-lighting-design",
+  "base_commit": "0440513a62954105c23c2b4d7e846513964d503a",
+  "files": [
+    {
+      "path": "CLAUDE.md",
+      "sha256": "eb369bfd137c92c0c08ec8cac9a03da28d9fff6458fd038137c53bff90dc2b51"
+    },
+    {
+      "path": "README.md",
+      "sha256": "815a23c69f40e21d6bd081cafe6a96dad57623e44c64abab3304ba2db30f457b"
+    },
+    {
+      "path": "docs/design-playbooks/lighting-design-playbook.md",
+      "sha256": "7b69f1a943eaf75c2f85882a9b76330695fc45f7ac61918468cc2eec29d98d8e"
+    },
+    {
+      "path": "docs/design-playbooks/lv-project-workflow-and-readiness.md",
+      "sha256": "11d7469d2ace194bed0c7d4b02be7864a2ddd3c18478945145ed639ce6b1cb21"
+    },
+    {
+      "path": "docs/design-playbooks/controller-power-placement.md",
+      "sha256": "7bab639e8dfbb19c467f26bfbe5061ed5d5ad989bb12ec748a7a365849a91aa8"
+    },
+    {
+      "path": "docs/design-playbooks/control-system-markup-legend.md",
+      "sha256": "47297f88292ffcf17c438d89c7755d12e9b711c2ba6c064079023df3fcaf502a"
+    },
+    {
+      "path": "docs/ontology/canonical-model/README.md",
+      "sha256": "5e35b12dc35e1c1d320229b5d901280a07671fac49d2609e25501575d6d15f2f"
+    },
+    {
+      "path": "docs/ontology/canonical-model/controller-power-topology-v1.md",
+      "sha256": "a0fbdc78687d8127d28fa549cf26804b45162d5435dc94027f7bf9ddce01377d"
+    },
+    {
+      "path": "docs/ontology/canonical-model/project.md",
+      "sha256": "29046b50e166056578c23eee77296ef836aa7e3f5e89e4eb9ea4f0d010215255"
+    },
+    {
+      "path": "docs/ontology/canonical-model/controller.md",
+      "sha256": "1eefa6f9a9bc8e654d3b08e2f521ee65d81fdb69036d5ba730c3971295308ec0"
+    },
+    {
+      "path": "docs/ontology/canonical-model/control-device.md",
+      "sha256": "8a9cf1592e458a85b5449e6a6bb0e711ddaf68004e72c7d56ae75b7e795feabb"
+    },
+    {
+      "path": "docs/ontology/canonical-model/cable-route.md",
+      "sha256": "8e9bfa585261b56115b528655796530569cbeeb0ff3d0db7c7cd674c77ad4f0e"
+    },
+    {
+      "path": "schemas/README.md",
+      "sha256": "4ce653d7613954c6cfc736bc55354e9e3cf9e3675df78f88695af8033c81985f"
+    },
+    {
+      "path": "schemas/controller-power-topology-v1.schema.json",
+      "sha256": "ea5b7440711e68ac9e819fe0011b951187d1df10e4a3f8a2b4d667ca81e7ae72"
+    },
+    {
+      "path": "templates/README.md",
+      "sha256": "fd95e47736b74cf66c44c66dcc7ce3ce355428c971c297721ecdd6ce1f387b40"
+    },
+    {
+      "path": "templates/controller-power-topology-v1.template.json",
+      "sha256": "bfdfb2686681b2d85452f1c3ed35e67e74e796997bdac2c5ec267f7bf0b951ab"
+    },
+    {
+      "path": "generators/README.md",
+      "sha256": "32ca2592b68d7fda7094f4c988620833cc8360786c11ae63b227594b82e7e104"
+    },
+    {
+      "path": "generators/validate_topology.py",
+      "sha256": "af56e28834fc4b349eac983e21d78ace748ee3935f2c528691dedcd3da43f326"
+    },
+    {
+      "path": "generators/model_intake.py",
+      "sha256": "dbed5109435d96180cbed0702f105c6281abc9ac86d69d610ff01e4fb789084e"
+    },
+    {
+      "path": "tests/test_topology.py",
+      "sha256": "828e986dcede3807ff6ef96f605ef3abb3b93014f21ce4b6880d52f8ab98101c"
+    },
+    {
+      "path": "tests/test_m4_framework.py",
+      "sha256": "8b457bc15a5dd7385128bab9f4595639e355c828f00c004dba5a35d3fceacf4d"
+    },
+    {
+      "path": "README_CONTROLLER_POWER_UPDATE.md",
+      "sha256": "0ea07e485bf9661da4c3ec7a739cbd57e3e98e49b7bd849b74a0c3c0af0b3e58"
+    }
+  ]
+}

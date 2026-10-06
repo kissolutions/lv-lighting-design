@@ -1,0 +1,21 @@
+{
+  "topology_version": "1.0.0",
+  "project_id": "REPLACE-PROJECT-ID",
+  "model_revision": "P01",
+  "ahj": null,
+  "ahj_source_ref_ids": [],
+  "areas": [],
+  "devices": [],
+  "channel_assignments": [],
+  "power_feeds": [],
+  "reduced_feed_decisions": [],
+  "control_connections": [],
+  "bus_assignments": [],
+  "routes": [],
+  "count_review": {
+    "feasible_minimum_qdcds": null,
+    "feasible_minimum_aggregators": null,
+    "installed_count_rationale": null
+  },
+  "open_items": []
+}

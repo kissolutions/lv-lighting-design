@@ -90,3 +90,8 @@ Use [Micro LV Control Channels](../concepts/micro-lv-control-channels.md) and th
 A control narrative can use less capability than a selected physical fixture provides. A dimmable fixture in an on/off-only zone remains the same dimmable fixture with the same AC/DC type, CV/CC mode, numeric nominal/min/max voltage, current requirement, driver architecture and load. Do not mutate fixture C1 (for example, a 36 VDC CC dimmable fixture) into a 48 VDC fixture merely because its zone does not require dimming. If a physically different implementation is desired, create/select a distinct fixture type or approved variant and preserve the decision trail.
 
 The converse is a design failure: when the functional zone requires dimming and the selected fixture/interface is non-dimmable, resolve the fixture or the reviewed control requirement before channel assignment.
+
+
+## Device-specific assignment after micro channels
+
+Step 10 forms electrically compatible micro channels first, then applies [controller/power placement](controller-power-placement.md). Preserve designated channels; record early AHJ/plenum facts, sensor/device counts, QDCD/CIO/SW/PDU assignments, locations, feed pairs, bus strings and owner-review markups. Use the [legend](control-system-markup-legend.md).

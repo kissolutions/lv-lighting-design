@@ -68,3 +68,8 @@ Validation returns `0` when implemented checks pass, `1` for model issues, and `
 | `generators/`, `tests/` | Validator, review exporter, regression cases |
 
 Automatic PDF extraction, optimized grouping, PDF markup, cable lengths, and product-specific BOM selection are future work. See the [roadmap](docs/governance-and-doctrine/roadmap.md).
+
+
+## Controller, power and sensor allocation
+
+[Placement workflow](docs/design-playbooks/controller-power-placement.md) · [Markup legend](docs/design-playbooks/control-system-markup-legend.md) · [Topology companion](docs/ontology/canonical-model/controller-power-topology-v1.md). Device knowledge/mini playbooks live in [WikiJS](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/smartdc-allocation-index.md).

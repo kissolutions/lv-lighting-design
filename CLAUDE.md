@@ -70,3 +70,8 @@ python -m generators.model_intake docs/reference-implementations/synthetic-volta
 ```
 
 Use [extension page templates](templates/README.md) and retain required framework metadata. All initial domain pages are draft pending real-project review. Treat examples as precedent, never standards.
+
+
+## Controller/power assignment extension
+
+After designated micro channels, follow [controller/power placement](docs/design-playbooks/controller-power-placement.md), [markup legend](docs/design-playbooks/control-system-markup-legend.md) and [topology companion v1](docs/ontology/canonical-model/controller-power-topology-v1.md). Capture AHJ and area plenum facts early. Read linked device-specific WikiJS mini playbooks. No silent channel regrouping; default four PDU feeds, SW4/SW8 aggregation and owner-reviewed CIO/device locations. Validate the companion separately from electrical checks. Current M4 100 W profile uses <=95 W; earlier 90 W text is historical.

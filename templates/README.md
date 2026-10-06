@@ -11,3 +11,6 @@ Copy `lighting-project.template.json` into approved project storage outside Git.
 Use `first-project-checklist.md` for the first representative project. Extension page templates preserve the framework metadata and give local canonical-model, validation, and governance pages a consistent structure. Other page types use the linked shared-framework templates in the page registry.
 
 Use [M2 — Lighting and Source Controls: Owner Review](m2-user-review-checklist.md) as the plain-language companion to the technical checklist. It identifies the review materials, fixture/count/type/room checks, source-controls observations, open-item treatment and scoped owner acceptance. Copy the completed project review outside Git.
+
+
+Use `controller-power-topology-v1.template.json` for early AHJ/plenum facts and later controller/PDU/sensor/route assignments paired with the lighting project.

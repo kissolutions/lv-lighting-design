@@ -280,7 +280,7 @@ def check_model(model, phase='intake'):
                 for key in ('source_voltage', 'source_power_type', 'source_power_mode', 'source_current_ma',
                             'source_voltage_basis', 'source_voltage_note', 'source_driver_type', 'source_driver_note',
                             'source_dimming_capability'):
-                    fixture.pop(key)
+                    fixture.pop(key, None)
             for branch in projection['branch_circuits']:
                 for unit in branch['power_units']:
                     for channel in unit['channels']:
@@ -296,7 +296,7 @@ def check_model(model, phase='intake'):
                 for light in zone['light_objects']:
                     for key in ('input_voltage', 'input_power_type', 'input_power_mode', 'input_current_ma', 'driver_type', 'driver_note',
                                 'dimming_capability'):
-                        light['design'].pop(key)
+                        light['design'].pop(key, None)
             if zone['label_mode'] == 'room':
                 zone['label_mode'] = 'room_default'
         for item in projection['open_items']:
@@ -343,3 +343,4 @@ def main():
 
 if __name__ == '__main__':
     raise SystemExit(main())
+

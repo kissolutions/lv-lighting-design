@@ -43,3 +43,8 @@ Record arrays are normalized and connected by globally unique stable IDs. The lo
 ## Current v0.2 element pages
 
 [HV branch circuit](branch-circuit.md), [power unit](power-unit.md), [LV light zone](lv-light-zone.md), [light object](light-object.md), [controller](controller.md), [control device/system](control-device.md), [shared control group](control-group.md), [backup supply](backup-supply.md). Power-channel fields and many-to-many derived membership are defined in [the hierarchy contract](device-hierarchy-v0.2.md).
+
+
+## Controller/power topology companion
+
+[Companion v1](controller-power-topology-v1.md) pairs with v0.6 and adds AHJ/plenum, equipment placement, PDU-to-QDCD feeds, sensor port/control associations, bus strings and routes. Validate both contracts separately.

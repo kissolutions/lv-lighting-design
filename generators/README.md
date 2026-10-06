@@ -23,3 +23,6 @@ For v0.2 draft data, use `python -m generators.model_hierarchy MODEL`. It emits 
 Default export requires all implemented checks to pass. `--allow-provisional` permits marked draft reviews with engineering issues, reports those issues, and exits `1`. Invalid schema, IDs/references, evidence/page-document consistency, or known geometry prevent all export.
 
 Outputs are schedule/quantity review views, not a construction release or fully specified procurement BOM. Unknown values remain blank with issues disclosed. Counts represent explicit modeled physical nodes; channel count is separate. No extraction, optimized grouping, PDF overlay, or cable-length tool is implemented.
+
+
+`python -m generators.validate_topology topology.json --model lighting-model.json [--final]` checks the companion; it does not render PDF markup or replace electrical checks.

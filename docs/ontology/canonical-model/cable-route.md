@@ -36,3 +36,8 @@ Leave empty in the initial Phase 1 project. Only references and point bounds are
 ## Sources and Stewardship
 
 Derived from the October 2026 LV lighting handoff; field shape and validation details are draft implementation decisions. Owner: KIS Solutions. Validate against one real project before treating this contract as stable.
+
+
+## Physical allocation extension
+
+The [topology companion](controller-power-topology-v1.md) links existing IDs to QDCD/CIO/SW/PDU devices, sensor/port/control associations, supply feeds, locations and bus routes. Validate separately from electrical model checks.

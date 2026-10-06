@@ -123,3 +123,8 @@ Do not expand the model solely to describe every future stage before the first p
 Reviewed the current architectural intake, lighting playbook, canonical v0.3/v0.2 pages, reconciliation rule, checklist, roadmap, and `model_spaces.py`, `model_hierarchy.py`, `export_review.py`. Legacy Space/hierarchy tools check entered data and emit derived JSON; their original exporter consumes v0.1 only. Beta 1 updates add the v0.4 physical registry, phase checks and v0.4/v0.3 source-review CSV export. The v0.3 schema contains no PDF boundary geometry, daylight polygons, route topology, detailed device configuration, control-review statuses, approval register, or commissioning results. Supporting method exists for several of these activities, but an end-to-end production pipeline has not been demonstrated.
 
 Owner: KIS Solutions. October 2026; owner-directed workflow and local capability audit. Draft pending project proof.
+
+
+## Controller/power topology readiness
+
+Capture AHJ and area return-plenum status during basis/intake. After channel designation use [controller/power placement](controller-power-placement.md), [legend](control-system-markup-legend.md), and [companion contract](../ontology/canonical-model/controller-power-topology-v1.md). Supervised allocation method and companion checks are available; automatic location/routing optimization, manufacturer missing-data resolution and editable PDF output/readback remain to prove.

@@ -81,6 +81,9 @@ class M4FrameworkTests(unittest.TestCase):
             if other["id"] in z["light_object_ids"]:
                 z["light_object_ids"].remove(other["id"])
         other_zone["light_object_ids"].append(other["id"])
+        served = next(s for s in self.model["spaces"] if other["id"] in s["light_object_ids"])
+        if other_zone["id"] not in served["light_zone_ids"]:
+            served["light_zone_ids"].append(other_zone["id"])
         self.assertIn("micro-channel-zone", self.rules())
 
     def test_95w_profile_rejects_larger_limit(self):
@@ -90,3 +93,4 @@ class M4FrameworkTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

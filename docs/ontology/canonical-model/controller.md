@@ -19,3 +19,8 @@ Location: `controllers[]` in the draft v0.2 model.
 Records physical controller identity, confirmed independent control-output capacity, optional integrated power unit, control devices, emergency inputs, and control-power backup. Connected zones are derived from their controller/output references. A typical four-output aggregated controller is a convention to verify against actual equipment; supply channels and control outputs are distinct objects.
 
 The [device hierarchy contract](device-hierarchy-v0.2.md) defines fields, ownership, derived views, validation scope, and migration boundaries. The [v0.2 schema](../../../schemas/lighting-project-v0.2.schema.json) is the executable data shape. Unknown fields remain `null`; relevant source references and engineering decisions remain explicit. Owner: KIS Solutions; October 2026; draft.
+
+
+## Physical allocation extension
+
+The [topology companion](controller-power-topology-v1.md) links existing IDs to QDCD/CIO/SW/PDU devices, sensor/port/control associations, supply feeds, locations and bus routes. Validate separately from electrical model checks.
