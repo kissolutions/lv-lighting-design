@@ -128,3 +128,7 @@ Owner: KIS Solutions. October 2026; owner-directed workflow and local capability
 ## Controller/power topology readiness
 
 Capture AHJ and area return-plenum status during basis/intake. After channel designation use [controller/power placement](controller-power-placement.md), [legend](control-system-markup-legend.md), and [companion contract](../ontology/canonical-model/controller-power-topology-v1.md). Supervised allocation method and companion checks are available; automatic location/routing optimization, manufacturer missing-data resolution and editable PDF output/readback remain to prove.
+
+## Milestone Print and Markup Sequence
+
+[Milestone review packages](milestone-review-packages.md) defines six printable packages without renumbering existing milestones: room boundaries; hatched-room light takeoff; zones/room devices after narrative lock; device-free micro channels; equipment location review; coordinated layers/cabling. Owner-returned room-device locations precede dependent routing. Parent/child zones and narrative status use v0.7; topology v1.1 supplies descriptive device/room identity. Markup manifest and schedule checks are implemented; automatic PDF overlay/layer/readback remains to prove.

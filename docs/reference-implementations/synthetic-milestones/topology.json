@@ -1,0 +1,74 @@
+{
+  "topology_version": "1.1.0",
+  "project_id": "SYNTHETIC-V02",
+  "model_revision": "DEMO-03",
+  "ahj": null,
+  "ahj_source_ref_ids": [],
+  "areas": [
+    {
+      "id": "AREA-SYNTHETIC",
+      "space_ids": [
+        "SPACE-SYNTHETIC-A"
+      ],
+      "return_air_plenum": false,
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ]
+    }
+  ],
+  "devices": [
+    {
+      "id": "DEVICE-SYNTHETIC-OCC",
+      "kind": "sensor",
+      "canonical_entity_id": null,
+      "model": null,
+      "smart": null,
+      "output_count": null,
+      "rated_total_watts": null,
+      "available_input_watts": null,
+      "connected_demand_watts": null,
+      "bus_demand_ma": null,
+      "casambi": true,
+      "source_ref_ids": [
+        "REF-SYNTHETIC"
+      ],
+      "location": {
+        "area_id": "AREA-SYNTHETIC",
+        "drawing_page_id": "PAGE-SYNTHETIC",
+        "x_pt": 10,
+        "y_pt": 10,
+        "mounting": "above_ceiling",
+        "owner_review": "proposed"
+      },
+      "rationale": "Synthetic local occupancy status supplied to child and parent narrative.",
+      "display_tag": "OS-01",
+      "name": "Synthetic occupancy sensor",
+      "room_id": "SPACE-SYNTHETIC-A",
+      "review_category": "room_device"
+    }
+  ],
+  "channel_assignments": [],
+  "power_feeds": [],
+  "reduced_feed_decisions": [],
+  "control_connections": [
+    {
+      "device_id": "DEVICE-SYNTHETIC-OCC",
+      "aggregator_id": null,
+      "input_port": null,
+      "control_zone_ids": [
+        "ZONE-SYNTHETIC-A",
+        "ZONE-SYNTHETIC-PARENT"
+      ],
+      "micro_channel_ids": [],
+      "qdcd_ids": []
+    }
+  ],
+  "bus_assignments": [],
+  "routes": [],
+  "count_review": {
+    "feasible_minimum_qdcds": null,
+    "feasible_minimum_aggregators": null,
+    "installed_count_rationale": null
+  },
+  "open_items": []
+}

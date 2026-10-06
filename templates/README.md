@@ -14,3 +14,5 @@ Use [M2 — Lighting and Source Controls: Owner Review](m2-user-review-checklist
 
 
 Use `controller-power-topology-v1.template.json` for early AHJ/plenum facts and later controller/PDU/sensor/route assignments paired with the lighting project.
+
+Use lighting-project-v0.7.template.json, controller-power-topology-v1.1.template.json and milestone-markup-v1.template.json for new work. Upgrades add unknown/unreviewed fields without inferring owner approval.

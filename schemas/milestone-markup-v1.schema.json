@@ -1,0 +1,221 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "markup_version",
+    "project_id",
+    "model_revision",
+    "packages",
+    "annotations"
+  ],
+  "properties": {
+    "markup_version": {
+      "const": "1.0.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "packages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "revision",
+          "review_status",
+          "pdf_filename",
+          "schedule_pages",
+          "plan_page_ids",
+          "annotation_ids",
+          "edit_save_readback_verified"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "room_boundaries",
+              "lighting_takeoff",
+              "zones_room_devices",
+              "micro_channels",
+              "equipment",
+              "coordinated"
+            ]
+          },
+          "revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "review_status": {
+            "enum": [
+              "draft",
+              "owner_review",
+              "accepted"
+            ]
+          },
+          "pdf_filename": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "schedule_pages": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "plan_page_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "annotation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "edit_save_readback_verified": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "annotations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "annotation_id",
+          "entity_type",
+          "entity_id",
+          "layer",
+          "drawing_page_id",
+          "review_status",
+          "display_tag",
+          "room_ids",
+          "zone_ids",
+          "location_basis",
+          "x_pt",
+          "y_pt",
+          "boundary_style",
+          "enveloped"
+        ],
+        "properties": {
+          "annotation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "entity_type": {
+            "enum": [
+              "space",
+              "light",
+              "zone",
+              "channel",
+              "device",
+              "route"
+            ]
+          },
+          "entity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layer": {
+            "enum": [
+              "rooms",
+              "lights",
+              "zones",
+              "lv_channels",
+              "controllers",
+              "cabling"
+            ]
+          },
+          "drawing_page_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "review_status": {
+            "enum": [
+              "proposed",
+              "accepted",
+              "change_requested"
+            ]
+          },
+          "display_tag": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "room_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "zone_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "location_basis": {
+            "enum": [
+              "room_center_provisional",
+              "reasonable_equipment_proposal",
+              "owner_returned",
+              "source",
+              "derived"
+            ]
+          },
+          "x_pt": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "y_pt": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "boundary_style": {
+            "enum": [
+              "solid",
+              "dashed",
+              null
+            ]
+          },
+          "enveloped": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Milestone PDF markup and review manifest v1.0"
+}

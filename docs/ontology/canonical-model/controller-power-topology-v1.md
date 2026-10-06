@@ -37,3 +37,8 @@ Versioned companion JSON pairs with an accepted v0.6 project. It supplies first-
 The companion checker verifies structure/IDs, links to canonical channels/zones/Spaces/pages/evidence, output/input/port collisions, family count capacities, Smart direct service, feed exceptions, aggregate recorded wattage, bus counts/current/distance, plenum placement, coordinates and device associations. Unknown capacities, CIO location and unverified routes remain review gaps. It does not prove fixture electrical compatibility, sensor coverage, reduced-feed routing, control precedence, physical installation suitability or editable PDF delivery; apply existing v0.6 checks and manufacturer/owner review too.
 
 Run `python -m generators.validate_topology topology.json --model lighting-model.json` for review, adding `--final` for dependent completeness gates. No build is required to copy these framework files into the repository.
+
+
+## Device-review extension v1.1
+
+[Topology v1.1 device review](topology-device-review-v1.1.md) adds display tag, name, associated Room ID and room-device/equipment review category. Existing topology v1 remains supported; use v1.1 for new milestone device schedules.

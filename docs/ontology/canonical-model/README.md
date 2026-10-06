@@ -48,3 +48,7 @@ Record arrays are normalized and connected by globally unique stable IDs. The lo
 ## Controller/power topology companion
 
 [Companion v1](controller-power-topology-v1.md) pairs with v0.6 and adds AHJ/plenum, equipment placement, PDU-to-QDCD feeds, sensor port/control associations, bus strings and routes. Validate both contracts separately.
+
+## Current Hierarchy and Markup Extensions
+
+[Zone hierarchy v0.7](zone-hierarchy-v0.7.md) retains v0.6 electrical semantics and adds parent zones/narrative review. [Milestone markup v1](milestone-markup-v1.md) tracks six review PDFs and stable annotation metadata. Topology v1.1 adds device display tags, names, room IDs and review category; v1.0 remains supported.

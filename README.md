@@ -73,3 +73,7 @@ Automatic PDF extraction, optimized grouping, PDF markup, cable lengths, and pro
 ## Controller, power and sensor allocation
 
 [Placement workflow](docs/design-playbooks/controller-power-placement.md) · [Markup legend](docs/design-playbooks/control-system-markup-legend.md) · [Topology companion](docs/ontology/canonical-model/controller-power-topology-v1.md). Device knowledge/mini playbooks live in [WikiJS](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/smartdc-allocation-index.md).
+
+## Milestone Review Packages
+
+[Six printable milestone packages](docs/design-playbooks/milestone-review-packages.md) · [Zone hierarchy v0.7](docs/ontology/canonical-model/zone-hierarchy-v0.7.md) · [Annotation/review manifest](docs/ontology/canonical-model/milestone-markup-v1.md). `generators.milestone_markup` exports CSV/printable HTML front sheets and provides ceiling-label/render-order helpers. PDF plan overlays and edit/readback remain separately verified work.

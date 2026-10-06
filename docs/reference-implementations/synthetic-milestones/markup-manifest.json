@@ -1,0 +1,45 @@
+{
+  "markup_version": "1.0.0",
+  "project_id": "SYNTHETIC-V02",
+  "model_revision": "DEMO-03",
+  "packages": [
+    {
+      "id": "PKG-SYNTHETIC-3",
+      "kind": "zones_room_devices",
+      "revision": "P01",
+      "review_status": "draft",
+      "pdf_filename": null,
+      "schedule_pages": 0,
+      "plan_page_ids": [
+        "PAGE-SYNTHETIC"
+      ],
+      "annotation_ids": [
+        "ANN-SYNTHETIC-OS-01"
+      ],
+      "edit_save_readback_verified": false
+    }
+  ],
+  "annotations": [
+    {
+      "annotation_id": "ANN-SYNTHETIC-OS-01",
+      "entity_type": "device",
+      "entity_id": "DEVICE-SYNTHETIC-OCC",
+      "layer": "controllers",
+      "drawing_page_id": "PAGE-SYNTHETIC",
+      "review_status": "proposed",
+      "display_tag": "OS-01",
+      "room_ids": [
+        "SPACE-SYNTHETIC-A"
+      ],
+      "zone_ids": [
+        "ZONE-SYNTHETIC-A",
+        "ZONE-SYNTHETIC-PARENT"
+      ],
+      "location_basis": "room_center_provisional",
+      "x_pt": 10,
+      "y_pt": 10,
+      "boundary_style": null,
+      "enveloped": false
+    }
+  ]
+}

@@ -203,3 +203,7 @@ Use existing `open_items[]` and the review workbook's discrepancy list rather th
 Human review resolves ambiguous use, boundaries, shared service, and design consequences. A second extraction pass can independently check labels, complete area coverage, assignments, cross-level alignment, references, and counts. Accepted owner corrections are evidence for reconciliation and must survive refreshes. Source reconciliation is an engineering workflow; the current generators validate entered data and do not extract drawings.
 
 Owner: KIS Solutions. October 2026; owner-directed draft clarification to v0.3.
+
+## Room Review Print Package
+
+For each boundary review deliverable, front-load a Room Boundaries schedule with Room ID, available source room tag/name, level, area/basis and basic notes, spanning as many legible pages as necessary. Plan labels retain every nonblank known name/tag without inventing missing names. Later light-point review overlays all fixtures on lightly hatched room areas. Follow [milestone packages](milestone-review-packages.md).

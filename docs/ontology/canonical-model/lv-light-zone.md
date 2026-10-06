@@ -33,3 +33,7 @@ The owner has agreed to `control_verification_status` with values `not_reviewed`
 Retain per-function occupancy/daylight/manual/scheduling findings where needed. The assessment/evidence structure, overall summary precedence, source-versus-applied sequence fields and approval/change record need a subsequent versioned model extension. A deficient zone requires manual review; a compliant one can still have an implementation proposal. Approval of a change is separate from both review statuses and from the model's confirmed decision status.
 
 The [device hierarchy contract](device-hierarchy-v0.2.md) defines fields, ownership, derived views, validation scope, and migration boundaries. The [v0.2 schema](../../../schemas/lighting-project-v0.2.schema.json) is the executable data shape. Unknown fields remain `null`; relevant source references and engineering decisions remain explicit. Owner: KIS Solutions; October 2026; draft.
+
+## Parent and Cluster Zones
+
+[Zone hierarchy v0.7](zone-hierarchy-v0.7.md) adds optional parent relationships through the same zone record type. Open-office occupancy clusters are first-class child zones; the parent owns common manual/aggregate occupancy behavior. Derive parent fixture membership and preserve leaf electrical assignments. Physical sensors are associated once through topology.

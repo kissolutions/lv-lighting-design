@@ -14,3 +14,5 @@ Use `generators.validate_model` to check references and engineering semantics in
 
 
 Controller/power placement uses the independently versioned `controller-power-topology-v1.schema.json` companion paired with v0.6. It does not upgrade or replace the existing lighting project.
+
+Versioned additions: lighting-project-v0.7.schema.json (zone hierarchy/narrative review), controller-power-topology-v1.1.schema.json (device identity), milestone-markup-v1.schema.json (deliverable/annotation review). Older schemas remain supported.

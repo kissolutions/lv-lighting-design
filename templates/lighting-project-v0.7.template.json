@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.7.0",
+  "project": {
+    "id": "REPLACE-PROJECT-ID",
+    "name": "REPLACE PROJECT NAME",
+    "model_revision": "P01",
+    "stage": "takeoff",
+    "takeoff_status": "in_progress",
+    "energy_code_basis": {
+      "standard": null,
+      "edition": null,
+      "jurisdiction": null,
+      "amendments_status": "unreviewed",
+      "source_ref_ids": [],
+      "decision_id": null
+    },
+    "controls_narrative_review": {
+      "status": "unreviewed",
+      "decision_id": null
+    }
+  },
+  "source_documents": [
+    {
+      "id": "DOC-01",
+      "filename": "REPLACE SOURCE FILENAME",
+      "revision": "REPLACE SOURCE REVISION",
+      "storage_uri": null
+    }
+  ],
+  "drawing_pages": [
+    {
+      "id": "PAGE-01",
+      "source_document_id": "DOC-01",
+      "sheet_id": "REPLACE SHEET ID",
+      "revision": "REPLACE SOURCE REVISION",
+      "page_index": 0,
+      "width_pt": 2592,
+      "height_pt": 1728,
+      "pdf_rotation_deg": 0
+    }
+  ],
+  "source_references": [
+    {
+      "id": "REF-01",
+      "source_document_id": "DOC-01",
+      "drawing_page_id": "PAGE-01",
+      "locator": "REPLACE SOURCE LOCATOR",
+      "statement": "REPLACE SOURCE OBSERVATION"
+    }
+  ],
+  "fixture_types": [],
+  "branch_circuits": [],
+  "light_zones": [],
+  "controllers": [],
+  "control_devices": [],
+  "control_systems": [],
+  "control_groups": [],
+  "backup_supplies": [],
+  "decisions": [],
+  "assumptions": [],
+  "open_items": [],
+  "spaces": [],
+  "light_objects": []
+}

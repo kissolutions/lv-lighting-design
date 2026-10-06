@@ -13,7 +13,8 @@ def validate(topology, model, final=False):
     issues = []
     def fail(rule, owner, message):
         issues.append(dict(rule=rule, entity_id=owner, message=message))
-    for error in Draft202012Validator(json.loads(SCHEMA.read_text())).iter_errors(topology):
+    schema_path = SCHEMA.with_name('controller-power-topology-v1.1.schema.json') if topology.get('topology_version') == '1.1.0' else SCHEMA
+    for error in Draft202012Validator(json.loads(schema_path.read_text())).iter_errors(topology):
         fail('topology-schema', '/'.join(map(str, error.path)), error.message)
     if issues:
         return issues, {}
@@ -49,6 +50,7 @@ def validate(topology, model, final=False):
         evidence(area['id'], area['source_ref_ids'])
     for d in devices.values():
         owner=d['id']; loc=d['location']
+        if 'room_id' in d: reference(owner,d['room_id'],spaces)
         reference(owner, d['canonical_entity_id'], canonical)
         reference(owner, loc['area_id'], areas)
         reference(owner, loc['drawing_page_id'], pages)
@@ -73,6 +75,8 @@ def validate(topology, model, final=False):
         if final and (loc['owner_review']!='accepted' or loc['area_id'] is None or page is None or coords[0] is None):
             fail('owner-location',owner,'Accept and document physical device location.')
         if final and not d['source_ref_ids']:fail('device-evidence',owner,'Confirm device basis.')
+    tags=[d['display_tag'] for d in devices.values() if 'display_tag' in d]
+    if len(tags)!=len(set(tags)):fail('device-tag','devices','Display tags must be unique.')
     outputs=set(); channel_claims=set(); assigned_watts=defaultdict(float)
     for a in topology['channel_assignments']:
         owner=a['micro_channel_id']; reference(owner,owner,channels);reference(owner,a['device_id'],devices)

@@ -95,3 +95,7 @@ The converse is a design failure: when the functional zone requires dimming and 
 ## Device-specific assignment after micro channels
 
 Step 10 forms electrically compatible micro channels first, then applies [controller/power placement](controller-power-placement.md). Preserve designated channels; record early AHJ/plenum facts, sensor/device counts, QDCD/CIO/SW/PDU assignments, locations, feed pairs, bus strings and owner-review markups. Use the [legend](control-system-markup-legend.md).
+
+## Printable Milestone Deliverables
+
+Use [six review packages](milestone-review-packages.md). Narrative approval now precedes required room-device scheduling/provisional placement and owner relocation; follow [zone hierarchy v0.7](../ontology/canonical-model/zone-hierarchy-v0.7.md) for parent/open-office clusters. Preserve source takeoff and channel design order. Review prints accumulate into the final layered package.

@@ -1,0 +1,694 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Controller/Power Topology Companion v1.1 \u2014 device review identity",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "topology_version",
+    "project_id",
+    "model_revision",
+    "ahj",
+    "ahj_source_ref_ids",
+    "areas",
+    "devices",
+    "channel_assignments",
+    "power_feeds",
+    "reduced_feed_decisions",
+    "control_connections",
+    "bus_assignments",
+    "routes",
+    "count_review",
+    "open_items"
+  ],
+  "properties": {
+    "topology_version": {
+      "const": "1.1.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ahj": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ahj_source_ref_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "areas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "space_ids",
+          "return_air_plenum",
+          "source_ref_ids"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "space_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "return_air_plenum": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "canonical_entity_id",
+          "model",
+          "smart",
+          "output_count",
+          "rated_total_watts",
+          "available_input_watts",
+          "connected_demand_watts",
+          "bus_demand_ma",
+          "casambi",
+          "source_ref_ids",
+          "location",
+          "rationale",
+          "display_tag",
+          "name",
+          "room_id",
+          "review_category"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "PDU",
+              "CIO",
+              "QDCD",
+              "SW4",
+              "SW8",
+              "sensor",
+              "wall_controller",
+              "wall_dimmer",
+              "other"
+            ]
+          },
+          "canonical_entity_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "model": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "smart": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "output_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "rated_total_watts": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "available_input_watts": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "connected_demand_watts": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "bus_demand_ma": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "casambi": {
+            "type": "boolean"
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "location": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "area_id",
+              "drawing_page_id",
+              "x_pt",
+              "y_pt",
+              "mounting",
+              "owner_review"
+            ],
+            "properties": {
+              "area_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "drawing_page_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "x_pt": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "y_pt": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "mounting": {
+                "enum": [
+                  "above_ceiling",
+                  "corridor_wall",
+                  "room_panel",
+                  "other",
+                  null
+                ]
+              },
+              "owner_review": {
+                "enum": [
+                  "proposed",
+                  "accepted",
+                  "change_requested"
+                ]
+              }
+            }
+          },
+          "rationale": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "display_tag": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "room_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "review_category": {
+            "enum": [
+              "room_device",
+              "equipment"
+            ]
+          }
+        }
+      }
+    },
+    "channel_assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "micro_channel_id",
+          "device_id",
+          "output",
+          "connected_watts",
+          "control_zone_ids"
+        ],
+        "properties": {
+          "micro_channel_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "device_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "output": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "connected_watts": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "control_zone_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "power_feeds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "pdu_id",
+          "pdu_output",
+          "qdcd_id",
+          "qdcd_input",
+          "demand_watts",
+          "rated_watts",
+          "source_ref_ids"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pdu_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pdu_output": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "qdcd_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "qdcd_input": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "demand_watts": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "rated_watts": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "reduced_feed_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "qdcd_id",
+          "rationale",
+          "decision_id",
+          "hardware_verified",
+          "source_ref_ids"
+        ],
+        "properties": {
+          "qdcd_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          },
+          "decision_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hardware_verified": {
+            "type": "boolean"
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "control_connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "device_id",
+          "aggregator_id",
+          "input_port",
+          "control_zone_ids",
+          "micro_channel_ids",
+          "qdcd_ids"
+        ],
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "aggregator_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "input_port": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "control_zone_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "micro_channel_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "qdcd_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "bus_assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "device_id",
+          "cio_id",
+          "bus",
+          "bus_units"
+        ],
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cio_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bus": {
+            "enum": [
+              "PDnet",
+              "SDCnet"
+            ]
+          },
+          "bus_units": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "network",
+          "cio_id",
+          "device_ids",
+          "drawing_page_id",
+          "points",
+          "length_ft",
+          "distance_from_cio_ft",
+          "spec_verified",
+          "source_ref_ids"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "network": {
+            "enum": [
+              "PDnet",
+              "SDCnet",
+              "power",
+              "luminaire",
+              "Ethernet"
+            ]
+          },
+          "cio_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "device_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "drawing_page_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "x_pt",
+                "y_pt"
+              ],
+              "properties": {
+                "x_pt": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "y_pt": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "length_ft": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "distance_from_cio_ft": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "spec_verified": {
+            "type": "boolean"
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "count_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feasible_minimum_qdcds",
+        "feasible_minimum_aggregators",
+        "installed_count_rationale"
+      ],
+      "properties": {
+        "feasible_minimum_qdcds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "feasible_minimum_aggregators": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "installed_count_rationale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "open_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "description",
+          "affects_ids",
+          "blocking",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "affects_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "blocking": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "resolved"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

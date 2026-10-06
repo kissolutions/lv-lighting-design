@@ -31,3 +31,9 @@ Device ID labels are mandatory, particularly shared rectangle/diamond shapes. `$
 ## Connectivity and Readback
 
 Draw and label PDnet, SDCnet, PDU power feeds and luminaire routes separately; route colors/line styles are not prescribed by the owner yet. Label route IDs, endpoints and bus/power role without inferring route color from device color. Show CIO associations, strings and PDU output/QDCD input mapping. Highlight unresolved locations, conflicts and specific owner questions. Retain editable unflattened annotations, saved coordinates and IDs; prove human edit/save/readback before promising a production markup workflow.
+
+## Milestone Presentation and Device Tags
+
+Follow [milestone review packages](milestone-review-packages.md). Display tags OS-01, DS-01, WC-01 and WD-01 distinguish room devices; persistent internal/annotation IDs remain separate. Sensors/wall controls stay PURPLE; QDCD/CIO/SW controls BLUE; PDU RED. Tag changes do not change the `$`/`$D` glyphs.
+
+Final layers are rooms, lights, zones, lv_channels, controllers and cabling. Both device categories live on controllers. Takeoff rooms use light hatches; micro-channel maps use boxes without devices, output tag upper left and ceiling-rounded watts lower right. Finish each markup by bringing text in front of lines/shapes. Enveloped zones/channels use dashed boundaries with other styling preserved; no polyline detours. Calculated display quantities use ceiling to whole numbers while calculations stay precise.

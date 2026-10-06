@@ -45,3 +45,7 @@ Use [topology companion](../ontology/canonical-model/controller-power-topology-v
 
 Hardware incompatibility returns upstream with an explanation; no silent channel regrouping. Keep source facts, owner design directives, manufacturer evidence, provisional proposals and accepted owner markups distinct. Final release needs resolved applicable ratings, sensor capacity, bus power/routing, electrical compatibility and owner location decisions.
 
+
+## Earlier Room-Device Review
+
+Immediately after narrative lock, inventory/schedule required room devices and place symbols provisionally near room centers for owner relocation. This stage precedes micro-channel/equipment-location review and final routing. Use [milestone packages](milestone-review-packages.md), topology v1.1 device tags/names/room links and markup identities. Hardware controller/aggregator selection and route validation still follow designated compatible channels and accepted device locations.

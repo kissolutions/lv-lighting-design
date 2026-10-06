@@ -128,6 +128,9 @@ def check_model(model, phase='intake'):
                     review_note='Checks verify entered data; independent source and owner review remain required.')
 
     version = model.get('schema_version')
+    if version == '0.7.0':
+        from .model_zone_hierarchy import check_v07
+        return check_v07(model, phase)
     electrical_version = version in ('0.5.0', '0.6.0')
     m4_version = version == '0.6.0'
     schema_path = SCHEMA_V06 if m4_version else (SCHEMA_V05 if electrical_version else SCHEMA)
@@ -286,7 +289,12 @@ def check_model(model, phase='intake'):
                     for channel in unit['channels']:
                         channel.pop('output_power_mode')
                         channel.pop('output_current_ma')
-                        channel.pop('output_power_type', None)
+                        power_type = channel.pop('output_power_type', None)
+                        if m4_version:
+                            channel['voltage']['current_type'] = power_type
+                            if channel['validation_profile'] == 'class2_100w_95w_design':
+                                # Preserve the verified limit in the older hierarchy projection.
+                                channel['validation_profile'] = 'product_specific'
                         channel.pop('light_zone_id', None)
                         channel.pop('controller_id', None)
                         channel.pop('controller_output', None)

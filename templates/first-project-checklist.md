@@ -93,3 +93,15 @@ Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human r
 - [ ] Verify installed control functions, coverage/daylight response and normal/emergency operation under the applicable test basis; retain results and deficiency closure.
 - [ ] Save accepted configuration, final schedules/markups and as-built reconciliation with any accepted outstanding items.
 - [ ] Capture reusable lessons as framework instructions/synthetic tests without copying client material into Git.
+
+## Printable Review Package Checks
+
+- [ ] Room boundary schedule before plans; known room tags/names shown; readable pagination.
+- [ ] Fixture schedule and every Light Point ID grouped by type; lightly hatched room membership; undercounter/strip reconciliation.
+- [ ] Narrative locked with owner decision; first-class open-office clusters and parent common control recorded.
+- [ ] Room-device schedule includes ID/tag/name/Room ID/name/zone/subzone/function; room-center placements marked provisional; returned locations reconciled.
+- [ ] Micro-channel map boxes show assigned output at upper left and calculated watts at lower right; no devices; no invented output tags.
+- [ ] Equipment schedule/proposed positions reviewed and returned with stable annotation/device IDs.
+- [ ] Text brought to front; calculated values ceiling-rounded to zero decimals; enveloped boundaries dashed with other style retained.
+- [ ] Final six PDF layers independently verified; editable annotation identity and human edit/save/readback checked before acceptance.
+
