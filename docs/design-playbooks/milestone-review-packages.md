@@ -107,3 +107,7 @@ Use the [markup manifest contract](../ontology/canonical-model/milestone-markup-
 ## Implemented Scope and Remaining Proof
 
 The v0.7 zone hierarchy, topology v1.1 device identity, markup manifest checks, upward-rounding/render-order helpers and CSV/printable HTML schedule exporter are implemented. Schedule HTML can be printed to PDF and used as front sheets. Automatic PDF plan overlay, label promotion in an existing PDF, PDF layer authoring, sensor coverage and human-edit readback are not implemented/proven by this update. An agent can produce scoped markups through a suitable external PDF workflow, following these directives and recording verification.
+
+## M2 Fixture-Schedule Evidence Prerequisite
+
+The Lighting Takeoff package's first-sheet fixture schedule is the extracted **original MEP source schedule**, with source locators and exact type marks; selected LV substitutions remain separately identified. Extract/review it before accepting light counts and apparent run/assembly continuity. Reconcile schedule descriptions with RCP geometry and electrical circuiting/daisy-chain evidence, especially curved/circular mixed-tag assemblies such as L4/L4A. Follow the [M2 source schedule gate](m2-linear-fixture-extraction.md#m2-source-fixture-schedule-gate). If the source schedule is absent, record that absence and do not substitute invented source data; unresolved affected quantities remain provisional.

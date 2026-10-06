@@ -18,9 +18,32 @@ related_pages:
 
 # M2 Linear Lighting Run Extraction
 
+
+## M2 Source Fixture Schedule Gate
+
+**Extract the MEP lighting fixture schedule as referenced source design information before committing fixture counts, type identity, or linear/curved continuity interpretations.** Schedule-first applies to physical Milestone 2, not only later LV fixture selection or electrical design. Keep the original schedule separate from the proposed LV replacement schedule.
+
+Capture every source type mark exactly (including suffixes such as L4 versus L4A), its description, manufacturer/model if given, mounting/form, lengths/dimensions/geometry, section or assembly details, wattage and its basis, voltage/driver information when stated, options/emergency variants, keyed notes and detail references. Preserve blank/unknown entries and conflicting descriptions; do not invent missing specifications. Retain schedule sheet/page/revision and row/note source locators. Reconcile source types to every affected Light Object and to the schedule front sheet.
+
+If a schedule is referenced but not yet found or extracted, register that omission and retrieve/review it before finalizing affected counts. If no schedule exists or was supplied (including design-build work), record that fact and available evidence instead of fabricating one. Supported takeoff can proceed provisionally from RCP/plans/legends/details, with unresolved type/assembly/count/load questions identified for owner review. “Design-build” does not automatically mean the schedule is absent.
+
+### Evidence Reconciliation for Rings, Curves and Mixed Tags
+
+A visually continuous ring, perimeter or linear path is **not proof of one physical fixture**. Reconcile all available sources together:
+
+- Architectural/lighting RCP: actual luminous paths, visible gaps/joints, segment boundaries, shape, dimensions and type-label associations.
+- MEP fixture schedule: distinct type descriptions and variants, specified pieces/lengths, assembly/ring definitions, driver/feed information, referenced details and manufacturer configurations where supplied.
+- Electrical lighting plan: symbols, circuit assignments, wiring/daisy-chain depiction, separate connection points, keyed notes and control/emergency distinctions. Wiring joins do not themselves prove physical luminous continuity; one circuit may serve several discrete fixtures.
+
+For a circular-looking assembly tagged **L4 and L4A**, extract both schedule rows first and determine whether they describe separate luminaires/segments, variants of an assembly, an emergency/control distinction, or a source discrepancy. Preserve both tags and locators. Do not merge them into one same-type run simply because their geometry touches, and do not infer piece quantity from the number of printed tags or circuiting strokes alone.
+
+Use the source-supported result: separate physical fixtures/independent typed sections receive separate takeoff occurrences; a documented continuous system retains its source-run/assembly identity with any supported section breakdown recorded separately. A ring assembly and its component pieces are distinct quantity views, not additive fixture counts. For mixed-type assemblies, retain an assembly/group relationship in the review register and count each established typed occurrence once; do not duplicate the whole ring under both L4 and L4A. If that relationship exceeds the current Light Object representation, retain the referenced breakdown in the review record rather than inventing a schema field or losing the distinct source types.
+
+Record the reconciled counting decision, schedule/RCP/circuiting evidence, known versus unknown physical sections/feeds and affected IDs in the discrepancy/review register. Missing or conflicting decisive evidence keeps the affected count provisional; ask a focused owner question. The schedule can resolve continuity but is not assumed definitive when its description is incomplete or conflicts with the drawing. Complete this pass before accepting the affected M2 counts and propagating them into numbered PDFs and summaries.
+
 ## Counting Convention
 
-**Count one explicitly or apparently continuous linear lighting path of the same Fixture Schedule Type as one source run.** This includes straight runs, connected corners, multiple turns, U-shaped paths and closed perimeter loops. Repeated fixture-type labels along the path, including labels beyond a 90-degree turn, do not alone create additional occurrences. An apparently continuous run may be recorded as one provisional run when continuity is ambiguous; retain the ambiguity for review rather than silently asserting verified physical continuity.
+**After the source fixture schedule and relevant RCP/electrical evidence are reconciled, count one explicitly or apparently continuous linear lighting path of the same Fixture Schedule Type as one source run.** This includes straight runs, connected corners, multiple turns, U-shaped paths and closed perimeter loops. Repeated fixture-type labels along the path, including labels beyond a 90-degree turn, do not alone create additional occurrences. An apparently continuous run may be recorded as one provisional run when continuity is ambiguous; retain the ambiguity for review rather than silently asserting verified physical continuity.
 
 **Count clearly separated or unconnected lighting paths as distinct runs**, even when they share the same type mark or occur in the same room. An explicit source designation of independent fixture runs also takes precedence over an apparent continuous line. A manufacturer section joint or connector within a continuous run does not alone increase the source-run count; retain its hardware breakdown separately. Preserve supported distinct schedule types rather than combining them into one typed occurrence. A change of direction alone is not a break.
 
@@ -28,7 +51,7 @@ This is an M2 source-takeoff convention. One run count does not establish one ma
 
 ## Follow the Source Path
 
-1. Identify the lighting symbol/line convention and actual schedule type from the source legend/schedule. Distinguish lighting type marks from architectural ceiling-type annotations, detail references, dimensions and other text. Multiple matching marks are evidence of type association, not a count by themselves.
+1. Complete the source fixture schedule gate above, then identify the lighting symbol/line convention and actual schedule type from the source legend/schedule. Distinguish lighting type marks from architectural ceiling-type annotations, detail references, dimensions and other text. Multiple matching marks are evidence of type association, not a count by themselves.
 2. Trace the original lighting path, including corners, returns and any closing segment. Inspect the source background with colored fixture-ID overlays hidden or removed from a review copy where needed; an annotation must not bridge or conceal a source break. Consult details/elevations where plan linework is unclear.
 3. Separate clearly independent paths. Conversely, a dashed depiction or interruption by a label, symbol or overlaid annotation does not automatically prove a physical break. Establish the source convention or flag continuity. Do not invent a universal gap-distance threshold or connect visibly separate runs merely because they are close.
 4. Give each resulting run one permanent Light Object ID and one display label under [M2 numbering](m2-fixture-numbering.md). Preserve every relevant type-label/segment locator as evidence for that occurrence. A corner or repeated mark does not receive a second ID. A room boundary alone does not duplicate a run; retain one primary served Space and flag genuinely shared/uncertain service for review.

@@ -99,3 +99,7 @@ Step 10 forms electrically compatible micro channels first, then applies [contro
 ## Printable Milestone Deliverables
 
 Use [six review packages](milestone-review-packages.md). Narrative approval now precedes required room-device scheduling/provisional placement and owner relocation; follow [zone hierarchy v0.7](../ontology/canonical-model/zone-hierarchy-v0.7.md) for parent/open-office clusters. Preserve source takeoff and channel design order. Review prints accumulate into the final layered package.
+
+## M2 Original Fixture Schedule and Continuity Gate
+
+Extract the original MEP lighting fixture schedule as referenced source design information before accepting fixture counts, type identity and linear/curved continuity. Preserve schedule and RCP/electrical source locators separately from selected LV replacement data. Reconcile schedule assembly/section descriptions, apparent luminous paths and electrical connection/circuiting evidence; mixed L4/L4A marks on a ring must not be merged merely because the path looks continuous. Record absent schedules and unresolved source intent rather than fabricating schedule facts. Follow the [M2 source fixture schedule gate](m2-linear-fixture-extraction.md#m2-source-fixture-schedule-gate) before affected physical takeoff acceptance.

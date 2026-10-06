@@ -105,3 +105,10 @@ Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human r
 - [ ] Text brought to front; calculated values ceiling-rounded to zero decimals; enveloped boundaries dashed with other style retained.
 - [ ] Final six PDF layers independently verified; editable annotation identity and human edit/save/readback checked before acceptance.
 
+
+## M2 Source Schedule and Assembly Reconciliation
+
+- [ ] Original MEP fixture schedule extracted with exact type suffixes, descriptions, available electrical/geometry/section facts and row/note locators; referenced-but-missing schedule retrieved or flagged.
+- [ ] Original source schedule remains distinct from selected LV replacements; absence of a schedule is documented rather than inferred from design-build delivery.
+- [ ] Curved/ring and mixed-tag paths reconciled against schedule, RCP and electrical circuiting/daisy-chain evidence; L4/L4A not merged from visual continuity alone.
+- [ ] Physical fixture, source run, assembly and hardware-piece quantities distinguished; unresolved counts provisional and source-supported changes reconciled across IDs/PDFs/summaries.
