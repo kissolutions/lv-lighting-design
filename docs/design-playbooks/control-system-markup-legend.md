@@ -28,6 +28,10 @@ related_pages:
 
 Device ID labels are mandatory, particularly shared rectangle/diamond shapes. `$D` is the accepted initial glyph; no special dollar-stroked D is required. Symbols show proposed physical locations. QDCD labels/callouts reference existing micro channels and outputs; sensor/wall labels reference served functional zones. Maintain visible proposal/owner-review status and annotation IDs mapped to device IDs.
 
+## Room-Map Colors
+
+For the first milestone's accepted fillable room footprints, use BLUE for ordinary enclosed rooms, GREEN for corridors/halls/circulation tracking Spaces, RUDDY ORANGE for open activity/common areas (open offices, gyms, play, dining and assembly), and VIOLET for multi-level atriums/open-to-above areas. Fills use a slightly different lighter shade from outlines and low opacity. Follow [room-map categories and precedence](milestone-review-packages.md#finalized-room-map-for-the-first-package); retain neutral unclassified presentation for unresolved categories. Room colors are independent of component colors: violet room fill does not identify a sensor, and blue room fill does not identify equipment. Include a room-map legend and retain source visibility and frontmost labels.
+
 ## Connectivity and Readback
 
 Draw and label PDnet, SDCnet, PDU power feeds and luminaire routes separately; route colors/line styles are not prescribed by the owner yet. Label route IDs, endpoints and bus/power role without inferring route color from device color. Show CIO associations, strings and PDU output/QDCD input mapping. Highlight unresolved locations, conflicts and specific owner questions. Retain editable unflattened annotations, saved coordinates and IDs; prove human edit/save/readback before promising a production markup workflow.

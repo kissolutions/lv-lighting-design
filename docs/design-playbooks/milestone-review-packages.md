@@ -22,7 +22,7 @@ Six printable review packages accumulate into the final package. These deliverab
 
 | Package | Schedule/list pages first | Plan markup |
 |---|---|---|
-| 1. Room Boundaries | Heading **Room Boundaries**; Room ID, known source room tag/name, level, area and basis, basic notes/open items; paginate as needed | Room boundaries with stable Room IDs and every available nonblank tag/name; do not invent missing names |
+| 1. Room Boundaries | Heading **Room Boundaries**; Room ID, known source room tag/name, level, area and basis, basic notes/open items; paginate as needed | Accepted room footprints as editable fillable closed shapes, colorized by the room-map legend below; stable Room IDs and every available nonblank tag/name; do not invent missing names |
 | 2. Lighting Takeoff | Fixture schedule first; all Light Point IDs grouped by fixture type and reconciled counts, continuing across pages | All light points over lightly **hatched room areas**, not borders alone; preserve visibility of source plan, undercounter lights, strips and small fixtures |
 | 3. Lighting Zones and Room Devices | Lighting-zone list first, including parent/child IDs; then narrative-required device schedule | Functional zones and device-specific provisional locations under the placement rules below; owner finalizes devices and returns markup |
 | 4. Micro LV Channels | Micro-channel schedule with stable ID, functional zone/subzone, assigned output, calculated connected wattage | Boxes around micro channels; `<controller tag>:CH<output>` upper left, wattage lower right. Exclude device symbols. Enveloped boxes use dashed boundaries |
@@ -30,6 +30,25 @@ Six printable review packages accumulate into the final package. These deliverab
 | 6. Coordinated System | Consolidated schedules and applicable connections/routing records | Accepted room, light, zone, channel, device and cable information on separate final layers |
 
 Use as many schedule sheets and plan pages as needed for legibility. Repeat schedule column headings; keep identifiers and associations readable rather than shrinking everything onto one page. Include plan/page reference and scale/basis information when available. Calculated labels round upward to whole numbers; source/nameplate values and engineering data retain their original precision.
+
+## Finalized Room Map for the First Package
+
+After the owner finalizes the room boundaries, make every accepted room footprint a fillable closed area. Retain an existing editable `/Polygon` or fillable `/Square` when it already represents the accepted boundary. Otherwise redraw the accepted footprint as a closed polygon; open polylines and separate edge segments alone are insufficient. Preserve the accepted geometry, Space ID, label, source/level and review history. Replace the superseded primary footprint rather than leaving duplicate room-area objects. Preserve the annotation ID when supported; otherwise explicitly reconcile the old/new annotation IDs to the same Space in the markup register.
+
+Use a colored outline and a slightly different, lighter shade of that color for the low-opacity fill so the plan reads as a colorized room map. Keep source linework and labels legible. Include the following legend on the room-map sheets; exact RGB values/opacity are presentation choices, not newly fixed owner requirements.
+
+| Room-map category | Color family | Interpretation |
+|---|---|---|
+| Enclosed rooms | Blue | Ordinary discrete enclosed rooms |
+| Corridors / halls / circulation tracking spaces | Green | Includes accepted logical corridor tracking Spaces; “space tracking” describes inventory practice, not an energy-code room type |
+| Open activity / common areas | Ruddy orange | Open offices, gyms, play areas, dining areas and assembly areas; these owner-named activity areas may be bounded by exterior walls and still belong in this presentation category |
+| Multi-level atriums / open-to-above areas | Violet | Includes an accepted reception area open to the level above; describe the served occupied level and vertical relationship |
+
+These are presentation categories, separate from building/energy-code classifications and device colors. When categories overlap, the confirmed open-to-above category takes precedence, then circulation, then the owner-named open activity/common-area category, then ordinary enclosed rooms. A tall room is not automatically an atrium. Unknown/unresolved map categories receive a neutral unclassified fill and review note rather than an invented classification. Confirmed excluded areas retain a scope note and are not colored as included rooms. Outdoor areas, chases and service voids do not receive a new category by assumption; record their known nature and request category review if included.
+
+An upper-level opening/void does not create duplicate occupied floor area, room loads or Light Objects. Preserve the accepted multi-level Space relationship and label the open-to-below context separately where shown; reception lights continue to belong to their primary served occupied level. The room-map fill is visual presentation and does not change accepted measured areas or generate controls zones.
+
+Carry the same category colors into the second package's light-point review, using light hatching/low-opacity fills so small fixtures remain visible. Finish with the existing text-in-front pass. Verify editable fills and identity in the actual saved PDF; documentation alone does not implement a PDF renderer.
 
 ## Narrative and Device Placement Sequence
 
