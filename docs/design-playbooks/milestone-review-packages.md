@@ -24,7 +24,7 @@ Six printable review packages accumulate into the final package. These deliverab
 |---|---|---|
 | 1. Room Boundaries | Heading **Room Boundaries**; Room ID, known source room tag/name, level, area and basis, basic notes/open items; paginate as needed | Room boundaries with stable Room IDs and every available nonblank tag/name; do not invent missing names |
 | 2. Lighting Takeoff | Fixture schedule first; all Light Point IDs grouped by fixture type and reconciled counts, continuing across pages | All light points over lightly **hatched room areas**, not borders alone; preserve visibility of source plan, undercounter lights, strips and small fixtures |
-| 3. Lighting Zones and Room Devices | Lighting-zone list first, including parent/child IDs; then narrative-required device schedule | Functional zones and room-device symbols initially near room centers, explicitly provisional; owner moves devices and returns markup |
+| 3. Lighting Zones and Room Devices | Lighting-zone list first, including parent/child IDs; then narrative-required device schedule | Functional zones and device-specific provisional locations under the placement rules below; owner finalizes devices and returns markup |
 | 4. Micro LV Channels | Micro-channel schedule with stable ID, functional zone/subzone, assigned output, calculated connected wattage | Boxes around micro channels; `<controller tag>:CH<output>` upper left, wattage lower right. Exclude device symbols. Enveloped boxes use dashed boundaries |
 | 5. Controller and Power Equipment | Device/equipment schedule and relevant assignment/feed references | QDCD, PDU, CIO, SW4/SW8 and other selected equipment at reasonable proposed positions; owner finalizes and returns |
 | 6. Coordinated System | Consolidated schedules and applicable connections/routing records | Accepted room, light, zone, channel, device and cable information on separate final layers |
@@ -33,7 +33,24 @@ Use as many schedule sheets and plan pages as needed for legibility. Repeat sche
 
 ## Narrative and Device Placement Sequence
 
-After the control narrative is locked, build the physical room-device schedule and place representations provisionally at room centers: wall controls, occupancy sensors, daylight sensors and any other narrative-required room devices. This is a relocation review, not a coverage/wall-mounting recommendation. Multiple devices may receive small display offsets/leader labels for readability while metadata keeps the proposed association/location basis explicit.
+After the control narrative is locked, build the physical room-device schedule and place representations using the provisional rules below. Owner review establishes final positions. Apply the rules to the actual served room/zone and retain each device's stable identity and parent/child associations. Multiple devices may receive label offsets/leaders for readability without moving the intended physical position.
+
+### Provisional Room-Device Placement
+
+| Device/context | Initial location for owner review |
+|---|---|
+| Wall switch, dimmer or scene controller in an enclosed room with a door | On the room side of the wall, on the door knob/latch side, a few inches beyond the door frame. Use a solid wall segment clear of the frame and door swing. |
+| The latch-side wall is glazing/window | Use the adjacent solid wall, a few inches beyond where the open door/swing reaches that wall. Keep the proposed control clear of the swing. |
+| Manual control for a parent zone or a larger common open area, particularly open offices and lobbies | On a suitable wall near the entryway/corridor opening along the reasonable pedestrian approach. Associate the shared control with the parent and all served zones; do not duplicate a switch for each child zone unless the narrative calls for it. |
+| Ceiling occupancy sensor in a simple enclosed room | Near the room center, centered within a ceiling tile when a visible tile grid permits it. |
+| Ceiling occupancy sensor in a complex zone or open-office cluster | Near the middle of its served zone/child zone, on a tile center when visible. Apply narrative-required quantities and positions to the occupancy-controlled child zones rather than adding a sensor solely for the parent container. |
+| Wall occupancy sensor | Use the top-left corner of the room as shown on the displayed plan, on a solid wall near that corner, as the current review placeholder. Note an intended view into the occupied area; owner review resolves orientation, obstructions and final position. |
+| Hallway/corridor occupancy sensor | Near the middle of the served hallway/corridor zone. For multiple narrative-required sensors, propose positions within their served portions and flag review rather than stacking symbols at one midpoint. |
+| Daylight sensor or another room device without a defined placement rule | Retain a room/served-zone-center review placeholder and flag device-specific placement for owner review. |
+
+These are owner-directed initial markup locations. “A few inches” is qualitative guidance, not an invented exact offset, mounting height or installation detail. Do not infer final sensor coverage or add/remove devices from symbol placement alone; quantities and functions come from the locked narrative. If the door, latch side, swing, solid wall, entry route or tile grid cannot be determined from the available source, record the missing basis and use a clearly provisional room/zone-center fallback instead of inventing geometry. Tile alignment is conditional on a visible grid. Preserve any already accepted owner location.
+
+Record the rule/context and source basis, uncertainties and provisional status in annotation comments or the linked review record. Separate intended device location from text/leader offsets. Sensor quantities and coverage, mounting heights and manufacturer-specific installation details remain subject to the applicable design/owner review.
 
 Owner-returned device locations are reconciled before dependent aggregator placement and cable routing. Controllers receive their own later reasonable-location review. Controller/output assignments may precede equipment location acceptance so channel-map tags can be shown; use stable micro-channel IDs while assignments remain unknown. Do not invent assignments just to make labels look complete.
 

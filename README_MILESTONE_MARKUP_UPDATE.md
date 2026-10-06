@@ -4,7 +4,7 @@ Copy this ZIP's contents into its matching repository root, preserving `.git`, t
 
 Six print packages: Room Boundaries schedule and review plans; fixture schedule plus every Light Point ID grouped by type over lightly hatched rooms; zone list and narrative-locked room-device schedule/location review; device-free micro-channel boxes with output tag upper left/watts lower right; controller/power equipment review; accepted coordinated six-layer markup.
 
-Room devices now get scheduled/provisionally placed at room centers immediately after narrative lock, then relocated by the owner. Tags OS/DS/WC/WD and stable metadata link devices to rooms and parent/child zones. Controller equipment receives a later reasonable-location review. Every open-office occupancy cluster is a first-class child zone; parent records shared manual/aggregate behavior without duplicating lights or loads.
+Room devices get scheduled immediately after narrative lock and receive device-specific provisional positions under the milestone placement rules, then are finalized by the owner. Tags OS/DS/WC/WD and stable metadata link devices to rooms and parent/child zones. Controller equipment receives a later reasonable-location review. Every open-office occupancy cluster is a first-class child zone; parent records shared manual/aggregate behavior without duplicating lights or loads.
 
 Queued display directives implemented in guidance/helpers: calculated values ceiling-round to whole numbers after calculation; text rendered last/in front; more-enveloped zone/channel boundaries dashed without polyline detours. Source/nameplate and underlying engineering precision remain unchanged.
 

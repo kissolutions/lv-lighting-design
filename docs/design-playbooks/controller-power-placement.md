@@ -48,4 +48,4 @@ Hardware incompatibility returns upstream with an explanation; no silent channel
 
 ## Earlier Room-Device Review
 
-Immediately after narrative lock, inventory/schedule required room devices and place symbols provisionally near room centers for owner relocation. This stage precedes micro-channel/equipment-location review and final routing. Use [milestone packages](milestone-review-packages.md), topology v1.1 device tags/names/room links and markup identities. Hardware controller/aggregator selection and route validation still follow designated compatible channels and accepted device locations.
+Immediately after narrative lock, inventory/schedule required room devices and place symbols using the device-specific provisional placement rules in the milestone packages for owner finalization. This stage precedes micro-channel/equipment-location review and final routing. Use [milestone packages](milestone-review-packages.md), topology v1.1 device tags/names/room links and markup identities. Hardware controller/aggregator selection and route validation still follow designated compatible channels and accepted device locations.
