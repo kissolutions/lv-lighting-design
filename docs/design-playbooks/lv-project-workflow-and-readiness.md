@@ -132,3 +132,11 @@ Capture AHJ and area return-plenum status during basis/intake. After channel des
 ## Milestone Print and Markup Sequence
 
 [Milestone review packages](milestone-review-packages.md) defines six printable packages without renumbering existing milestones: room boundaries; hatched-room light takeoff; zones/room devices after narrative lock; device-free micro channels; equipment location review; coordinated layers/cabling. Owner-returned room-device locations precede dependent routing. Parent/child zones and narrative status use v0.7; topology v1.1 supplies descriptive device/room identity. Markup manifest and schedule checks are implemented; automatic PDF overlay/layer/readback remains to prove.
+
+## Open Framework Item: Exterior Lighting
+
+**Status: unresolved. Owner flag: 2026-10-06.**
+
+Define the exterior-lighting workflow before treating exterior designs as covered by the framework. Resolve exterior area/fixture ownership and takeoff, functional zoning and controls narrative, applicable code-review routing, power/driver/channel selection (including larger-fixture aggregation when compatible), outdoor equipment/enclosure and routing evidence, and review deliverables. Record decisions through the existing owner-review process; no default exterior sequence or hardware selection is established by this flag.
+
+The accepted low-opacity wine/burgundy exterior room-map color is presentation guidance only. It does not resolve exterior lighting scope, controls, electrical compatibility or equipment suitability. Preserve known source intent and mark unsupported exterior design decisions as open. Shared exterior design/controls knowledge belongs in WikiJS; project/model/channel/markup implementation belongs in this LV extension.
