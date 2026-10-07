@@ -99,7 +99,7 @@ Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human r
 - [ ] Room boundary schedule before plans; known room tags/names shown; readable pagination.
 - [ ] Fixture schedule and every Light Point ID grouped by type; lightly hatched room membership; undercounter/strip reconciliation.
 - [ ] Narrative locked with owner decision; first-class open-office clusters and parent common control recorded.
-- [ ] Room-device schedule includes ID/tag/name/Room ID/name/zone/subzone/function; wall switch/scene/dimmer positions start with electrical-plan evidence (accepted owner positions prevail), with door/entry/glazing fallbacks only where source locations are unavailable; sensor placement follows tile/zone and wall/corridor rules; placement basis and missing geometry recorded; returned locations reconciled.
+- [ ] Room-device schedule includes ID/tag/name/Room ID/name/zone/subzone/function; wall switch/scene/dimmer positions start with electrical-plan evidence (accepted owner positions prevail), with door/entry/glazing fallbacks only where source locations are unavailable; occupancy/daylight sensors also start with source design locations; use tile/zone, wall/corridor or daylight-placeholder fallbacks only without usable source locations; placement basis and missing geometry recorded; returned locations reconciled.
 - [ ] Micro-channel map boxes show assigned output at upper left and calculated watts at lower right; no devices; no invented output tags.
 - [ ] Equipment schedule/proposed positions reviewed and returned with stable annotation/device IDs.
 - [ ] Text brought to front; calculated values ceiling-rounded to zero decimals; enveloped boundaries dashed with other style retained.
