@@ -19,6 +19,13 @@ LAYERS=('rooms','lights','zones','lv_channels','controllers','cabling')
 PACKAGES=('room_boundaries','lighting_takeoff','zones_room_devices','micro_channels','equipment','coordinated')
 TITLES=('Room Boundaries','Lighting Takeoff','Lighting Zones and Room Devices','Micro LV Channels','Controller and Power Equipment','Coordinated System')
 LAYER_FOR={'space':'rooms','light':'lights','zone':'zones','channel':'lv_channels','device':'controllers','route':'cabling'}
+ROOM_REVIEW_NOTE = ('Room footprints use editable single-ring polygons. Hosts are notched from an outer edge around carved-out Spaces; '
+    'no hairline/zero-width slits. Open-to-below voids extend to the wall where owner-directed; consumed wall strips are recorded. '
+    'Rare retained islands leave the host whole and are shown in front, dashed, and in a deeper category shade. '
+    'Area sf (check only): polygon areas are scale cross-checks, not quantity takeoffs; owner CAD governs area takeoffs. '
+    'Notched host areas exclude carved-out Spaces and connector strips. Retained host areas include nested Spaces; do not sum them. '
+    'Light membership uses the smallest containing Space in the accepted served-level coordinate frame; presentation never changes membership.')
+
 
 
 def calculated_label(value):
@@ -60,6 +67,7 @@ def validate_manifest(manifest,model,topology=None):
         if page and a['x_pt'] is not None and (a['x_pt']>page['width_pt'] or a['y_pt']>page['height_pt']):fail(owner,'Position is outside displayed page bounds.')
         if any(s not in sets['space'] for s in a['room_ids']) or any(z not in sets['zone'] for z in a['zone_ids']):fail(owner,'Unknown room/zone association.')
         if a['entity_type'] in ('zone','channel') and a['enveloped'] and a['boundary_style']!='dashed':fail(owner,'Enveloped boundary must be dashed.')
+        if a['entity_type']=='space' and any(s['id']==a['entity_id'] and s.get('nested_in') for s in model['spaces']) and a['boundary_style']!='dashed':fail(owner,'Retained nested Space boundary must be dashed.')
         if a['entity_type']=='device' and not a['display_tag']:fail(owner,'Device requires visible identifying tag.')
         if a['review_status']=='accepted' and a['entity_type']=='device' and a['location_basis'] in ('room_center_provisional','reasonable_equipment_proposal'):fail(owner,'Accepted device placement must record owner-returned location basis.')
     pkg_ids=set()
@@ -92,14 +100,14 @@ def schedules(model,topology=None):
         return set(zones[zid]['light_object_ids']).union(*(members(c,trail|{zid}) for c in children[zid]))
     def room_names(sids):return '; '.join(spaces[s]['name'] for s in sids if s in spaces)
     rows={}
-    rows['rooms']=[dict(room_id=s['id'],room_tag=s.get('room_number'),room_name=s['name'],level=s.get('level'),area_sq_ft=(calculated_label(s['area_sq_ft']) if s['area_basis'] in ('measured','estimated') else s['area_sq_ft']),area_basis=s['area_basis'],notes=s.get('area_note') or s.get('description')) for s in spaces.values()]
+    rows['rooms']=[dict(room_id=s['id'],room_tag=s.get('room_number'),room_name=s['name'],level=s.get('level'),**{'Area sf (check only)': (calculated_label(s['area_sq_ft']) if s['area_basis'] in ('measured','estimated') else s['area_sq_ft']), 'Nested in': s.get('nested_in')},notes='; '.join(str(x) for x in (s.get('area_note') or s.get('description'), 'Area basis: '+s['area_basis']) if x)) for s in spaces.values()]
     rows['fixtures']=[];rows['light_points_by_type']=[]
     for t in model['fixture_types']:
         ids=[l['id'] for l in lights.values() if l['source']['fixture_type_id']==t['id']]
-        rows['fixtures'].append(dict(fixture_type_id=t['id'],source_mark=t['source_mark'],description=t['description'],source_watts=t['source_load']['watts'],load_basis=t['source_load']['basis'],light_point_count=len(ids)))
+        rows['fixtures'].append(dict(fixture_type_id=t['id'],source_mark=t['source_mark'],schedule_presence=t.get('schedule_presence','unknown'),description=t['description'],source_watts=t['source_load']['watts'],load_basis=t['source_load']['basis'],light_point_count=len(ids)))
         for lid in ids:
             l=lights[lid];room=room_for.get(lid,{})
-            rows['light_points_by_type'].append(dict(fixture_type_id=t['id'],source_mark=t['source_mark'],light_point_id=lid,display_label=l.get('label'),room_id=room.get('id'),room_name=room.get('name'),source_page_id=l['source']['drawing_page_id']))
+            rows['light_points_by_type'].append(dict(fixture_type_id=t['id'],source_mark=t['source_mark'],light_point_id=lid,display_label=l.get('label'),room_id=room.get('id'),room_name=room.get('name'),source_page_id=l['source']['drawing_page_id'],source_tag=l['source'].get('source_tag'),source_annotation_id=l['source'].get('source_annotation_id'),schedule_match_status=l['source'].get('schedule_match_status','unknown'),assembly_id=l.get('assembly_id'),count_basis=l.get('count_basis','unknown'),count_decision_id=l.get('count_decision_id')))
     rows['zones']=[]
     for z in zones.values():
         ids=members(z['id']);sids=sorted({room_for[l]['id'] for l in ids if l in room_for})
@@ -146,9 +154,14 @@ def export_schedules(model,topology,output_dir,through=2):
         table=tables[key];fields=list(table[0]) if table else ['status']
         with (output/(key+'.csv')).open('w',newline='') as f:
             writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader();writer.writerows(table)
+    with (output/'takeoff_notes.csv').open('w',newline='') as f:
+        writer=csv.writer(f);writer.writerow(['package','required_note'])
+        for kind in PACKAGES[:min(through,2)]:writer.writerow([kind,ROOM_REVIEW_NOTE])
     for i,group in enumerate(content_groups[:through]):
         parts=['<!doctype html><html><head><meta charset="utf-8"><style>@page{size:landscape;margin:0.4in}body{font:10pt Arial}table{width:100%;border-collapse:collapse;overflow-wrap:anywhere}th,td{border:1px solid #999;padding:4px;text-align:left}thead{display:table-header-group}tr{break-inside:avoid}section+section{break-before:page}h1{font-size:18pt}</style></head><body>']
         parts.append('<h1>'+TITLES[i]+'</h1><p>'+html.escape(model['project']['name'])+' — '+html.escape(model['project']['model_revision'])+' — REVIEW SCHEDULES / PLAN MARKUP TO FOLLOW</p>')
+        if not report['checks_pass']:parts.append('<p><strong>PROVISIONAL - unresolved intake findings; affected counts are not accepted.</strong></p>')
+        if i<2:parts.append('<p>'+html.escape(ROOM_REVIEW_NOTE)+'</p>')
         for key in group:
             rows=tables[key];parts.append('<section><h2>'+html.escape(key.replace('_',' ').title())+'</h2>')
             if rows:

@@ -112,3 +112,12 @@ Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human r
 - [ ] Original source schedule remains distinct from selected LV replacements; absence of a schedule is documented rather than inferred from design-build delivery.
 - [ ] Curved/ring and mixed-tag paths reconciled against schedule, RCP and electrical circuiting/daisy-chain evidence; L4/L4A not merged from visual continuity alone.
 - [ ] Physical fixture, source run, assembly and hardware-piece quantities distinguished; unresolved counts provisional and source-supported changes reconciled across IDs/PDFs/summaries.
+
+## M1/M2 Beta Review Gates
+
+- [ ] Owner-returned geometry and working page frame adopted without duplicate footprints; notches documented, no slits.
+- [ ] Nesting derived in the same served-level frame; rare islands styled and Nested in exported.
+- [ ] Both front sheets include the mandatory notch/nesting/area-check note; no summed overlapping areas.
+- [ ] Live annotations and register reconcile on every plan page; zero annotations rejects build.
+- [ ] Owner section-count decisions, assembly IDs, exact plan tags and unresolved suffix mappings recorded.
+- [ ] Keynote-only types retain unknown electrical values; exterior holdouts retained with quantities and reasons.

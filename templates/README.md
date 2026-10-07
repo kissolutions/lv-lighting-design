@@ -16,3 +16,7 @@ Use [M2 — Lighting and Source Controls: Owner Review](m2-user-review-checklist
 Use `controller-power-topology-v1.template.json` for early AHJ/plenum facts and later controller/PDU/sensor/route assignments paired with the lighting project.
 
 Use lighting-project-v0.7.template.json, controller-power-topology-v1.1.template.json and milestone-markup-v1.template.json for new work. Upgrades add unknown/unreviewed fields without inferring owner approval.
+
+## Physical Intake Review v0.8
+
+The v0.8 schema/template adds `Space.nested_in`, light `assembly_id`, `count_basis`, `count_decision_id`, source `source_tag`/`schedule_match_status`, and fixture `schedule_presence`. `model_intake_review.upgrade_v08` preserves existing values and leaves new facts unknown. `model_intake` checks v0.8 through prior electrical/hierarchy validators. `room_geometry_review` derives same-frame containment without changing membership; `validate_markup_pdf` checks the saved live annotations/register. Schedule exports include required M1/M2 notes and review metadata. The EPS aggregator contract is not implemented by this version.

@@ -52,3 +52,5 @@ Record arrays are normalized and connected by globally unique stable IDs. The lo
 ## Current Hierarchy and Markup Extensions
 
 [Zone hierarchy v0.7](zone-hierarchy-v0.7.md) retains v0.6 electrical semantics and adds parent zones/narrative review. [Milestone markup v1](milestone-markup-v1.md) tracks six review PDFs and stable annotation metadata. Topology v1.1 adds device display tags, names, room IDs and review category; v1.0 remains supported.
+
+- [M1/M2 beta metadata and review rules](../../design-playbooks/m1-m2-beta-review.md): lighting-project v0.8, exact source tags, assembly/count decisions and nested Spaces.

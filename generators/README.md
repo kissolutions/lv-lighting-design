@@ -28,3 +28,7 @@ Outputs are schedule/quantity review views, not a construction release or fully 
 `python -m generators.validate_topology topology.json --model lighting-model.json [--final]` checks the companion; it does not render PDF markup or replace electrical checks.
 
 `python -m generators.milestone_markup lighting.json output_dir --topology topology.json --through 3` exports CSV and printable HTML schedule front sheets through package 3; narrative lock is required at 3+. Existing model_intake accepts v0.7; validate_topology accepts v1.1. Use milestone_markup.validate_manifest for saved annotation/acceptance records. These helpers do not render PDF plan layers or verify human edits.
+
+## Physical Intake Review v0.8
+
+The v0.8 schema/template adds `Space.nested_in`, light `assembly_id`, `count_basis`, `count_decision_id`, source `source_tag`/`schedule_match_status`, and fixture `schedule_presence`. `model_intake_review.upgrade_v08` preserves existing values and leaves new facts unknown. `model_intake` checks v0.8 through prior electrical/hierarchy validators. `room_geometry_review` derives same-frame containment without changing membership; `validate_markup_pdf` checks the saved live annotations/register. Schedule exports include required M1/M2 notes and review metadata. The EPS aggregator contract is not implemented by this version.

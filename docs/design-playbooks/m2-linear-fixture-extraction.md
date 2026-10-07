@@ -78,3 +78,7 @@ A documented apparently continuous candidate can carry forward as a provisional 
 If later evidence changes one run into several, or several into one, preserve the earlier geometry/count basis and label history. Reconcile permanent-ID dispositions and any new occurrences; update every affected count, label map and markup in one review revision. Do not silently replace accepted owner corrections. No default lighting zone follows from this counting decision.
 
 Owner: KIS Solutions. October 2026; owner-directed source-run counting convention. Automated continuity tracing, section/feed derivation and PDF generation remain unimplemented.
+
+## Owner Physical-Section Override
+
+The default source-run convention yields to a dated owner physical-section counting decision for its stated project/scope. Under that override, each supported straight or curved section is one Light Object; record `count_basis=physical_section`, a confirmed `count_decision_id`, and shared `assembly_id`. Do not count the whole assembly again. Approximate lengths remain null until verified; preserve exact plan tags separately from schedule marks and keep unexplained suffix mappings provisional. Follow [M1/M2 beta review](m1-m2-beta-review.md#owner-section-count-override-and-assembly-identity).

@@ -1,0 +1,2618 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lighting project v0.8: physical intake review metadata",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "project",
+    "source_documents",
+    "drawing_pages",
+    "source_references",
+    "fixture_types",
+    "branch_circuits",
+    "light_zones",
+    "controllers",
+    "control_devices",
+    "control_systems",
+    "control_groups",
+    "backup_supplies",
+    "decisions",
+    "assumptions",
+    "open_items",
+    "spaces",
+    "light_objects"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.8.0"
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "model_revision",
+        "stage",
+        "takeoff_status",
+        "energy_code_basis",
+        "controls_narrative_review"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "model_revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "stage": {
+          "enum": [
+            "takeoff",
+            "provisional",
+            "checkpoint"
+          ]
+        },
+        "takeoff_status": {
+          "enum": [
+            "in_progress",
+            "reconciled"
+          ]
+        },
+        "energy_code_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "standard",
+            "edition",
+            "jurisdiction",
+            "amendments_status",
+            "source_ref_ids",
+            "decision_id"
+          ],
+          "properties": {
+            "standard": {
+              "enum": [
+                "IECC",
+                "ASHRAE 90.1",
+                "other",
+                null
+              ]
+            },
+            "edition": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "jurisdiction": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "amendments_status": {
+              "enum": [
+                "unreviewed",
+                "none_identified",
+                "reviewed"
+              ]
+            },
+            "source_ref_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+              },
+              "uniqueItems": true,
+              "minItems": 0
+            },
+            "decision_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "controls_narrative_review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "decision_id"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "unreviewed",
+                "draft",
+                "locked"
+              ]
+            },
+            "decision_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source_document"
+      },
+      "minItems": 1
+    },
+    "drawing_pages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/drawing_page"
+      },
+      "minItems": 1
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source_reference"
+      },
+      "minItems": 1
+    },
+    "fixture_types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fixture_type_v02"
+      }
+    },
+    "branch_circuits": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/branch_circuit"
+      }
+    },
+    "light_zones": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/light_zone"
+      }
+    },
+    "controllers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/controller"
+      }
+    },
+    "control_devices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/control_device"
+      }
+    },
+    "control_systems": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/control_system"
+      }
+    },
+    "control_groups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/control_group"
+      },
+      "description": "Preserved source control intent and constraints, including MEP source zones. These are not the designed LV light zones or controller-output groups."
+    },
+    "backup_supplies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/backup_supply"
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/decision"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assumption"
+      }
+    },
+    "open_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/open_item"
+      },
+      "minItems": 0
+    },
+    "spaces": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/space"
+      }
+    },
+    "light_objects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/light"
+      }
+    }
+  },
+  "$defs": {
+    "source_document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "filename",
+        "revision",
+        "storage_uri"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "storage_uri": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "drawing_page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_document_id",
+        "sheet_id",
+        "revision",
+        "page_index",
+        "width_pt",
+        "height_pt",
+        "pdf_rotation_deg"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "source_document_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "sheet_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "page_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "width_pt": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height_pt": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "pdf_rotation_deg": {
+          "enum": [
+            0,
+            90,
+            180,
+            270
+          ]
+        }
+      }
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_document_id",
+        "drawing_page_id",
+        "locator",
+        "statement"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "source_document_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "drawing_page_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x_pt",
+        "y_pt"
+      ],
+      "properties": {
+        "x_pt": {
+          "type": "number",
+          "minimum": 0
+        },
+        "y_pt": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "open_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "affects_ids",
+        "source_ref_ids",
+        "blocking",
+        "status",
+        "resolution",
+        "decision_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "affects_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "open",
+            "resolved"
+          ]
+        },
+        "resolution": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "blocking_phases": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "inventory",
+              "intake",
+              "design"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "Explicit phases blocked by this item. Omission conservatively means every phase; never infer phases from prose."
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "rationale",
+        "status",
+        "source_ref_ids",
+        "assumption_ids"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "status": {
+          "enum": [
+            "provisional",
+            "confirmed"
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "assumption_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "source_ref_ids",
+        "invalidated_if",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "invalidated_if": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "status": {
+          "enum": [
+            "unverified",
+            "confirmed",
+            "invalidated"
+          ]
+        }
+      }
+    },
+    "load": {
+      "type": "object",
+      "required": [
+        "basis",
+        "watts",
+        "length_ft",
+        "reference_length_ft"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "enum": [
+            "per_fixture",
+            "per_foot",
+            "per_reference_length"
+          ]
+        },
+        "watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "length_ft": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "reference_length_ft": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "voltage": {
+      "type": "object",
+      "required": [
+        "nominal_v",
+        "min_v",
+        "max_v"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "nominal_v": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "min_v": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "max_v": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        }
+      },
+      "description": "Numeric voltage attributes only. nominal_v, min_v and max_v are volts; AC/DC is stored separately as the applicable peer power-type field."
+    },
+    "control_connection": {
+      "type": "object",
+      "required": [
+        "target_id",
+        "interface",
+        "role"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "interface": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "channel": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "power_class",
+        "validation_profile",
+        "voltage",
+        "output_power_type",
+        "rated_output_watts",
+        "design_limit_watts",
+        "auxiliary_load_watts",
+        "compatibility_group",
+        "source_ref_ids",
+        "decision_id",
+        "output_power_mode",
+        "output_current_ma",
+        "controller_output",
+        "controller_id",
+        "light_zone_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "power_class": {
+          "enum": [
+            "class_1",
+            "class_2",
+            "class_3",
+            "class_4",
+            null
+          ]
+        },
+        "validation_profile": {
+          "enum": [
+            "class2_100w_90w_design",
+            "class2_100w_95w_design",
+            "product_specific",
+            null
+          ]
+        },
+        "voltage": {
+          "$ref": "#/$defs/voltage"
+        },
+        "rated_output_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "design_limit_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "auxiliary_load_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "compatibility_group": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_power_mode": {
+          "enum": [
+            "constant_voltage",
+            "constant_current",
+            null
+          ]
+        },
+        "output_current_ma": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "output_power_type": {
+          "enum": [
+            "ac",
+            "dc",
+            null
+          ]
+        },
+        "light_zone_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Functional room/control zone served by this micro LV channel. One channel serves one zone; one zone may use many channels."
+        },
+        "controller_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controller providing this channel's independently commanded output, when applicable."
+        },
+        "controller_output": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "description": "Physical controller output number. A populated controller/output pair is unique to one micro LV channel."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "validation_profile": {
+                "const": "class2_100w_90w_design"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "power_class": {
+                "const": "class_2"
+              },
+              "rated_output_watts": {
+                "const": 100
+              },
+              "design_limit_watts": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "exclusiveMinimum": 0,
+                "maximum": 90
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "validation_profile": {
+                "const": "class2_100w_95w_design"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "power_class": {
+                "const": "class_2"
+              },
+              "rated_output_watts": {
+                "const": 100
+              },
+              "design_limit_watts": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "exclusiveMinimum": 0,
+                "maximum": 95
+              }
+            }
+          }
+        }
+      ]
+    },
+    "power_unit": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "input_voltage_v",
+        "input_phases",
+        "lv_power_type",
+        "rated_output_watts",
+        "rated_input_watts",
+        "design_input_watts",
+        "aggregate_design_limit_watts",
+        "number_of_channels",
+        "backup_supply_id",
+        "connected_controls",
+        "channels",
+        "source_ref_ids",
+        "decision_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "input_voltage_v": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "input_phases": {
+          "enum": [
+            1,
+            3,
+            null
+          ]
+        },
+        "lv_power_type": {
+          "enum": [
+            "class_1",
+            "class_2",
+            "class_3",
+            "class_4",
+            "mixed",
+            null
+          ]
+        },
+        "rated_output_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "rated_input_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "design_input_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "aggregate_design_limit_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "number_of_channels": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "backup_supply_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "connected_controls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/control_connection"
+          }
+        },
+        "channels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/channel"
+          }
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "branch_circuit": {
+      "type": "object",
+      "required": [
+        "id",
+        "panel_ref",
+        "circuit_label",
+        "voltage_v",
+        "phases",
+        "breaker_amps",
+        "backup_supply_id",
+        "power_units",
+        "source_ref_ids",
+        "decision_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "panel_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "circuit_label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "voltage_v": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "phases": {
+          "enum": [
+            1,
+            3,
+            null
+          ]
+        },
+        "breaker_amps": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "backup_supply_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "power_units": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/power_unit"
+          }
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "fixture_type_v02": {
+      "type": "object",
+      "required": [
+        "id",
+        "source_mark",
+        "description",
+        "source_load",
+        "manufacturer_options",
+        "source_emergency_provision",
+        "source_ref_ids",
+        "source_voltage",
+        "source_power_type",
+        "source_power_mode",
+        "source_current_ma",
+        "source_voltage_basis",
+        "source_voltage_note",
+        "source_driver_type",
+        "source_driver_note",
+        "source_dimming_capability",
+        "schedule_presence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "source_mark": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_load": {
+          "$ref": "#/$defs/load"
+        },
+        "manufacturer_options": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "source_emergency_provision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "source_voltage": {
+          "$ref": "#/$defs/voltage"
+        },
+        "source_power_mode": {
+          "enum": [
+            "constant_voltage",
+            "constant_current",
+            null
+          ]
+        },
+        "source_current_ma": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "source_voltage_basis": {
+          "enum": [
+            "fixture_input",
+            "led_module_input",
+            "driver_output",
+            "unknown"
+          ]
+        },
+        "source_voltage_note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "source_driver_type": {
+          "enum": [
+            "driver",
+            "driverless",
+            "other",
+            null
+          ]
+        },
+        "source_driver_note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_power_type": {
+          "enum": [
+            "ac",
+            "dc",
+            null
+          ]
+        },
+        "source_dimming_capability": {
+          "enum": [
+            "dimmable",
+            "non_dimmable",
+            null
+          ],
+          "description": "Physical/source fixture capability. This is not the zone's applied dimming requirement."
+        },
+        "schedule_presence": {
+          "enum": [
+            "scheduled",
+            "keynote_only",
+            "unknown"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_driver_type": {
+                "const": "other"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_driver_note": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "light": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "source",
+        "design",
+        "source_ref_ids",
+        "assembly_id",
+        "count_basis",
+        "count_decision_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "type": "object",
+          "required": [
+            "fixture_type_id",
+            "drawing_page_id",
+            "source_branch_label",
+            "source_control_group_labels",
+            "source_annotation_id",
+            "drawing_anchor",
+            "source_tag",
+            "schedule_match_status"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "fixture_type_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            "drawing_page_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_branch_label": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_control_group_labels": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "description": "Original MEP/source zone labels preserved as observations, never LV-zone IDs or inferred channel assignments."
+            },
+            "source_annotation_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "drawing_anchor": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/point"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_tag": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "schedule_match_status": {
+              "enum": [
+                "verified",
+                "provisional",
+                "not_on_schedule",
+                "unknown"
+              ]
+            }
+          }
+        },
+        "design": {
+          "type": "object",
+          "required": [
+            "lv_description",
+            "load",
+            "compatibility_group",
+            "channel_id",
+            "backup_supply_id",
+            "decision_id",
+            "input_voltage",
+            "input_power_type",
+            "input_power_mode",
+            "input_current_ma",
+            "driver_type",
+            "driver_note",
+            "dimming_capability"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "lv_description": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "load": {
+              "$ref": "#/$defs/load"
+            },
+            "compatibility_group": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "channel_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "backup_supply_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "decision_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "input_voltage": {
+              "$ref": "#/$defs/voltage"
+            },
+            "input_power_mode": {
+              "enum": [
+                "constant_voltage",
+                "constant_current",
+                null
+              ]
+            },
+            "input_current_ma": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "exclusiveMinimum": 0
+            },
+            "driver_type": {
+              "enum": [
+                "driver",
+                "driverless",
+                "other",
+                null
+              ]
+            },
+            "driver_note": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "input_power_type": {
+              "enum": [
+                "ac",
+                "dc",
+                null
+              ]
+            },
+            "dimming_capability": {
+              "enum": [
+                "dimmable",
+                "non_dimmable",
+                null
+              ],
+              "description": "Inherent capability of the selected physical fixture/interface. A non-dimming zone may use a dimmable fixture; the unused capability does not alter voltage, AC/DC, CV/CC, current, driver architecture or wattage."
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "driver_type": {
+                    "const": "other"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "driver_note": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "mounting": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "height_above_served_floor_ft",
+            "height_basis",
+            "note",
+            "source_ref_ids"
+          ],
+          "properties": {
+            "height_above_served_floor_ft": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "height_basis": {
+              "enum": [
+                "source_document",
+                "measured",
+                "estimated",
+                "unknown"
+              ]
+            },
+            "note": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "source_ref_ids": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+              }
+            }
+          },
+          "description": "Optional v0.3 fixture mounting context. Qualitative high mounting leaves numeric height null with a verification note."
+        },
+        "assembly_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "count_basis": {
+          "enum": [
+            "discrete_fixture",
+            "source_run",
+            "physical_section",
+            "unknown"
+          ]
+        },
+        "count_decision_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      }
+    },
+    "light_zone": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "space_labels",
+        "control_group_ids",
+        "controller_id",
+        "controller_output",
+        "driver_type",
+        "control_types",
+        "on_off_type",
+        "normal_behavior",
+        "egress_type",
+        "emergency_behavior",
+        "emergency_input_id",
+        "light_object_ids",
+        "source_ref_ids",
+        "decision_id",
+        "label_mode",
+        "control_area_sq_ft",
+        "control_area_basis",
+        "parent_zone_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "space_labels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "description": "Retained source/display labels only. Canonical Space membership is defined by the Space ID-reference lists."
+        },
+        "control_group_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "description": "Applicable source-intent/constraint IDs, distinct from this designed LV zone and its controller output. Confirm satisfaction or record conflicts during engineering review."
+        },
+        "controller_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "controller_output": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "driver_type": {
+          "enum": [
+            "dimming",
+            "non_dimming",
+            null
+          ]
+        },
+        "control_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "occupancy",
+              "timeswitch",
+              "daylight",
+              "manual_override",
+              "color_control"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "on_off_type": {
+          "enum": [
+            "vacancy",
+            "occupancy",
+            "partial_on",
+            "not_applicable",
+            null
+          ]
+        },
+        "normal_behavior": {
+          "enum": [
+            "controlled",
+            "always_on",
+            "always_off",
+            null
+          ]
+        },
+        "egress_type": {
+          "enum": [
+            "normal",
+            "em_always_off",
+            "em_always_on",
+            "em_normally_controlled",
+            null
+          ]
+        },
+        "emergency_behavior": {
+          "enum": [
+            "not_required",
+            "force_on",
+            null
+          ]
+        },
+        "emergency_input_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "label_mode": {
+          "enum": [
+            "room",
+            "named"
+          ]
+        },
+        "control_area_sq_ft": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "control_area_basis": {
+          "enum": [
+            "source_document",
+            "measured",
+            "estimated",
+            "unknown"
+          ]
+        },
+        "light_object_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 0
+        },
+        "parent_zone_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "control_narrative": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "occupancy_aggregation": {
+          "enum": [
+            "any_child",
+            "all_children",
+            "other",
+            null
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "label_mode": {
+                "const": "named"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "emergency_input": {
+      "type": "object",
+      "required": [
+        "id",
+        "source_device_id",
+        "signal_type",
+        "monitored_branch_circuit_id",
+        "trigger_condition",
+        "verified",
+        "source_ref_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "source_device_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "signal_type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "monitored_branch_circuit_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "trigger_condition": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      }
+    },
+    "controller": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "device_class",
+        "number_of_control_outputs",
+        "integrated_power_unit_id",
+        "control_power_backup_supply_id",
+        "connected_control_device_ids",
+        "emergency_inputs",
+        "source_ref_ids",
+        "decision_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "device_class": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "number_of_control_outputs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "integrated_power_unit_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "control_power_backup_supply_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "connected_control_device_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true
+        },
+        "emergency_inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/emergency_input"
+          }
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "control_device": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "asset_type",
+        "source_ref_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "asset_type": {
+          "enum": [
+            "hardware",
+            "software"
+          ]
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      }
+    },
+    "control_system": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "interfaces",
+        "source_ref_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "interfaces": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      }
+    },
+    "control_group": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "normal_schedule_intent",
+        "source_ref_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "normal_schedule_intent": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "description": "Preserved source schedule or operating requirement used to constrain the LV design; do not overwrite it with the proposed controller program."
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      },
+      "description": "A source design requirement with its original label, operating intent, and evidence. Referenced by our LV zones; source numbering does not assign hardware."
+    },
+    "backup_supply": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "rated_output_watts",
+        "design_duration_minutes",
+        "verified",
+        "source_ref_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "kind": {
+          "enum": [
+            "ups",
+            "central_battery",
+            "integral_battery",
+            "other"
+          ]
+        },
+        "rated_output_watts": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "design_duration_minutes": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      }
+    },
+    "space_code_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "standard",
+        "edition",
+        "section",
+        "reason",
+        "url",
+        "applicability_status",
+        "decision_id"
+      ],
+      "properties": {
+        "standard": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "edition": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "applicability_status": {
+          "enum": [
+            "provisional",
+            "confirmed",
+            "not_applicable"
+          ]
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "space": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "room_number",
+        "description",
+        "area_sq_ft",
+        "area_basis",
+        "area_note",
+        "source_room_type",
+        "building_code_space_type",
+        "energy_code_space_type",
+        "energy_classification_basis",
+        "energy_classification_note",
+        "energy_classification_decision_id",
+        "enclosure",
+        "has_windows",
+        "has_daylight_zone",
+        "daylight_control_required",
+        "daylight_assessment_note",
+        "building_code_occupancy_group",
+        "code_references",
+        "drawing_page_ids",
+        "source_ref_ids",
+        "light_object_ids",
+        "light_zone_ids",
+        "decision_id",
+        "nested_in"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "room_number": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "area_sq_ft": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "area_basis": {
+          "enum": [
+            "source_document",
+            "measured",
+            "estimated",
+            "unknown"
+          ],
+          "description": "Estimated area stays an estimate and must be reviewed when a code threshold could change the outcome."
+        },
+        "area_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_room_type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Observed plan use or everyday room type; preserve separately from code classifications."
+        },
+        "building_code_space_type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Space function selected for building-code analysis, independently evidenced; do not infer it from energy classification."
+        },
+        "energy_code_space_type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Space function selected for energy-code control and lighting analysis, e.g. enclosed_office or open_office."
+        },
+        "energy_classification_basis": {
+          "enum": [
+            "source_label",
+            "inferred",
+            "owner_classification",
+            "unknown"
+          ]
+        },
+        "energy_classification_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "energy_classification_decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "enclosure": {
+          "enum": [
+            "enclosed",
+            "open",
+            "bounded_other",
+            null
+          ]
+        },
+        "has_windows": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "has_daylight_zone": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Geometric daylight zone presence; distinct from whether daylight-responsive controls are required."
+        },
+        "daylight_control_required": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "daylight_assessment_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "building_code_occupancy_group": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Building-code occupancy group, distinct from Building Code Space Type and Energy Code Space Type. Unknown remains null."
+        },
+        "code_references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/space_code_reference"
+          }
+        },
+        "drawing_page_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "light_object_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 0
+        },
+        "light_zone_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "minItems": 0
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "level": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Occupied/served floor, independent of fixture source sheet or mounting height. Null for a described multi-level Space."
+        },
+        "inventory_only": {
+          "type": "boolean",
+          "description": "Explicit unlit service-void/chase inventory entry. Requires description and empty light/zone lists. Not an energy-code exemption."
+        },
+        "nested_in": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "description": "Room or bounded area. References existing lights and zones; does not duplicate their objects or editable fixture counts."
+    }
+  },
+  "description": "v0.6 electrical contract preserved. Zones may have parent IDs; containers derive child lighting membership and never own duplicate lights. Narrative review is explicit."
+}

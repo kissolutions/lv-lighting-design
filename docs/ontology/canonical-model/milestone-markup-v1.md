@@ -29,3 +29,7 @@ Owner-returned location revisions update topology and annotation review basis to
 ## Check and Export Scope
 
 `generators.milestone_markup.validate_manifest` checks IDs, references, layer/category agreement, narrative dependency, envelope styling and acceptance/readback flags. `render_order` and `calculated_label` are formatting helpers, not PDF editing operations. `export_schedules` emits schedule CSVs and printable HTML front sheets; it does not generate PDF plan annotations. Do not claim a layered PDF or successful human readback from manifest validation alone.
+
+## Beta Delivery Gate
+
+Final room footprints use live Polygon annotations, light labels use FreeText with nonempty appearance streams, and every annotation ID maps through the delivered CSV register. Use `generators.validate_markup_pdf` against the saved PDF. The v1 manifest remains unchanged; its anchors do not substitute for actual Vertices or page-frame evidence. See [beta workflow and scoped Bluebeam proof](../../design-playbooks/m1-m2-beta-review.md).

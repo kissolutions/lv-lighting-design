@@ -16,3 +16,7 @@ Use `generators.validate_model` to check references and engineering semantics in
 Controller/power placement uses the independently versioned `controller-power-topology-v1.schema.json` companion paired with v0.6. It does not upgrade or replace the existing lighting project.
 
 Versioned additions: lighting-project-v0.7.schema.json (zone hierarchy/narrative review), controller-power-topology-v1.1.schema.json (device identity), milestone-markup-v1.schema.json (deliverable/annotation review). Older schemas remain supported.
+
+## Physical Intake Review v0.8
+
+The v0.8 schema/template adds `Space.nested_in`, light `assembly_id`, `count_basis`, `count_decision_id`, source `source_tag`/`schedule_match_status`, and fixture `schedule_presence`. `model_intake_review.upgrade_v08` preserves existing values and leaves new facts unknown. `model_intake` checks v0.8 through prior electrical/hierarchy validators. `room_geometry_review` derives same-frame containment without changing membership; `validate_markup_pdf` checks the saved live annotations/register. Schedule exports include required M1/M2 notes and review metadata. The EPS aggregator contract is not implemented by this version.

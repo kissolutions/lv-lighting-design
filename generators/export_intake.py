@@ -34,7 +34,7 @@ def export_intake(model, output_dir, allow_provisional=False):
         write_csv(output_dir / name, list(common) + fields, [{**common, **r} for r in rows])
 
     fields = ['space_id', 'name', 'room_number', 'level', 'description', 'source_room_type',
-              'area_sq_ft', 'area_basis', 'area_note', 'building_code_space_type',
+              'area_sq_ft', 'area_basis', 'area_note', 'nested_in', 'building_code_space_type',
               'building_code_occupancy_group', 'energy_code_space_type', 'enclosure',
               'has_windows', 'has_daylight_zone', 'daylight_control_required',
               'light_count', 'light_object_ids', 'light_zone_ids', 'inventory_only', 'source_ref_ids']
@@ -50,7 +50,7 @@ def export_intake(model, output_dir, allow_provisional=False):
     for tid, t in types.items():
         count = sum(l['source']['fixture_type_id'] == tid for l in lights.values())
         voltage = t.get('source_voltage', {})
-        type_rows.append(dict(fixture_type_id=tid, source_mark=t['source_mark'], description=t['description'],
+        type_rows.append(dict(fixture_type_id=tid, source_mark=t['source_mark'], schedule_presence=t.get('schedule_presence','unknown'), description=t['description'],
                               source_load_basis=t['source_load']['basis'], source_watts=t['source_load']['watts'],
                               source_voltage=voltage.get('nominal_v'), source_voltage_min_v=voltage.get('min_v'),
                               source_voltage_max_v=voltage.get('max_v'), source_power_type=t.get('source_power_type', voltage.get('current_type')), source_voltage_current_type=voltage.get('current_type'),
@@ -59,7 +59,7 @@ def export_intake(model, output_dir, allow_provisional=False):
                               source_driver_type=t.get('source_driver_type'), source_driver_note=t.get('source_driver_note'),
                               occurrence_or_run_count=count, manufacturer_options=';'.join(t['manufacturer_options']),
                               source_ref_ids=';'.join(t['source_ref_ids'])))
-    emit('fixture_type_schedule.csv', ['fixture_type_id', 'source_mark', 'description', 'source_load_basis',
+    emit('fixture_type_schedule.csv', ['fixture_type_id', 'source_mark', 'schedule_presence', 'description', 'source_load_basis',
          'source_watts', 'source_voltage', 'source_voltage_min_v', 'source_voltage_max_v',
          'source_power_type', 'source_voltage_current_type', 'source_power_mode', 'source_current_ma', 'source_voltage_basis',
          'source_voltage_note', 'source_driver_type', 'source_driver_note', 'occurrence_or_run_count',
@@ -96,8 +96,10 @@ def export_intake(model, output_dir, allow_provisional=False):
 
     for row in point_rows:
         row['light_label'] = lights[row['light_id']]['label']
+        light=lights[row['light_id']]
+        row.update(source_tag=light['source'].get('source_tag'),source_annotation_id=light['source'].get('source_annotation_id'),schedule_match_status=light['source'].get('schedule_match_status','unknown'),assembly_id=light.get('assembly_id'),physical_count_basis=light.get('count_basis','unknown'),count_decision_id=light.get('count_decision_id'))
     point_rows.sort(key=label_order)  # Stable for unlabeled/nonstandard labels and ties.
-    emit('light_points.csv', ['light_label', 'light_id', 'fixture_type_id', 'source_mark', 'space_id', 'zone_id',
+    emit('light_points.csv', ['light_label', 'light_id', 'fixture_type_id', 'source_mark', 'source_tag', 'source_annotation_id', 'schedule_match_status', 'assembly_id', 'physical_count_basis', 'count_decision_id', 'space_id', 'zone_id',
          'drawing_page_id', 'x_pt', 'y_pt', 'quantity_basis', 'length_ft', 'lv_watts',
          'lv_input_voltage', 'lv_input_voltage_min_v', 'lv_input_voltage_max_v', 'lv_input_power_type', 'lv_input_current_type',
          'lv_input_power_mode', 'lv_input_current_ma', 'lv_driver_type', 'lv_driver_note', 'channel_id',
