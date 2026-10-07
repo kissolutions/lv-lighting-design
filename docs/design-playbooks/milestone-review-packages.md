@@ -58,20 +58,29 @@ Gray also identifies service voids and confirmed out-of-scope/no-lighting areas.
 
 After the control narrative is locked, build the physical room-device schedule and place representations using the provisional rules below. Owner review establishes final positions. Apply the rules to the actual served room/zone and retain each device's stable identity and parent/child associations. Multiple devices may receive label offsets/leaders for readability without moving the intended physical position.
 
+### Wall-Control Location Priority
+
+For wall switches, scene controllers and dimmers, start with the locations shown on the electrical lighting plans. Capture source control symbols/locations during source intake and carry them into post-narrative device selection/placement. Match each location to its source tag, room and intended control function; selecting an LV device does not itself relocate the shown control.
+
+Preserve an already accepted owner location first. Otherwise use the applicable electrical-plan location as the initial proposal, recording sheet/page/revision and symbol/anchor evidence with location basis `source`. Register source positions into the accepted working page frame before placing symbols; retain the original source locator. If sources conflict or a symbol's association/location is unclear, flag that uncertainty for review rather than silently treating the location as absent or overriding it with a door rule.
+
+Only when no usable source location is available for the required wall control, apply the existing door-latch, glazing/adjacent-wall and open-area entry-route rules below. Record the source search and fallback basis; fallback positions remain provisional for owner finalization. Location evidence does not independently establish control quantities/functions or approve a departure from the narrative.
+
 ### Provisional Room-Device Placement
 
 | Device/context | Initial location for owner review |
 |---|---|
-| Wall switch, dimmer or scene controller in an enclosed room with a door | On the room side of the wall, on the door knob/latch side, a few inches beyond the door frame. Use a solid wall segment clear of the frame and door swing. |
-| The latch-side wall is glazing/window | Use the adjacent solid wall, a few inches beyond where the open door/swing reaches that wall. Keep the proposed control clear of the swing. |
-| Manual control for a parent zone or a larger common open area, particularly open offices and lobbies | On a suitable wall near the entryway/corridor opening along the reasonable pedestrian approach. Associate the shared control with the parent and all served zones; do not duplicate a switch for each child zone unless the narrative calls for it. |
+| Wall switch, dimmer or scene controller with a source electrical-plan location | Use that location first, subject to accepted owner changes and source/working-frame reconciliation. |
+| Wall switch, dimmer or scene controller in an enclosed room with a door, without a usable source location | On the room side of the wall, on the door knob/latch side, a few inches beyond the door frame. Use a solid wall segment clear of the frame and door swing. |
+| No usable source location, and the latch-side wall is glazing/window | Use the adjacent solid wall, a few inches beyond where the open door/swing reaches that wall. Keep the proposed control clear of the swing. |
+| Manual control for a parent zone or larger common open area without a usable source location, particularly open offices and lobbies | On a suitable wall near the entryway/corridor opening along the reasonable pedestrian approach. Associate the shared control with the parent and all served zones; do not duplicate a switch for each child zone unless the narrative calls for it. |
 | Ceiling occupancy sensor in a simple enclosed room | Near the room center, centered within a ceiling tile when a visible tile grid permits it. |
 | Ceiling occupancy sensor in a complex zone or open-office cluster | Near the middle of its served zone/child zone, on a tile center when visible. Apply narrative-required quantities and positions to the occupancy-controlled child zones rather than adding a sensor solely for the parent container. |
 | Wall occupancy sensor | Use the top-left corner of the room as shown on the displayed plan, on a solid wall near that corner, as the current review placeholder. Note an intended view into the occupied area; owner review resolves orientation, obstructions and final position. |
 | Hallway/corridor occupancy sensor | Near the middle of the served hallway/corridor zone. For multiple narrative-required sensors, propose positions within their served portions and flag review rather than stacking symbols at one midpoint. |
 | Daylight sensor or another room device without a defined placement rule | Retain a room/served-zone-center review placeholder and flag device-specific placement for owner review. |
 
-These are owner-directed initial markup locations. “A few inches” is qualitative guidance, not an invented exact offset, mounting height or installation detail. Do not infer final sensor coverage or add/remove devices from symbol placement alone; quantities and functions come from the locked narrative. If the door, latch side, swing, solid wall, entry route or tile grid cannot be determined from the available source, record the missing basis and use a clearly provisional room/zone-center fallback instead of inventing geometry. Tile alignment is conditional on a visible grid. Preserve any already accepted owner location.
+These are owner-directed initial markup locations. “A few inches” is qualitative guidance, not an invented exact offset, mounting height or installation detail. Do not infer final sensor coverage or add/remove devices from symbol placement alone; quantities and functions come from the locked narrative. If the applicable fallback geometry (door, latch side, swing, solid wall or entry route) or sensor tile grid cannot be determined from the available source, record the missing basis and use a clearly provisional room/zone-center fallback instead of inventing geometry. Tile alignment is conditional on a visible grid. Preserve any already accepted owner location.
 
 Record the rule/context and source basis, uncertainties and provisional status in annotation comments or the linked review record. Separate intended device location from text/leader offsets. Sensor quantities and coverage, mounting heights and manufacturer-specific installation details remain subject to the applicable design/owner review.
 
