@@ -48,6 +48,12 @@ This is an October 2026 audit of the local documentation and tools, not a declar
 | 12. Installation and field changes | Substitution/field-change log, impact checks and revised affected outputs | Stable IDs and source/decision provenance support revision review | Defined change/diff workflow and reliable drawing/model round trip; authorized field changes still need documented approval |
 | 13. Commission and close | Function tests, deficiency closure, accepted configuration, final schedules/markups and as-built record | Normal/emergency intent provides part of the test basis | Test protocols/results, coverage/daylight testing, installed configuration and as-built reconciliation not implemented |
 
+## M3 Control Narrative Data Header
+
+Every M3 room/zone control narrative data table must include **Light Reduction** as a separate header alongside manual switches, occupancy and the other control functions. Use readable entries such as **Partial on**, **Partial off**, **50% off**, **50% on**, and **None**, with combined actions where needed. Follow the [shared data definition](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/room-classification-and-controls-review-playbook.md#m3-control-narrative-data--light-reduction) for trigger, resulting level, percentage basis and unknown-versus-none treatment. Carry the column into review/adopted narrative deliverables with stable Space/zone references and source/decision evidence.
+
+The current model stores narrative text rather than a complete per-function narrative contract. Maintain this explicit header in project narrative tables and linked review records; do not add an unsupported JSON property or claim the current generic zone exporter creates this column.
+
 ## Milestone Review Points
 
 For the M2 owner review, use the [plain-language checklist](../../templates/m2-user-review-checklist.md). Extraction/verification agents prepare the evidence and reconciliation; the owner reviews findings and records scoped acceptance. It supplements the milestone below without moving code/design approval into M2.

@@ -54,6 +54,10 @@ Carry the same category colors into the second package's light-point review, usi
 
 Gray also identifies service voids and confirmed out-of-scope/no-lighting areas. Exterior areas use low-opacity wine/burgundy fill. Show excluded regions as gray context with retained scope notes, without adding included takeoff records merely to color the map. Keep service-void identity, scope exclusion and confirmed no-lighting status separate; color alone establishes none of those source facts. For overlapping categories, confirmed gray status takes precedence, followed by exterior wine/burgundy, then the categories above. Retain low-opacity fills and source visibility.
 
+## M3 Narrative Review Data
+
+Include the **Light Reduction** column in the M3 control narrative review data alongside manual switches, occupancy and the other functions. Carry it into the narrative schedule accompanying the lighting-zone review. Entries include partial on, partial off, 50% off, 50% on, none, or a supported combination; preserve unresolved values explicitly. Use the [M3 data-header directive](lv-project-workflow-and-readiness.md#m3-control-narrative-data-header) and its shared definition for percentage meaning and evidence. Project-authored narrative tables supply this column; the existing generic zone CSV/HTML exporter does not yet structure these per-function fields.
+
 ## Narrative and Device Placement Sequence
 
 After the control narrative is locked, build the physical room-device schedule and place representations using the provisional rules below. Owner review establishes final positions. Apply the rules to the actual served room/zone and retain each device's stable identity and parent/child associations. Multiple devices may receive label offsets/leaders for readability without moving the intended physical position.
