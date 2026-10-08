@@ -62,7 +62,19 @@ For each corridor endpoint and internal tracking split, record its boundary basi
 
 Record the result in the existing room descriptions, boundary review PDF and discrepancy list. Before M1 is complete, every observed circulation area must have an explicit Space association or a visible unresolved item. The owner may accept, split or merge proposed tracking Spaces while preserving their evidence and stable-ID history. These decisions do not create lighting zones; logical control zoning comes later.
 
-## Architectural Room Areas
+## Area Precision Near Code Thresholds
+
+Use a first-pass area estimate for scale and code-threshold screening; do not perform detailed area takeoffs for every room. The owner performs important quantity takeoffs separately. This owner-authorized screening estimate is derived information, not an asserted architectural source fact.
+
+Once the applicable code section is identified, compare the relevant room or control-zone area with its actual threshold and exact inequality. Values such as 250, 300 or 600 square feet are examples to look for only when supported by that selected provision; they are not universal room-type rules.
+
+**If the first pass is close enough that plausible measurement uncertainty could change the threshold result, make a second, more accurate pass before finalizing that area-dependent decision.** Also remeasure when the uncertainty cannot be bounded reliably. No universal percentage tolerance is prescribed. Far from a threshold, retain the screening basis and supported above/below conclusion without pursuing unnecessary decimal precision.
+
+For the second pass, review the actual applicable boundary and area convention, use explicit dimensions or a calibrated applicable plan view, check scale against known dimensions, and recalculate the room/zone geometry. Do not use presentation notches, connector wall strips, retained nested areas or other styling adjustments as substitutes for the code-relevant boundary. Preserve accepted working-frame geometry and source revisions. If dimensions, scale or boundaries remain inadequate, flag the threshold decision for owner measurement/confirmation rather than claiming accuracy.
+
+Record the first-pass estimate/basis, applicable edition/section/threshold/operator, reason for remeasurement, refined area/method and resulting conclusion in linked review records. Existing area basis/note and source/decision references can carry the supported result; preserve prior evidence. Compare unrounded values: ceiling-rounded markup labels are presentation only. Keep ordinary markup areas labeled check-only; document the specific refined measurement separately as threshold evidence, not a general quantity takeoff. Recheck affected narrative or zone assignments if the refined result changes the branch.
+
+
 
 A width-by-depth label such as `10' X 15'` is dimension evidence, not an explicit square-footage label. Preserve it verbatim with its source in `area_note`; leave `area_sq_ft` null at initial extraction unless a separate supported area is available. A reviewed calculation or boundary takeoff may establish area later with its own basis. Do not silently turn nominal room labels into accepted measured areas.
 
