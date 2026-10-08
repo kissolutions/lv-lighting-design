@@ -50,9 +50,15 @@ This is an October 2026 audit of the local documentation and tools, not a declar
 
 ## M3 Control Narrative Data Header
 
-Every M3 room/zone control narrative data table must include **Light Reduction** as a separate header alongside manual switches, occupancy and the other control functions. Use readable entries such as **Partial on**, **Partial off**, **50% off**, **50% on**, and **None**, with combined actions where needed. Follow the [shared data definition](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/room-classification-and-controls-review-playbook.md#m3-control-narrative-data--light-reduction) for trigger, resulting level, percentage basis and unknown-versus-none treatment. Carry the column into review/adopted narrative deliverables with stable Space/zone references and source/decision evidence.
+Organize the M3 review into **one section per sequence**: sequence number/stable ID and revision, full narrative, required functions/components, then a table of every assigned room/zone. Preserve the one-to-many narrative relationship. Follow the [shared sequence-section layout](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/room-classification-and-controls-review-playbook.md#m3-review-layout--one-section-per-sequence).
 
-The current model stores narrative text rather than a complete per-function narrative contract. Maintain this explicit header in project narrative tables and linked review records; do not add an unsupported JSON property or claim the current generic zone exporter creates this column.
+Sequence requirements cover manual/automatic operation, switching, occupancy/vacancy, dimming, **Light Reduction**, daylight, scheduling and other applicable functions. Room rows show what is actually documented or proposed: wall-switch/dimmer quantities, sensor quantities and operating modes, controlled groups and settings, shared control references, and implementation gaps. Do not simply repeat “required” or the generic sequence in every row. Keep source/proposed/adopted status explicit; these are not installed-equipment assertions.
+
+Use consistent columns and identical wording for matching entries so differences can be scanned vertically. Flag differing cells and unresolved entries with text as well as optional shading. Distinguish legitimate device-count variations from behavior conflicting with the sequence. Known absence is None; missing information is Unknown/TBD. Preserve stable Room/zone/device identities and references, and avoid duplicate counts for shared devices.
+
+Retain **Light Reduction** as a dedicated header: sequence summaries state partial on/off, 50% on/off, none or another supported behavior; room rows state the actual implementation, percentage basis and known equipment/group quantities. See the [shared Light Reduction definition](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/room-classification-and-controls-review-playbook.md#m3-control-narrative-data--light-reduction). Unknown device counts remain pending; do not bypass narrative lock or coverage review to populate this table. Physical scheduling and placement continue after narrative lock.
+
+Repeat sequence IDs and column headers across continuation pages. Project-authored narrative tables implement this review format; the current generic zone CSV/HTML exporter and narrative-text model do not yet structure or render these per-function sequence sections. Do not add unsupported JSON properties.
 
 ## Milestone Review Points
 
