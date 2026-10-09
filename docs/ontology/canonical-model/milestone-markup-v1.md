@@ -33,3 +33,9 @@ Owner-returned location revisions update topology and annotation review basis to
 ## Beta Delivery Gate
 
 Final room footprints use live Polygon annotations, light labels use FreeText with nonempty appearance streams, and every annotation ID maps through the delivered CSV register. Use `generators.validate_markup_pdf` against the saved PDF. The v1 manifest remains unchanged; its anchors do not substitute for actual Vertices or page-frame evidence. See [beta workflow and scoped Bluebeam proof](../../design-playbooks/m1-m2-beta-review.md).
+
+## Editability at Every Stage
+
+All markup work remains live, editable and unflattened at every stage, including draft, accepted, issued, final coordinated and closeout packages. Review completion or narrative lock never authorizes flattening. Preserve editable labels, symbols, room fills/boundaries, zones, channels, equipment and cabling, with stable annotation IDs and linked object metadata. Do not rasterize markups, bake them into page content, or use a print-to-PDF path that destroys annotations. Assemble schedule front sheets and plan PDFs without flattening the plan annotations; source drawing backgrounds and ordinary schedule page content need not be converted into annotations. Verify annotation retention and editability in the actual saved/assembled deliverable; layers alone do not prove editability. Do not lock annotations against owner edits.
+
+The saved-PDF annotation/register checks apply to final assembled packages as well as intermediate reviews. Existing validation covers its documented scope; do not infer editability of every annotation type solely from a nonzero annotation count.

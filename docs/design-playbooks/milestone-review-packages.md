@@ -123,7 +123,9 @@ When another zone visually envelops a zone/channel, draw the more enveloped boun
 
 ## Annotation Identity and Owner Return
 
-Use the [markup manifest contract](../ontology/canonical-model/milestone-markup-v1.md). Device symbols carry immutable annotation identity and linked Device ID; moving a symbol preserves its schedule and zone associations. Retain geometry/location in displayed-page coordinates, revision and review state. Verify the actual human edit/save/readback path before marking a package accepted. Preserve editable unflattened markups until review is complete.
+All markup work remains live, editable and unflattened at every stage, including draft, accepted, issued, final coordinated and closeout packages. Review completion or narrative lock never authorizes flattening. Preserve editable labels, symbols, room fills/boundaries, zones, channels, equipment and cabling, with stable annotation IDs and linked object metadata. Do not rasterize markups, bake them into page content, or use a print-to-PDF path that destroys annotations. Assemble schedule front sheets and plan PDFs without flattening the plan annotations; source drawing backgrounds and ordinary schedule page content need not be converted into annotations. Verify annotation retention and editability in the actual saved/assembled deliverable; layers alone do not prove editability. Do not lock annotations against owner edits.
+
+Use the [markup manifest contract](../ontology/canonical-model/milestone-markup-v1.md). Device symbols carry immutable annotation identity and linked Device ID; moving a symbol preserves its schedule and zone associations. Retain geometry/location in displayed-page coordinates, revision and review state. Verify the actual human edit/save/readback path before marking a package accepted. Preserve editable unflattened markups after review is complete and in every subsequent delivery.
 
 ## Implemented Scope and Remaining Proof
 
