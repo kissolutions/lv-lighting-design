@@ -97,3 +97,7 @@ Extract the original MEP fixture schedule as referenced design information befor
 ## M1/M2 Beta Directives
 
 Follow [M1/M2 beta review](docs/design-playbooks/m1-m2-beta-review.md): room edge notches without slits, rare nested-space metadata/style, mandatory Package 1/2 area-check notes, served-level smallest-containing membership independent of styling, owner-returned working page frame, live Polygon/FreeText delivery and annotation register/build gate. Owner-reported 47-Polygon Bluebeam round-trip closes that workflow proof gap. Section-count owner decisions override source-run defaults only within their scope. v0.8 supports exact source tags, provisional mappings, keynote-only types, assembly IDs and Space nesting. Keep actual project registers/PDFs outside this repository; the example is anonymized. EPS fixture-aggregator topology remains a separate pending implementation.
+
+## Phase 2 Coordination
+
+Follow the iterative two-phase placement workflow and the October 15 reconciliation. Group QDCD candidates by room family, separate from regulatory classifications, preserving independent outputs and electrical compatibility. Use existing accepted/owner_returned review vocabulary for held positions; no new pinned state. Coordinate free-device siting with weighted pathways, exclusions, bend costs and demand-based feeds. Preserve all unflattened markup delivery rules. Bundle-tree v0.9 is separate contract/checker work; never implement the superseded independent-route shape of F.

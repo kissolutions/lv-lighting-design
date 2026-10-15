@@ -24,16 +24,27 @@ During basis/room intake record AHJ explicitly alongside energy code/edition/jur
 
 ## 3. Design Sequence
 
-1. Count output-based minimum QDCDs from eligible already-designated channels. Apply product capacity constraints before claiming a feasible minimum.
-2. Count unique wired/Casambi sensors, separate wall controls, minimum suitable SW4/SW8 aggregators and total SDCnet peripheral devices. Count potential CIO demand without inventing locations.
-3. Group existing micro channels into QDCD candidates by room family first, then geography within that family. A QDCD may serve multiple rooms using separate outputs while preserving each channel's functional boundaries. Fill nearby similar rooms' boxes before mixing families. Room family is an equipment-service taxonomy, independent of Building Code Space Type and Energy Code Space Type; record each Space's family and basis in project review records until a versioned field exists. Flag dispersed families that cannot meet reviewed reach instead of silently adding barely-used boxes or mixing families. Electrical compatibility and product capacity remain mandatory.
-4. Assign channels to QDCD outputs and locate QDCDs. Prefer confirmed non-return-plenum above-ceiling common spaces central to served zones; co-locate compatible QDCDs serving the same room family where access and routing support it. Alternative corridor-wall locations require owner review and appropriate installation conditions.
-5. Obtain owner CIO locations: IDF, Electrical or Storage room are usual choices. Proposed locations may support clearly provisional options.
-6. Starting at furthest field devices, develop reasonable sensor strings back toward CIOs.
-7. Locate SW4/SW8 near associated QDCDs, favoring the QDCD nearest CIO in the associated group.
-8. Allocate PDU outputs to QDCD inputs by verified input demand and usable per-feed capacity, plus any explicit owner spare policy, or to direct lighting. Verify each feed's load/sharing, conductor and reach under the upstream EPS allocation guidance; no flat four-feed default. Require Smart for direct network PDU on/off control. Existing topology v1/v1.1 still requires reduced_feed_decisions records for one to three feeds; retain those evidence records until a versioned migration changes the checker.
-9. After placement, route SDCnet and PDnet separately according to manufacturer requirements, and develop power/luminaire routes with voltage-drop checks.
-10. Submit first-pass equipment and route markups for owner review; incorporate returned location changes, recompute affected allocations/distances and retain IDs/decision history.
+### Phase 1 — Application and Transport
+
+Establish rooms, fixtures, functional zones, approved narrative, compatible micro channels and device-count/grouping candidates. Use room-family grouping below. These form the accepted input baseline; later incompatibility returns upstream with an explained, reviewed change, never a silent regrouping.
+
+### Room-Family Grouping (Change A)
+
+Group existing micro channels into QDCD candidates by room family first, then geography within the family. A controller may serve several rooms through independent outputs. Family is an equipment-service taxonomy, not an energy/building-code classification. Record each Space's family and basis in review records; no unversioned field. Fill similar rooms' boxes before mixing families, preserve electrical/product/control constraints, and flag dispersion or reach conflicts. Co-locate compatible family devices where access and installation conditions permit; owner-held devices are not free banking candidates.
+
+### Phase 2 — Hardware and Infrastructure
+
+Placement, pathways, routes, conductors and supports are coordinated iteratively. Field knowledge and returned changes are expected inputs.
+
+1. Record held owner locations using existing annotation review_status: accepted and location_basis: owner_returned, with basis/evidence. Do not add a pinned state. The optimiser does not move these locations or require justification against an optimum. Source-supported fixed conditions also remain explicit constraints; do not falsely label them owner-returned.
+2. Establish the proposed pathway network, access/mountable locations, risers, source/reviewer exclusions and area plenum facts. Unknown conditions remain flagged on dependent proposals; they neither justify an invented straight-line route nor block unrelated work. Above-ceiling final acceptance still requires applicable installation evidence.
+3. Seed free-device locations from supported mountable candidates, then alternate routing and re-siting. Route held locations and heavy bundles first; free equipment joins mountable points on the roadway already serving its channels, within a stated project tap reach. The first pass may have no open roadway. Report off-network devices and proposed roadway extensions/spurs for deliberate review. Do not move an owner-held device to enforce an optimisation preference.
+4. Use the pathway/pull/bend objective below. Retain the lowest-cost feasible configuration actually evaluated under the same inputs/objective, not merely the last pass. Detect repeated configurations, impose an explicit iteration limit, and report stable, oscillating or best-seen-at-limit as algorithm outcomes, not new review states. Re-evaluate saved candidates when inputs change.
+5. Verify both drop budgets, conductor/terminal suitability and demand-based PDU feed allocation. Retain reduced_feed_decisions evidence required by topology v1/v1.1. Do not assume cable count equals feed count. Require Smart for direct network PDU on/off control and verify selected ratings/demand.
+6. Coordinate sensor strings, SW4/SW8 associations and owner CIO locations using the upstream device mini playbooks. Route signal networks separately under their manufacturer rules; power bundle trees are not signal topology.
+7. Submit equipment and route markups. Incorporate returned location changes, recompute affected allocations/distances and retain IDs/decision history. Use existing assumption invalidation when inputs change. Accepted geometry and associations survive a new optimisation unless explicitly reopened.
+
+This loop defines review procedure, not a claim that a router/fixpoint solver exists in the framework. Efficient candidate scoring may use shared cost fields instead of a separate full routing solve per candidate, provided direction, weights, constraints and evaluation order are preserved.
 
 ## 4. Required Review Outputs
 
