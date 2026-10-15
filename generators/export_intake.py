@@ -108,6 +108,14 @@ def export_intake(model, output_dir, allow_provisional=False):
          'blocking_phases', 'status', 'resolution', 'decision_id'],
          [{**i, 'affects_ids': ';'.join(i['affects_ids']), 'source_ref_ids': ';'.join(i['source_ref_ids']),
            'blocking_phases': ';'.join(i.get('blocking_phases', ('inventory', 'intake', 'design')))} for i in model['open_items']])
+    if original_version == '0.9.0':
+        view = derived['bundle_routes']
+        fields = ['bundle_id','flow','serves','controllers_terminating','cables_terminating',
+                  'downstream_controllers','downstream_cables','cable_ids','length_ft']
+        emit('bundle_review_derived.csv', fields,
+             [{k:(';'.join(v) if isinstance(v,list) else v) for k,v in r.items()}
+              for r in view['bundles']])
+        emit('controller_positions_derived.csv', ['controller_id','frame_id','x','y'], view['controller_positions'])
     (output_dir / 'intake_validation.json').write_text(json.dumps(report, indent=2, default=str) + '\n')
     return report
 

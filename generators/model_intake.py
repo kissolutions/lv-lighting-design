@@ -128,6 +128,9 @@ def check_model(model, phase='intake'):
                     review_note='Checks verify entered data; independent source and owner review remain required.')
 
     version = model.get('schema_version')
+    if version == '0.9.0':
+        from .model_bundles import check_v09
+        return check_v09(model, phase)
     if version == '0.8.0':
         from .model_intake_review import check_v08
         return check_v08(model, phase)

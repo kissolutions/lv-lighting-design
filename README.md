@@ -77,3 +77,13 @@ Automatic PDF extraction, optimized grouping, PDF markup, cable lengths, and pro
 ## Milestone Review Packages
 
 [Six printable milestone packages](docs/design-playbooks/milestone-review-packages.md) · [Zone hierarchy v0.7](docs/ontology/canonical-model/zone-hierarchy-v0.7.md) · [Annotation/review manifest](docs/ontology/canonical-model/milestone-markup-v1.md). `generators.milestone_markup` exports CSV/printable HTML front sheets and provides ceiling-label/render-order helpers. PDF plan overlays and edit/readback remain separately verified work.
+
+## Bundle-tree extension v0.9
+
+[Flat bundle trees and cable routes](docs/ontology/canonical-model/cable-route.md) implement a versioned power-routing contract,
+served-set identity, cycle rejection, controller stations, separate upstream/drop
+counts, physical cable/circuit/conductor mapping, and strict geometry-return
+reconciliation. CSV/flat records are authoritative; JSON and review tables are
+derived. Migration does not invent routes. Routing optimisation, electrical
+routing validation, risers and an actual polyline viewer round-trip remain outside
+this implementation. Earlier schemas remain supported.

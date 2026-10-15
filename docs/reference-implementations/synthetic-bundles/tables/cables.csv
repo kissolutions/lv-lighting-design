@@ -1,0 +1,6 @@
+cable_id,flow,source_id,endpoint_id,conductor_count,conductor_gauge,slack_basis
+CABLE-SYNTHETIC-0,upstream,PU-SYNTHETIC,CTRL-SYNTHETIC,4,18 AWG (synthetic only),
+CABLE-SYNTHETIC-1,upstream,PU-SYNTHETIC,CTRL-SYNTHETIC-B,2,18 AWG (synthetic only),
+CABLE-SYNTHETIC-2,upstream,PU-SYNTHETIC,CTRL-SYNTHETIC-B,2,18 AWG (synthetic only),
+CABLE-SYNTHETIC-3,upstream,PU-SYNTHETIC,CTRL-SYNTHETIC-C,2,18 AWG (synthetic only),
+DROP-CABLE,drop,CTRL-SYNTHETIC,CH-SYNTHETIC-1,2,18 AWG (synthetic only),

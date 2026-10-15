@@ -54,3 +54,13 @@ Record arrays are normalized and connected by globally unique stable IDs. The lo
 [Zone hierarchy v0.7](zone-hierarchy-v0.7.md) retains v0.6 electrical semantics and adds parent zones/narrative review. [Milestone markup v1](milestone-markup-v1.md) tracks six review PDFs and stable annotation metadata. Topology v1.1 adds device display tags, names, room IDs and review category; v1.0 remains supported.
 
 - [M1/M2 beta metadata and review rules](../../design-playbooks/m1-m2-beta-review.md): lighting-project v0.8, exact source tags, assembly/count decisions and nested Spaces.
+
+## Bundle-tree extension v0.9
+
+[Flat bundle trees and cable routes](cable-route.md) implement a versioned power-routing contract,
+served-set identity, cycle rejection, controller stations, separate upstream/drop
+counts, physical cable/circuit/conductor mapping, and strict geometry-return
+reconciliation. CSV/flat records are authoritative; JSON and review tables are
+derived. Migration does not invent routes. Routing optimisation, electrical
+routing validation, risers and an actual polyline viewer round-trip remain outside
+this implementation. Earlier schemas remain supported.

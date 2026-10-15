@@ -1,0 +1,364 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "frames",
+    "bundles",
+    "geometry",
+    "attachments",
+    "cables",
+    "circuits",
+    "conductors"
+  ],
+  "properties": {
+    "frames": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "frame_id",
+          "drawing_page_id",
+          "level",
+          "feet_per_unit",
+          "scale_basis"
+        ],
+        "properties": {
+          "frame_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "drawing_page_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "level": {
+            "type": "string",
+            "minLength": 1
+          },
+          "feet_per_unit": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "scale_basis": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "bundles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bundle_id",
+          "parent_bundle_id",
+          "source_id",
+          "flow",
+          "level",
+          "frame_id",
+          "serves",
+          "annotation_id",
+          "review_status",
+          "location_basis",
+          "assumption_ids"
+        ],
+        "properties": {
+          "bundle_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parent_bundle_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "flow": {
+            "enum": [
+              "upstream",
+              "drop"
+            ]
+          },
+          "level": {
+            "type": "string",
+            "minLength": 1
+          },
+          "frame_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "serves": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "annotation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "review_status": {
+            "enum": [
+              "proposed",
+              "accepted",
+              "change_requested"
+            ]
+          },
+          "location_basis": {
+            "enum": [
+              "room_center_provisional",
+              "reasonable_equipment_proposal",
+              "owner_returned",
+              "source",
+              "derived"
+            ]
+          },
+          "assumption_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "geometry": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bundle_id",
+          "seq",
+          "x",
+          "y"
+        ],
+        "properties": {
+          "bundle_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "seq": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "controller_id",
+          "parent_bundle_id",
+          "station_ft",
+          "offset_ft",
+          "review_status",
+          "location_basis"
+        ],
+        "properties": {
+          "controller_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parent_bundle_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "station_ft": {
+            "type": "number",
+            "minimum": 0
+          },
+          "offset_ft": {
+            "type": "number"
+          },
+          "review_status": {
+            "enum": [
+              "proposed",
+              "accepted",
+              "change_requested"
+            ]
+          },
+          "location_basis": {
+            "enum": [
+              "room_center_provisional",
+              "reasonable_equipment_proposal",
+              "owner_returned",
+              "source",
+              "derived"
+            ]
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "cables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cable_id",
+          "flow",
+          "source_id",
+          "endpoint_id",
+          "conductor_count",
+          "conductor_gauge",
+          "slack_basis"
+        ],
+        "properties": {
+          "cable_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "flow": {
+            "enum": [
+              "upstream",
+              "drop"
+            ]
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "endpoint_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "conductor_count": {
+            "type": "integer",
+            "minimum": 2
+          },
+          "conductor_gauge": {
+            "type": "string",
+            "minLength": 1
+          },
+          "slack_basis": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "circuits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "circuit_id",
+          "cable_id",
+          "source_port",
+          "destination_port"
+        ],
+        "properties": {
+          "circuit_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cable_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_port": {
+            "type": "string",
+            "minLength": 1
+          },
+          "destination_port": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "conductors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cable_id",
+          "conductor_number",
+          "circuit_id",
+          "polarity",
+          "parallel_group",
+          "effective_gauge"
+        ],
+        "properties": {
+          "cable_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "conductor_number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "circuit_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "polarity": {
+            "enum": [
+              "positive",
+              "negative"
+            ]
+          },
+          "parallel_group": {
+            "type": "string",
+            "minLength": 1
+          },
+          "effective_gauge": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "uniqueItems": true
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Flat bundle records v0.9 (authoritative tables)"
+}

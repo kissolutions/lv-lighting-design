@@ -54,12 +54,22 @@ def validate_manifest(manifest,model,topology=None):
     if manifest['model_revision']!=model['project']['model_revision']:fail('revision','Markup model revision differs from paired model.')
     channels={c['id'] for b in model['branch_circuits'] for u in b['power_units'] for c in u['channels']}
     sets=dict(space={s['id'] for s in model['spaces']},light={l['id'] for l in model['light_objects']},zone={z['id'] for z in model['light_zones']},channel=channels,device={d['id'] for d in (topology or {}).get('devices',[])},route={r['id'] for r in (topology or {}).get('routes',[])})
+    sets['route'].update(b['bundle_id'] for b in model.get('bundle_routes',{}).get('bundles',[]))
     pages={p['id']:p for p in model['drawing_pages']};anns={}
     for a in manifest['annotations']:
         owner=a['annotation_id']
         if owner in anns:fail(owner,'Duplicate annotation identity.')
         anns[owner]=a
         if a['entity_id'] not in sets[a['entity_type']]:fail(owner,'Unknown entity reference.')
+        if a['entity_type']=='route':
+            for b in model.get('bundle_routes',{}).get('bundles',[]):
+                if b['bundle_id']==a['entity_id']:
+                    frame=next(f for f in model['bundle_routes']['frames'] if f['frame_id']==b['frame_id'])
+                    if a['annotation_id']!=b['annotation_id'] or a['drawing_page_id']!=frame['drawing_page_id']:
+                        fail(owner,'Bundle annotation ID/page differs from authoritative flat records.')
+                    if any(a[k]!=b[k] for k in ('review_status','location_basis')):
+                        fail(owner,'Bundle review metadata differs from authoritative flat records.')
+
         if a['layer']!=LAYER_FOR[a['entity_type']]:fail(owner,'Entity is on incorrect final layer.')
         page=pages.get(a['drawing_page_id'])
         if page is None:fail(owner,'Unknown drawing page.')

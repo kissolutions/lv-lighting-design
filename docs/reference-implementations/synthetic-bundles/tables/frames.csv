@@ -1,0 +1,2 @@
+frame_id,drawing_page_id,level,feet_per_unit,scale_basis
+FRAME-SYNTHETIC,PAGE-SYNTHETIC,1,1,Synthetic: 1 drawing unit = 1 foot; not a project calibration.
