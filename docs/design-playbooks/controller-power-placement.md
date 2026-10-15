@@ -26,8 +26,8 @@ During basis/room intake record AHJ explicitly alongside energy code/edition/jur
 
 1. Count output-based minimum QDCDs from eligible already-designated channels. Apply product capacity constraints before claiming a feasible minimum.
 2. Count unique wired/Casambi sensors, separate wall controls, minimum suitable SW4/SW8 aggregators and total SDCnet peripheral devices. Count potential CIO demand without inventing locations.
-3. Locate understandable geographic clusters of existing micro channels while preserving room-zone identities.
-4. Assign channels to QDCD outputs and locate QDCDs. Prefer confirmed non-return-plenum above-ceiling common spaces central to served zones; co-locate related QDCDs serving one zone. Alternative corridor-wall locations require owner review and appropriate installation conditions.
+3. Group existing micro channels into QDCD candidates by room family first, then geography within that family. A QDCD may serve multiple rooms using separate outputs while preserving each channel's functional boundaries. Fill nearby similar rooms' boxes before mixing families. Room family is an equipment-service taxonomy, independent of Building Code Space Type and Energy Code Space Type; record each Space's family and basis in project review records until a versioned field exists. Flag dispersed families that cannot meet reviewed reach instead of silently adding barely-used boxes or mixing families. Electrical compatibility and product capacity remain mandatory.
+4. Assign channels to QDCD outputs and locate QDCDs. Prefer confirmed non-return-plenum above-ceiling common spaces central to served zones; co-locate compatible QDCDs serving the same room family where access and routing support it. Alternative corridor-wall locations require owner review and appropriate installation conditions.
 5. Obtain owner CIO locations: IDF, Electrical or Storage room are usual choices. Proposed locations may support clearly provisional options.
 6. Starting at furthest field devices, develop reasonable sensor strings back toward CIOs.
 7. Locate SW4/SW8 near associated QDCDs, favoring the QDCD nearest CIO in the associated group.
