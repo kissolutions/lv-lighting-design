@@ -63,6 +63,12 @@ Within the hard constraints, prefer:
 
 Same fixture type is a preferred simplifier, not automatically a universal electrical law. Mixed fixture types require explicit compatibility evidence; constant-current mixed-fixture topology remains a manual-review condition until the model supports it fully.
 
+## Orientation-independent adjacency
+
+Do not implement adjacency as row/column clustering on a coordinate or as mandatory straight-run detection. Horizontal, vertical, diagonal, curved and grid arrangements must all be evaluated without favouring a drawing axis. Compare feasible compact partitions under the hard boundaries and the preference order above; a minimum channel count never overrides practical routing or service legibility. A fixture-count capacity formula applies only where compatible equal-load fixtures justify it; heterogeneous loads require actual load checks. Unknown loads remain unresolved, not repacked by assumed capacity.
+
+Before accepting a building-wide packing result, check layouts against the dominant plan axis, curves and grids. Verify every included light is assigned exactly once, total load is unchanged and all channel limits/control boundaries are preserved. The current checker validates entered assignments; this directive does not claim an implemented packing optimiser.
+
 ## Capability is not requirement
 
 A zone requiring only on/off behavior may contain a physically dimmable fixture. That does not make the fixture non-dimming and does not change its electrical attributes. Conversely, a zone requiring dimming cannot be satisfied by a confirmed non-dimmable fixture/interface.
