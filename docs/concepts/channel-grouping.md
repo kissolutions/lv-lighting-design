@@ -22,11 +22,11 @@ The current [v0.5 electrical interface](../ontology/canonical-model/electrical-i
 
 Grouping is a partition of included fixtures subject to zoning, compatibility, and load constraints. The design belongs in the model; a PDF overlay is its presentation.
 
-For channel c, connected watts = sum of each assigned fixture's confirmed LV input watts. Under the baseline, connected watts <= design limit <=90 W. The unused margin is design limit minus connected watts.
+For channel c, connected watts = sum of each assigned fixture's confirmed LV input watts. Connected watts must not exceed the design limit. The v0.1 baseline used 90 W; current M4 uses class2_100w_95w_design at 95 W maximum on a 100 W rated channel, honoring any lower verified equipment limit. The unused margin is design limit minus connected watts.
 
 Zone and compatibility groups split the candidate set before channel utilization is considered. Within each set, compact groups reduce difficult routing, but a small channel count cannot justify lost control boundaries.
 
-Example: four compatible 20 W fixtures in one zone fit on one 80 W channel. Five require at least two channels under a 90 W ceiling. Four 20 W fixtures split across two required zones need at least two channels despite an 80 W combined load.
+Example: four compatible 20 W fixtures in one zone fit on one 80 W channel. Five require at least two channels under a 90 W ceiling (historical v0.1 example; the current profile is stated above). Four 20 W fixtures split across two required zones need at least two channels despite an 80 W combined load.
 
 ## Limits
 

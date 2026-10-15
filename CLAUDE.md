@@ -34,7 +34,7 @@ Use WikiJS for general room/control design knowledge. General [application-guide
 
 - Facts from sources, assumptions, engineering decisions, and generated presentation remain distinguishable.
 - Every source fact and consequential selection retains source references. Source revisions are explicit; never silently overwrite a fact when a plan changes.
-- Nominal 100 W channel baseline: design load <= 90 W, with any lower verified equipment limit honored. This is KIS design doctrine, not a universal code/listing claim.
+- Historical v0.1 nominal 100 W channel baseline: design load <= 90 W; current M4 uses <=95 W, with any lower verified equipment limit honored. This is KIS design doctrine, not a universal code/listing claim.
 - Calculate with confirmed LV input load at the channel interface. Do not automatically reuse original AC fixture wattage or assume driver compatibility.
 - Legacy v0.1: one explicit scope disposition per physical fixture; one channel per included fixture; no assignments to excluded fixtures.
 - Legacy v0.1: one required room/micro-zone per channel. Independent daylight, manual, occupancy, dimming, or other source control boundaries survive the transformation.
