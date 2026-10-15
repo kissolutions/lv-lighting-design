@@ -49,3 +49,13 @@ EPS fixture power aggregators are power devices, distinct from BLUE SW4/SW8 sens
 ## M1/M2 Beta Review Update
 
 Follow [room geometry and physical intake review](m1-m2-beta-review.md). Room footprints use owner-reviewed edge notches with no slits; rare retained nested Spaces use frontmost dashed/deeper fills and `nested_in`. This room rule is distinct from the unchanged no-detour styling for control-zone/channel boxes. Package 1 uses **Area sf (check only)** and **Nested in**; both Package 1/2 carry the mandatory area/notch/nesting note. Owner-returned geometry establishes the working frame; presentation does not change smallest-containing served-Space membership. Deliver live Polygon/FreeText annotations and an identity register, with a zero-annotation build rejection. Apply owner section-count overrides, exact source tags, provisional schedule mappings, keynote-only types and explicit exterior holdouts under that playbook. Polygon readback is owner-reported proven for the tested Bluebeam workflow; retain scoped verification for other behaviors.
+
+## Reviewer Routing Exclusions
+
+Use an editable **cyan Polygon** on the cabling layer, with stable annotation/review identity and the reason in Subject:
+- **Solid outline — no-go:** no route through the area.
+- **Dashed outline — crossing only:** crossing to destinations beyond is allowed; running along the area or placing supports inside it is not.
+
+Record geometry/frame, author, reason, source/owner basis and the existing review_status/location_basis. No reason means an incomplete review object. Do not infer exclusions from room names or promote demonstration zones to owner facts. Source-established obstacles and reviewer-stated restrictions retain separate provenance.
+
+A high per-foot weight can guide a crossing, but it does not prove compliance with crossing-only/support restrictions; validate the route against the actual rule. Document necessary fixture-drop treatment separately rather than silently granting through-traffic exceptions. Unknown/new returned IDs require owner reconciliation, never proximity matching. All delivered versions remain editable and unflattened.
