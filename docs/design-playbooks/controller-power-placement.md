@@ -31,7 +31,7 @@ During basis/room intake record AHJ explicitly alongside energy code/edition/jur
 5. Obtain owner CIO locations: IDF, Electrical or Storage room are usual choices. Proposed locations may support clearly provisional options.
 6. Starting at furthest field devices, develop reasonable sensor strings back toward CIOs.
 7. Locate SW4/SW8 near associated QDCDs, favoring the QDCD nearest CIO in the associated group.
-8. Allocate PDU outputs to QDCD inputs (default four feeds, documented 1–3 exceptions) or direct lighting. Require Smart for direct network PDU on/off control; verify ratings and demand.
+8. Allocate PDU outputs to QDCD inputs by verified input demand and usable per-feed capacity, plus any explicit owner spare policy, or to direct lighting. Verify each feed's load/sharing, conductor and reach under the upstream EPS allocation guidance; no flat four-feed default. Require Smart for direct network PDU on/off control. Existing topology v1/v1.1 still requires reduced_feed_decisions records for one to three feeds; retain those evidence records until a versioned migration changes the checker.
 9. After placement, route SDCnet and PDnet separately according to manufacturer requirements, and develop power/luminaire routes with voltage-drop checks.
 10. Submit first-pass equipment and route markups for owner review; incorporate returned location changes, recompute affected allocations/distances and retain IDs/decision history.
 
