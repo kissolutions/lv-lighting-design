@@ -31,8 +31,8 @@ This document defines a **process sequence**, not new milestone names or a new c
 2. **PROC-P1-LIGHT-POINT-OBSERVE v0.1 — Preliminary Light Point Extraction**
    - Input: registered lighting plans (and architectural view/coordinate frame where available).
    - Locate each depicted light symbol or point and record **provisional observation identity**, source tag exactly as shown, sheet/view/revision, approximate point/graphic envelope, and known coordinate frame/level. Record uncertain or non-matching symbols, source groups and obvious cross-level sources.
-   - **No final Light Object ID**, human-readable label, final type, verified physical section count, room/zone association or source schedule reconciliation is required in this preliminary pass. Do not turn an observed symbol into a declared fixture where assembly identity is unresolved.
-   - Output: provisional light-point observation overlay/working list (can be ephemeral), source-linked and available to Space Extraction. Preserve original observations for later M2 reconciliation.
+   - **No final Light Object ID**, fixture type grouping, verified physical section count, room association or source schedule reconciliation is required in this preliminary observation pass. Do not turn an observed symbol into a declared fixture where assembly identity is unresolved. After the Space inventory provides reviewed room associations, issue **provisional M1 review point numbers within each room** in row-major order: uppermost row first, left-to-right across the row, then downward row-by-row to bottom-right. Do not group or restart numbering by fixture type. Use the established upright plan/view coordinate frame; ambiguous rows or cross-level serving Spaces require explicit review. These numbers are display-only and retain links to immutable observation identities.
+   - Output: source-linked provisional light-point observations available to Space Extraction; subsequently a **room-by-room row-major M1 point overlay/list** once Space association is reviewed. Preserve original observation IDs, coordinates, and source facts for M2 reconciliation.
 
 3. **PROC-P1-SPACE-EXTRACT v0.1 — AI Space Inventory and Polygon Generation**
    - Input: architectural-first evidence, scope and provisional light points.
@@ -55,7 +55,7 @@ This document defines a **process sequence**, not new milestone names or a new c
    - Repeat **Space Extraction/Generation → Owner Review → Markup Intake** as necessary; accepted geometry stays untouched.
 
 6. **PROC-P1-SPACE-VERIFY v0.1 — Independent Space Inventory Reconciliation**
-   - A separate agent/pass inventories Spaces independently from the architectural floor/dimension source, not merely from the AI's original list or owner annotations, applying the same known owner scope decisions. Compare missing/extra/duplicate Spaces, labels, circulation, absorbed alcoves, notches, gaps/overlaps, served level and evidence. Identify candidate light-point containment mismatches without inferring room creation from lights.
+   - A separate agent/pass inventories Spaces independently from the architectural floor/dimension source, not merely from the AI's original list or owner annotations, applying the same known owner scope decisions. Compare missing/extra/duplicate Spaces, labels, circulation, absorbed alcoves, notches, gaps/overlaps, served level and evidence. Identify candidate light-point containment mismatches without inferring room creation from lights. Once reviewed room assignment is available, check **M1 light point row order** from top-left to bottom-right within each room, independent of fixture type.
    - Check annotation IDs ↔ Space IDs ↔ saved PDF mapping, live annotation types/vertices, and source/revision evidence. Run available `generators.validate_markup_pdf` checks on the actual final PDF and annotation register **when those artifacts exist**; passed tool checks are not proof of room completeness.
    - Output: findings/open items with affected IDs and source references, corrections and accepted limitations. Retain the **Room Schedule**, boundary PDF, annotation register and discrepancy list together.
 
@@ -64,7 +64,7 @@ This document defines a **process sequence**, not new milestone names or a new c
 8. **M2 — Source Lighting and Controls Intake** invokes existing schedule-first detailed lighting processes:
    - First extract the source MEP fixture schedule with exact suffixes, notes and evidence **before accepting detailed counts or interpreting linear assemblies**.
    - Reconcile preliminary point observations, fixture types and actual physical fixture occurrences/sections, keynote-only items, controls/zone observations, source provenance, cross-level primary served Space, exterior holdouts and owner overrides. Separate physical Light Object identity from readable designation.
-   - **Human-readable fixture naming convention (proposed for domain BETA):** `[Room/Space designation]-[Source Fixture Type]-[Sequence]`, numbered clockwise **within each Room and type**, using a consistent plan reference/start orientation; flag irregular geometry and ambiguous array order for human review. Keep immutable Light Object ID and source observation reference independent from labels. Do not silently renumber prior accepted identities when adding/moving one light.
+   - **M1 point numbering is not M2 fixture labeling.** M1 produces provisional room-local point sequences in row-by-row top-left-to-bottom-right order, regardless of type. M2 uses the independently governed [M2 Fixture Display Numbering](m2-fixture-numbering.md) after source schedule/type and physical object reconciliation; its final display-label policy is not changed by this M1 rule. Retain immutable Light Object and source observation identities, and reconcile any accepted labels before changing them.
    - Produce and independently review M2 Room Schedule, Source Lighting Schedule, Light Objects/Points, control intent observations, exception/discrepancy report and editable PDF as required. Apply existing M2 gate; no automatic assumption of M3 code/controls acceptance.
 
 ## Optional parallel / repeatable process
@@ -81,7 +81,7 @@ This document defines a **process sequence**, not new milestone names or a new c
 ## Informative illustrations (non-normative)
 
 - [Room polygon close to inside walls](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/assets/illustrations/space-boundary-markup-example.svg)
-- [Clockwise IDs by Room and fixture type](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/assets/illustrations/light-ids-clockwise-room-example.svg)
+- [Clockwise fixture-ID example (M2 only; **not** M1 light-point row numbering)](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/assets/illustrations/light-ids-clockwise-room-example.svg)
 
 These are NEC Handbook-style explanatory aids. Written process/source evidence controls.
 
@@ -98,8 +98,9 @@ These are NEC Handbook-style explanatory aids. Written process/source evidence c
 | Owner-first complete/supplemental polygon intake | **Specified here; general automated parsing/reconciliation unproven** |
 | Inward visual-buffer polygon generation | **Specified here; automated geometric constraint not yet tested** |
 | Acceptance via polygon comments or conversation | **Specified here; complete automated enforcement not verified** |
-| Clockwise type-specific human-readable IDs | **Specified here as proposed BETA method; no numbering implementation claimed** |
+| Room-local, row-major M1 review point numbers | **Specified here; annotation and numbering automation unproven; not grouped by fixture type** |
+| Final M2 fixture display IDs | Governed separately by [M2 Fixture Display Numbering](m2-fixture-numbering.md); no implementation change in this revision |
 | Complete independent M1 verification | Required method; dependent on actual project review |
 | Full Boundary Register integration / crossing analysis | Optional future implementation |
 
-**BETA smoke test:** Using a two/three-room source plan, ask for snippets, record provisional fixture points; generate markup/Space IDs; have owner reshape, accept and add a new polygon without Space ID; ingest returned comments/vertices and preserve stable IDs; verify independent room list; regenerate without changing accepted geometry; then reconcile lights under known Spaces and exercise clockwise numbering. Use source-revision/annotation ID diffs and distinguish observed from confirmed behavior.
+**BETA smoke test:** Using a two/three-room source plan, ask for snippets, record provisional fixture points; generate markup/Space IDs; have owner reshape, accept and add a new polygon without Space ID; ingest returned comments/vertices and preserve stable IDs; verify independent room list; regenerate without changing accepted geometry; then reconcile points under known Spaces and exercise M1 row-major numbering irrespective of fixture type. Use source-revision/annotation ID diffs and distinguish observed from confirmed behavior.
