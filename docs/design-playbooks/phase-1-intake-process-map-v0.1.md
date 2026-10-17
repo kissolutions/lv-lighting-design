@@ -64,8 +64,8 @@ This document defines a **process sequence**, not new milestone names or a new c
 8. **M2 — Source Lighting and Controls Intake** invokes existing schedule-first detailed lighting processes:
    - First extract the source MEP fixture schedule with exact suffixes, notes and evidence **before accepting detailed counts or interpreting linear assemblies**.
    - Reconcile preliminary point observations, fixture types and actual physical fixture occurrences/sections, keynote-only items, controls/zone observations, source provenance, cross-level primary served Space, exterior holdouts and owner overrides. Separate physical Light Object identity from readable designation.
-   - **M1 point numbering is not M2 fixture labeling.** M1 produces provisional room-local point sequences in row-by-row top-left-to-bottom-right order, regardless of type. M2 uses the independently governed [M2 Fixture Display Numbering](m2-fixture-numbering.md) after source schedule/type and physical object reconciliation; its final display-label policy is not changed by this M1 rule. Retain immutable Light Object and source observation identities, and reconcile any accepted labels before changing them.
-   - Produce and independently review M2 Room Schedule, Source Lighting Schedule, Light Objects/Points, control intent observations, exception/discrepancy report and editable PDF as required. Apply existing M2 gate; no automatic assumption of M3 code/controls acceptance.
+   - **Preserve approved M1 Light Point labels.** M1 owner review establishes room-local labels in top-to-bottom row order, left-to-right within each row, regardless of fixture type. M2 **does not reassign fixture display numbers**: apply [M2 Approved Light Point Identity and Fixture Scheduling](m2-fixture-numbering.md) to enrich those same objects with source schedule and fixture facts. Preserve immutable Light Object/source observation IDs and explicit approved/provisional status. Split/merge/new observations require a traceable owner-reviewed remap, not bulk renumbering.
+   - Produce and independently review M2 Room Schedule, Source Lighting Schedule, Light Objects/Points, control intent observations, exception/discrepancy report and editable PDF as required, preserving approved M1 point labels across these outputs. Apply existing M2 gate; no automatic assumption of M3 code/controls acceptance.
 
 ## Optional parallel / repeatable process
 
@@ -81,7 +81,7 @@ This document defines a **process sequence**, not new milestone names or a new c
 ## Informative illustrations (non-normative)
 
 - [Room polygon close to inside walls](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/assets/illustrations/space-boundary-markup-example.svg)
-- [Clockwise fixture-ID example (M2 only; **not** M1 light-point row numbering)](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/assets/illustrations/light-ids-clockwise-room-example.svg)
+- [Historical clockwise fixture-ID illustration (**superseded example**, not current M1/M2 practice)](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/assets/illustrations/light-ids-clockwise-room-example.svg)
 
 These are NEC Handbook-style explanatory aids. Written process/source evidence controls.
 
@@ -99,7 +99,7 @@ These are NEC Handbook-style explanatory aids. Written process/source evidence c
 | Inward visual-buffer polygon generation | **Specified here; automated geometric constraint not yet tested** |
 | Acceptance via polygon comments or conversation | **Specified here; complete automated enforcement not verified** |
 | Room-local, row-major M1 review point numbers | **Specified here; annotation and numbering automation unproven; not grouped by fixture type** |
-| Final M2 fixture display IDs | Governed separately by [M2 Fixture Display Numbering](m2-fixture-numbering.md); no implementation change in this revision |
+| M2 labels | **Must preserve owner-approved M1 Light Point labels**; type-block/clockwise renumbering superseded; split/merge reconciliation remains a supervised workflow |
 | Complete independent M1 verification | Required method; dependent on actual project review |
 | Full Boundary Register integration / crossing analysis | Optional future implementation |
 
