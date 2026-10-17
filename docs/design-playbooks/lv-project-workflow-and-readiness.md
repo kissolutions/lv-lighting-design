@@ -18,6 +18,19 @@ related_pages:
 
 # LV Project Workflow and Readiness
 
+
+## Parent Systems Engineering Architecture (v1.0)
+
+This domain's six milestones map to the [KIS Systems Engineering Framework v1.0](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/governance-and-doctrine/systems-engineering-framework-v1.md) as: **Phase 1 Intake = M1/M2**; **Phase 2 Design Basis & Requirements = M3**; **Phase 3 Design Development = M4**; **Phase 4 Coordination & Delivery = M5**; **Phase 5 Verification & Closeout = M6**. Existing milestone names, six printable markup packages, source precedence and schema versions remain unchanged.
+
+A **Process** is a reusable, versioned procedure invoked as needed across milestones. A **Work Product** remains the domain-named M1/M2/etc. output; the milestone is the review gate. Do not conflate a phase, process, milestone and printable package. Reconciliation, boundary/scope review, requirements derivation, verification, validation and configuration comparison may recur at different stages.
+
+For BETA, record the applicable process version/revision and input source revision when practical; run targeted regression checks against ALPHA examples. Tailor review detail to project scale, but retain source provenance, stable identities, explicit unknowns, independent completeness review and acceptance preservation. A small project does not require heavyweight MBSE or an approval form per record.
+
+Where project intake identifies regulatory editions and specialty codes, preserve the asserted source and applicability state. M3 derives governing requirements and owner-confirmed functional direction. Keep source facts, needs, requirements, constraints, assumptions, decisions and findings distinguishable. Report only currently applicable constraints as governing; candidate code interpretations are not accepted requirements. The initial project review records may implement this contract without an immediate schema migration.
+
+**Acceptance** is protection of selected derived decisions/configurations against silent future reconfiguration; **Snapshot** preserves a state; **Configuration Baseline** designates a snapshot for comparison. `Make this the M4 baseline` should preserve the complete identified milestone state without automatically marking every route, device or record accepted. Existing accepted, owner-returned controller locations and accepted geometry remain held on later optimization; no new `pinned` state is introduced. Markup/CAD-based acceptance is a future cross-domain candidate, with operational conventions retained in this domain's routing processes.
+
 ## Purpose and Authority
 
 The LV workflow extracts the MEP lighting/control scheme, checks it through the general electrical workflow in `knowledgebase_wikijs`, and translates supported intent into an LV implementation. It does not begin by designing a replacement control scheme. Architectural floor/dimension plans establish rooms and boundaries; MEP plans, legends, schedules, details, and notes establish the specified lighting/control intent. An engineering check does not overwrite a source observation.
