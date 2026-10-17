@@ -31,6 +31,13 @@ Where project intake identifies regulatory editions and specialty codes, preserv
 
 **Acceptance** is protection of selected derived decisions/configurations against silent future reconfiguration; **Snapshot** preserves a state; **Configuration Baseline** designates a snapshot for comparison. `Make this the M4 baseline` should preserve the complete identified milestone state without automatically marking every route, device or record accepted. Existing accepted, owner-returned controller locations and accepted geometry remain held on later optimization; no new `pinned` state is introduced. Markup/CAD-based acceptance is a future cross-domain candidate, with operational conventions retained in this domain's routing processes.
 
+
+## Optional Shared Physical Boundary Intake
+
+Invoke the parent [Physical Boundary & Barrier Intake Process v0.1](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/physical-boundary-intake-v0.1.md) when cable-route design, equipment placement, or life-safety interfaces require construction boundaries beyond the architectural room inventory. The [Boundary Register v0.1](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/ontology/physical-boundary-register-v0.1.md) separates physical form, adopted-code classification, rating, smoke-barrier status, adjacent Spaces, source revisions, and persistent geometry references.
+
+**Not part of mandatory M1 completion:** M1 room/Space intake remains architectural-first and does not become a complete wall survey. For M4/M5 routing, target only consequential construction boundaries and record unknowns; an annotation crossing a wall is not itself an approved penetration. The proposed [Boundary Crossing Review skeleton](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/physical-boundary-crossing-review-v0.1.md) provides the handoff. No current LV schema/validator or geometry tool automatically implements these new shared records. Accepted LV routing and controller locations retain their existing protections.
+
 ## Purpose and Authority
 
 The LV workflow extracts the MEP lighting/control scheme, checks it through the general electrical workflow in `knowledgebase_wikijs`, and translates supported intent into an LV implementation. It does not begin by designing a replacement control scheme. Architectural floor/dimension plans establish rooms and boundaries; MEP plans, legends, schedules, details, and notes establish the specified lighting/control intent. An engineering check does not overwrite a source observation.
