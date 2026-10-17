@@ -20,6 +20,9 @@ This extension owns LV project extraction/reconciliation, the canonical project 
 
 Knowledge structure follows meaning; workflow lives in playbooks. Do not import BAS I/O, PLC/controller, or controls-narrative ontology unless a specific cross-domain need is established.
 
+
+**Phase 1 execution order:** Follow [Phase 1 Intake Process Map v0.1](docs/design-playbooks/phase-1-intake-process-map-v0.1.md). Preliminary light-point observation may precede initial room polygons solely for geometric containment; it does not assign final Light IDs or replace architectural-first Space source authority. Owner-first markup intake and repeated accepted-geometry-preserving PDF reconciliation are supported process paths. Full fixture schedule-first reconciliation remains the M2 gate.
+
 ## Engineering invariants
 
 Start room extraction with the Architectural Floor Plan or Dimension Plan and follow [architectural space intake](docs/design-playbooks/architectural-space-intake.md). Compare architectural floor, architectural RCP, and electrical room labels; record mismatches in the discrepancy list. Assign lights by their primary served Space/occupied level, preserve the fixture source sheet separately, and put mounting height/basis on the Light Object. Describe consequential partial-wall/open boundaries and request review before finalizing uncertain zoning; do not require a wall object catalog. Include unnumbered chases/service voids with location/purpose notes. Preserve the MEP stair-control scheme. One shared zone per physical stair is a reviewed implementation convention only when source behavior and independent-control constraints support it; retain one Space or separate level records without duplicating lights.
