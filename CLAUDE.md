@@ -21,7 +21,7 @@ This extension owns LV project extraction/reconciliation, the canonical project 
 Knowledge structure follows meaning; workflow lives in playbooks. Do not import BAS I/O, PLC/controller, or controls-narrative ontology unless a specific cross-domain need is established.
 
 
-**Phase 1 execution order:** Follow [Phase 1 Intake Process Map v0.1](docs/design-playbooks/phase-1-intake-process-map-v0.1.md). Preliminary light-point observation may precede initial room polygons solely for geometric containment; it does not assign final Light IDs or replace architectural-first Space source authority. Owner-first markup intake and repeated accepted-geometry-preserving PDF reconciliation are supported process paths. Full fixture schedule-first reconciliation remains the M2 gate.
+**Phase 1 execution order:** Follow [Phase 1 Intake Process Map v0.1](docs/design-playbooks/phase-1-intake-process-map-v0.1.md). Preliminary light-point observation may precede initial room polygons solely for geometric containment; it does not assign final Light IDs or replace architectural-first Space source authority. After reviewed Space association, M1 provisional point numbering is **per room, top row to bottom row and left-to-right within each row**, independent of fixture type; preserve stable source observation IDs. This is distinct from final M2 fixture display numbering. Owner-first markup intake and repeated accepted-geometry-preserving PDF reconciliation are supported process paths. Full fixture schedule-first reconciliation remains the M2 gate.
 
 ## Engineering invariants
 
