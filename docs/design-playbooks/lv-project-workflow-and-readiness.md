@@ -46,6 +46,9 @@ WikiJS owns the shared electrical lighting knowledge: space vocabulary, room-by-
 
 Redesign is conditional: identify a deficiency or implementation opportunity, establish authority to propose a change, document the proposal and its approval, then update the applied implementation while preserving the original scheme. A confirmed model decision alone does not establish approval by the responsible party. Unclear intent requires clarification, not an invented default.
 
+
+**Phase 1 process orchestration:** Follow [Phase 1 Intake Process Map v0.1](phase-1-intake-process-map-v0.1.md) for the agreed order: source registration/owner visual snippets → provisional light-point observation → AI/owner-first Space polygon generation → iterative owner correction and PDF intake → independent M1 verification → detailed M2 schedule-first light identification and controls intake. This refines process execution without renaming milestones or migrating schemas. The map distinguishes documented directives from software implementation and notes remaining BETA gaps.
+
 ## How to Read Readiness
 
 This is an October 2026 audit of the local documentation and tools, not a declaration that a particular project has passed its milestones. **Method available** means there is enough documented guidance for a supervised manual/agent pass. **Checks implemented** means software checks entered data. **Development needed** means an output, rule, or round trip has not been implemented/proven. Passing synthetic checks does not prove plan extraction, source completeness, physical coverage, or an editable PDF round trip.
