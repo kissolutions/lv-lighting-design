@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KIS Fixture Dimming Interface Schedule Companion v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "model_revision",
+    "fixtures"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixtures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_type_id",
+          "interface_basis",
+          "dimming_interfaces",
+          "supported_dimming_schemes",
+          "minimum_dim_percent",
+          "dim_to_off",
+          "signal_mode",
+          "driver_location",
+          "source_ref_ids",
+          "notes"
+        ],
+        "properties": {
+          "fixture_type_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "interface_basis": {
+            "enum": [
+              "source",
+              "selected"
+            ]
+          },
+          "dimming_interfaces": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "triac_forward_phase",
+                "elv_reverse_phase",
+                "phase_cut_universal",
+                "zero_to_ten_v",
+                "one_to_ten_v",
+                "dali",
+                "dmx512",
+                "pwm",
+                "ccr",
+                "proprietary_digital",
+                "integrated_wireless",
+                "none",
+                "other",
+                "unknown"
+              ]
+            }
+          },
+          "supported_dimming_schemes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "continuous",
+                "stepped",
+                "none",
+                "unknown"
+              ]
+            }
+          },
+          "minimum_dim_percent": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          },
+          "dim_to_off": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "signal_mode": {
+            "enum": [
+              "sink",
+              "source",
+              "sink_or_source",
+              "not_applicable",
+              "unknown"
+            ]
+          },
+          "driver_location": {
+            "enum": [
+              "integral",
+              "remote",
+              "driverless",
+              "unknown"
+            ]
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
