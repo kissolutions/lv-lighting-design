@@ -1934,6 +1934,23 @@
                 null
               ],
               "description": "Inherent capability of the selected physical fixture/interface. A non-dimming zone may use a dimmable fixture; the unused capability does not alter voltage, AC/DC, CV/CC, current, driver architecture or wattage."
+            },
+            "selected_cct_k": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "exclusiveMinimum": 0,
+              "description": "Optional correlated color temperature in kelvin. Null or omitted means unspecified; never zero."
+            },
+            "selected_cri": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Optional color rendering index (CRI). Null or omitted means unspecified; never zero."
             }
           },
           "allOf": [
@@ -1955,24 +1972,7 @@
                 }
               }
             }
-          ],
-          "selected_cct_k": {
-            "type": [
-              "number",
-              "null"
-            ],
-            "exclusiveMinimum": 0,
-            "description": "Optional correlated color temperature in kelvin. Null or omitted means unspecified; never zero."
-          },
-          "selected_cri": {
-            "type": [
-              "number",
-              "null"
-            ],
-            "minimum": 0,
-            "maximum": 100,
-            "description": "Optional color rendering index (CRI). Null or omitted means unspecified; never zero."
-          }
+          ]
         },
         "source_ref_ids": {
           "type": "array",
