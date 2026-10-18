@@ -61,6 +61,16 @@ def validate(model, companion, standard_catalog=None, locked=False):
             if scheme=='stepped' and steps is None:fail(d['id'],'Stepped dimming needs number of steps >= 2.')
             if scheme!='stepped' and steps is not None:fail(d['id'],'Dimming steps apply only to stepped sequence.')
             if d['status']=='approved' and scheme=='unknown':fail(d['id'],'Approved sequence must declare dimming scheme.')
+        for d in standard_catalog:
+            if d.get('status')!='approved':continue
+            f=d.get('functions',{})
+            scheme=f.get('dimming_scheme')
+            if scheme not in ('continuous','stepped','none'):
+                fail(d.get('id','standard'),'Approved standard sequence needs known dimming scheme.')
+            if scheme=='stepped' and (not isinstance(f.get('dimming_steps'),int) or f['dimming_steps']<2):
+                fail(d.get('id','standard'),'Approved stepped standard needs dimming_steps >= 2.')
+            if scheme!='stepped' and f.get('dimming_steps') is not None:
+                fail(d.get('id','standard'),'Non-stepped standard cannot specify dimming_steps.')
         for a in companion['assignments']:
             if a['dimming_scheme_override'] is not None:
                 if a['decision_id'] is None or decisions.get(a['decision_id'],{}).get('status')!='confirmed':
