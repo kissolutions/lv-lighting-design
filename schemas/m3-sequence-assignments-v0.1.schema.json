@@ -37,7 +37,8 @@
           "title",
           "narrative",
           "functions",
-          "source_refs"
+          "source_refs",
+          "approval_decision_id"
         ],
         "properties": {
           "id": {
@@ -108,6 +109,12 @@
               "type": "string",
               "minLength": 1
             }
+          },
+          "approval_decision_id": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         }
       }
