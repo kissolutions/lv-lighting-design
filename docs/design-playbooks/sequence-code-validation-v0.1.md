@@ -5,6 +5,8 @@ page_status: draft
 domain_primary: low-voltage-lighting
 ai_role: prescriptive_standard
 ---
+**Framework proposal U3 (2026-10-18):** C405.2.5 specific-application rules were added externally for 2021 and provisional 2024. They evaluate `specific_application: true` and a reviewed `specific_application_type` at the endpoint/group level; for qualifying permanent supplemental task/under-cabinet/display applications the required settings are `separate_from_general_lighting: true`, `manual_control_available: true`, and `automatic_shutoff_method: occupant_sensor | time_switch`. A local manual switch **alone** fails the combined requirement. `SEQ-008` is reserved as a draft behavioral family, not automatically selectable. Distinguish other medical, plant-growth, sleeping-unit and nonvisual categories for separate checks. Confirm IECC 2024 primary text before qualifying those draft rules.
+
 # IECC Sequence Validation: Mandatory Build Microprocess
 
 The [parent process](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/sequence-validation-process-v0.1.md) and versioned [external 2021/2024 rule catalog](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/rules/iecc-lighting-sequence-validation-v0.1.json) define the governing procedures and research status. **Do not duplicate the catalog as normative SEQ definitions or alter canonical project schemas to update rules.** Use the actual parent catalog from the sibling Git checkout or download a pinned version.
