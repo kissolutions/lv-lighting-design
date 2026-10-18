@@ -27,6 +27,8 @@ Parent zones carry no sequence reference and cannot appear in `assignments[]`. A
 
 **Dimming-scheme revision:** [M3 companion schema v0.2](../../../schemas/m3-sequence-assignments-v0.2.schema.json) retains v0.1 project/assignment semantics and requires `functions.dimming_scheme` (`continuous`, `stepped`, `none`, `unknown`) plus `dimming_steps` where stepped. It supports a separately owner-reviewed `dimming_scheme_override` on individual endpoint assignments. The same validator/exporter recognizes both v0.1 and v0.2 and prints the effective dimming scheme. Sequence scheme is a behavior requirement, *not* the physical fixture dimming interface.
 
+**Subzone acceptance dependency:** M3 sequence lock can take `--subzone-register accepted-subzones.json`. This checks the separately owner-accepted M3-B subzone review and ensures no scratch Unzoned Light Points appear in an accepted endpoint. A late daylight / owner grouping change yields targeted re-verification, not automatic adoption of outdated sequence decisions. See [M3-B extraction](../../design-playbooks/m3-subzone-extraction-v0.1.md).
+
 ## Validator and output
 
 ```bash
