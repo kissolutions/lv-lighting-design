@@ -158,6 +158,16 @@ class SubzoneTests(unittest.TestCase):
             a=PdfReader(str(other)).pages[0]['/Annots'][0].get_object()
             self.assertEqual([float(x) for x in a['/Rect']],[112.0,181.0,129.0,198.0])
 
+    def test_pdf_rotated_page_requires_coordinate_reconciliation(self):
+        m,r=case()
+        with tempfile.TemporaryDirectory() as d:
+            base=Path(d)/'rotated.pdf'
+            w=PdfWriter();page=w.add_blank_page(width=400,height=800)
+            page.rotate(90)
+            with base.open('wb') as f:w.write(f)
+            with self.assertRaisesRegex(ValueError,'Rotated PDF page'):
+                render(base,Path(d)/'out.pdf',label_manifest(m,r),{'PG1':0})
+
     def test_csv_suite_grouping_and_name_first(self):
         m,r=case()
         m['spaces'][0]['name']='1100 Conference'
