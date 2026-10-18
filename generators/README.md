@@ -1,3 +1,5 @@
+**M3 companion validator/exporter:** Run `python -m generators.m3_sequence_review PROJECT_MODEL.json M3_COMPANION.json NEW_OUTPUT_DIR [--standard-catalog APPROVED_STANDARDS.json] [--lock-check]`. The independent [M3 sequence contract](../docs/ontology/canonical-model/m3-sequence-assignments-v0.1.md) preserves old project schemas, validates leaf-only sequence assignments, and creates one-narrative-per-sequence HTML plus assignment/daylight/all-Space CSVs and a findings report. Use `python -m unittest tests.test_m3_sequence_review -v` for regression tests. This is an engineering review, not automatic code certification.
+
 # Phase 1 Generators
 
 v0.5 also exports source `source_driver_type`/note and selected `lv_driver_type`/note independently. Architecture values are driver/driverless/other/null, with a description required for other. These are not CV/CC or dimming labels. Unknown selected architecture defers at intake and blocks design; upgrades do not infer it from existing zone dimming fields.
