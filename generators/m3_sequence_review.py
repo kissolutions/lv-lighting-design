@@ -14,6 +14,7 @@ from jsonschema import Draft202012Validator
 
 ROOT=Path(__file__).resolve().parents[1]
 SCHEMA=ROOT/'schemas/m3-sequence-assignments-v0.1.schema.json'
+SCHEMA_V02=ROOT/'schemas/m3-sequence-assignments-v0.2.schema.json'
 FUNCTIONS=('manual','occupancy','light_reduction','daylight','schedule','emergency')
 
 
@@ -23,7 +24,9 @@ def validate(model, companion, standard_catalog=None, locked=False):
     findings=[]
     def fail(scope,msg):
         findings.append(dict(entity_id=str(scope),rule='M3-SEQ',message=msg))
-    for err in Draft202012Validator(json.loads(SCHEMA.read_text())).iter_errors(companion):
+    version=companion.get('schema_version')
+    schema=SCHEMA_V02 if version=='0.2.0' else SCHEMA
+    for err in Draft202012Validator(json.loads(schema.read_text())).iter_errors(companion):
         fail('/'.join(map(str,err.absolute_path)),err.message)
     if findings:return findings
     if model.get('project',{}).get('id')!=companion['project_id']:fail('project','M3 companion project differs from model')
@@ -52,6 +55,17 @@ def validate(model, companion, standard_catalog=None, locked=False):
                 fail(definition['id'],'Approved project sequence definition requires a confirmed owner decision')
         elif approval_id is not None and approval_id not in decisions:
             fail(definition['id'],'Unknown project sequence approval decision')
+    if version=='0.2.0':
+        for d in companion['project_sequences']:
+            f=d['functions'];scheme=f['dimming_scheme'];steps=f['dimming_steps']
+            if scheme=='stepped' and steps is None:fail(d['id'],'Stepped dimming needs number of steps >= 2.')
+            if scheme!='stepped' and steps is not None:fail(d['id'],'Dimming steps apply only to stepped sequence.')
+            if d['status']=='approved' and scheme=='unknown':fail(d['id'],'Approved sequence must declare dimming scheme.')
+        for a in companion['assignments']:
+            if a['dimming_scheme_override'] is not None:
+                if a['decision_id'] is None or decisions.get(a['decision_id'],{}).get('status')!='confirmed':
+                    fail(a['endpoint_zone_id'],'Dimming scheme override requires confirmed owner decision.')
+                if not a['override_note']:fail(a['endpoint_zone_id'],'Dimming scheme override requires explanation and verification.')
     pseq={(x['id'],x['revision']):x for x in companion['project_sequences']}
     std={(x.get('id'),x.get('revision')):x for x in standard_catalog if isinstance(x,dict)}
     seen=set()
@@ -131,6 +145,8 @@ def tables(model,companion,standard_catalog=None):
                 endpoint_zone_id=a['endpoint_zone_id'],room_ids='; '.join(ids),
                 room_names='; '.join(spaces[s]['name'] for s in ids),
                 assignment_status=a['assignment_status'],
+                dimming_scheme=a.get('dimming_scheme_override') or definition.get('functions',{}).get('dimming_scheme','UNSPECIFIED_V01'),
+                dimming_steps=definition.get('functions',{}).get('dimming_steps'),
                 parameters=json.dumps(a['parameters'],sort_keys=True),
                 light_reduction=definition.get('functions',{}).get('light_reduction','UNKNOWN'),
                 manual=definition.get('functions',{}).get('manual','UNKNOWN'),
