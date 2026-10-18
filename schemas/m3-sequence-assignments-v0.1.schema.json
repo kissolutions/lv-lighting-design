@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KIS LV M3 Sequence Assignment Companion v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "model_revision",
+    "project_sequences",
+    "assignments",
+    "daylight_determinations",
+    "space_direction_reviews",
+    "deferred_items"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_sequences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "revision",
+          "status",
+          "title",
+          "narrative",
+          "functions",
+          "source_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^PSEQ-[0-9]{3,}$"
+          },
+          "revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "reviewed",
+              "approved",
+              "superseded"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "narrative": {
+            "type": "string",
+            "minLength": 1
+          },
+          "functions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "manual",
+              "occupancy",
+              "light_reduction",
+              "daylight",
+              "schedule",
+              "emergency"
+            ],
+            "properties": {
+              "manual": {
+                "type": "string",
+                "minLength": 1
+              },
+              "occupancy": {
+                "type": "string",
+                "minLength": 1
+              },
+              "light_reduction": {
+                "type": "string",
+                "minLength": 1
+              },
+              "daylight": {
+                "type": "string",
+                "minLength": 1
+              },
+              "schedule": {
+                "type": "string",
+                "minLength": 1
+              },
+              "emergency": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "endpoint_zone_id",
+          "sequence_id",
+          "sequence_revision",
+          "assignment_status",
+          "origin_basis",
+          "decision_id",
+          "parameters",
+          "requirement_refs",
+          "source_intent_refs",
+          "override_note"
+        ],
+        "properties": {
+          "endpoint_zone_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sequence_id": {
+            "type": "string",
+            "pattern": "^(SEQ|PSEQ)-[0-9]{3,}$"
+          },
+          "sequence_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assignment_status": {
+            "enum": [
+              "proposed",
+              "verified",
+              "accepted"
+            ]
+          },
+          "origin_basis": {
+            "enum": [
+              "matched_standard",
+              "owner_custom"
+            ]
+          },
+          "decision_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "requirement_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "source_intent_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "override_note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "daylight_determinations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "space_id",
+          "determination",
+          "basis",
+          "source_refs"
+        ],
+        "properties": {
+          "space_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "determination": {
+            "enum": [
+              "yes",
+              "no",
+              "unresolved"
+            ]
+          },
+          "basis": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "space_direction_reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "space_id",
+          "disposition",
+          "endpoint_zone_ids",
+          "light_object_ids",
+          "source_refs",
+          "notes"
+        ],
+        "properties": {
+          "space_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "disposition": {
+            "enum": [
+              "lit_controlled",
+              "unlit_confirmed",
+              "served_elsewhere",
+              "missing_source_lights",
+              "unresolved"
+            ]
+          },
+          "endpoint_zone_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "light_object_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "deferred_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scope",
+          "issue",
+          "receiving_milestone"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "issue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "receiving_milestone": {
+            "enum": [
+              "M4",
+              "M5"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
