@@ -22,7 +22,7 @@ class BuildValidationTests(unittest.TestCase):
         result=build(m,c,RULES,b,s)
         self.assertEqual(c,before)
         self.assertEqual(result['status'],'needs_review')
-        self.assertIn('vacancy_timeout_minutes',result['results'][0]['proposed_missing_parameters'])
+        self.assertTrue(any(f.get('parameter')=='vacancy_timeout_minutes' for f in result['results'][0]['findings']))
     def test_code_change_does_not_silently_change_original_sequence(self):
         m,c,b,s=self.setup_case('2021')
         c['project_sequences'][0]['functions']['dimming_scheme']='none'
