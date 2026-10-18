@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from generators.dimming_interfaces import validate as fixture_validate, export as fixture_export
 from generators.m3_sequence_review import validate as m3_validate
-from tests.test_m3_sequence_review import example
+from test_m3_sequence_review import example
 
 def setup_fixtures():
     model={'project':{'id':'P1','model_revision':'R1'},
