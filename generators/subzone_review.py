@@ -237,7 +237,7 @@ def csv_rows(model,register):
     rows=[]
     for a in register['assignments']:
         l=lights[a['light_id']];s=spaces[a['space_id']]
-        rows.append(dict(space_id=s['id'],full_room_name=' '.join(x for x in (s.get('room_number'),s['name']) if x),
+        rows.append(dict(space_id=s['id'],full_room_name=full_room_name(s),
             light_id=l['id'],light_label=l.get('label') or '',fixture_type_id=l['source']['fixture_type_id'],
             subzone_label=a['subzone_label'] or 'Unzoned',zone_id=a['zone_id'] or '',
             basis=a['basis'],confidence=a['confidence'],source_group=a['source_group'],evidence=a['evidence'],owner_comment=a['owner_comment']))
