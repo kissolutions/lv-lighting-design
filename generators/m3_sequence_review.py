@@ -18,7 +18,7 @@ SCHEMA_V02=ROOT/'schemas/m3-sequence-assignments-v0.2.schema.json'
 FUNCTIONS=('manual','occupancy','light_reduction','daylight','schedule','emergency')
 
 
-def validate(model, companion, standard_catalog=None, locked=False):
+def validate(model, companion, standard_catalog=None, locked=False, subzone_register=None):
     """Return finding records. The standard catalog MUST be independently approved."""
     standard_catalog=standard_catalog or []
     findings=[]
@@ -110,6 +110,15 @@ def validate(model, companion, standard_catalog=None, locked=False):
         if actual!=set(d['light_object_ids']):fail(sid,'Space review Light Objects do not match canonical Space membership')
         if d['disposition']=='lit_controlled' and (not actual or not d['endpoint_zone_ids']):fail(sid,'Lit-controlled Space needs lights and endpoint directions')
         if d['disposition']=='unlit_confirmed' and actual:fail(sid,'Unlit disposition contradicts registered lights')
+    if subzone_register is not None:
+        from .subzone_review import validate as validate_subzones
+        subzone_issues=validate_subzones(model,subzone_register,accept=locked)
+        for issue in subzone_issues:fail(issue['entity_id'],'Subzone prerequisite: '+issue['message'])
+        if locked:
+            scratch={a['light_id'] for a in subzone_register['assignments'] if a['zone_id'] is None}
+            for z in zones.values():
+                if scratch.intersection(z.get('light_object_ids',[])):
+                    fail(z['id'],'Unzoned scratch Light Point cannot enter an accepted endpoint/SEQ.')
     if locked:
         if set(zones)-parents != seen:fail('M3','Every leaf requires one active sequence assignment before lock')
         if any(a['assignment_status']!='accepted' for a in companion['assignments']):fail('M3','Every sequence assignment must be accepted for lock')
@@ -171,8 +180,8 @@ def tables(model,companion,standard_catalog=None):
     return sections
 
 
-def export(model,companion,outdir,standard_catalog=None,locked=False):
-    findings=validate(model,companion,standard_catalog,locked)
+def export(model,companion,outdir,standard_catalog=None,locked=False,subzone_register=None):
+    findings=validate(model,companion,standard_catalog,locked,subzone_register)
     out=Path(outdir)
     if out.exists() and any(out.iterdir()):raise ValueError('Output directory must be empty')
     out.mkdir(parents=True,exist_ok=True)
@@ -216,9 +225,11 @@ def main():
     p.add_argument('model',type=Path);p.add_argument('companion',type=Path);p.add_argument('outdir',type=Path)
     p.add_argument('--standard-catalog',type=Path)
     p.add_argument('--lock-check',action='store_true')
+    p.add_argument('--subzone-register',type=Path,help='Accepted B2 subzone review prerequisite for sequence lock')
     a=p.parse_args()
     catalog=json.loads(a.standard_catalog.read_text()) if a.standard_catalog else []
-    findings=export(json.loads(a.model.read_text()),json.loads(a.companion.read_text()),a.outdir,catalog,a.lock_check)
+    findings=export(json.loads(a.model.read_text()),json.loads(a.companion.read_text()),a.outdir,catalog,a.lock_check,
+        json.loads(a.subzone_register.read_text()) if a.subzone_register else None)
     print(json.dumps(dict(findings=findings,reviewable=not bool(findings)),indent=2))
     if findings:raise SystemExit(1)
 
