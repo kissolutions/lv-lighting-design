@@ -14,6 +14,9 @@ related_pages:
 
 # Controller, Power and Sensor Placement
 
+
+**M4 channel-gate update (2026-10-18):** Before Phase 1, run [PROC-M4-CHANNEL-PACK](m4-channel-packing-v0.1.md) on the accepted endpoint zones and selected fixture input data. Do not designate a channel merely because one fixture's load is <95 W; minimize feasible channels with a 90 W utilization target and a hard 95 W maximum. Keep physically daisy-chained wiring electrically parallel. Manufacturer-qualified CC parallel driver operation and operating limits are mandatory evidence; unresolved combinations block final acceptance. Reconcile packer candidate output with the canonical v0.9 model validator and obtain owner acceptance before final physical controller/output placement.
+
 ## 1. Purpose and Use
 
 Run after micro LV channels have already been designated under the current v0.6 electrical contract. Read the [SmartDC/EPS device index](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/smartdc-allocation-index.md) and each selected device mini playbook. General hardware knowledge stays upstream; project assignments and markup stay here.
