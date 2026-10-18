@@ -260,7 +260,7 @@ def label_manifest(model,register):
         out.append(dict(annotation_id='SZLABEL-'+a['light_id'],
             role='subzone_label',entity_type='light',light_id=a['light_id'],
             drawing_page_id=source.get('drawing_page_id'),source_annotation_id=source.get('source_annotation_id'),
-            anchor=anchor,display_label=a['subzone_label'],
+            anchor=anchor,anchor_origin='top_left',display_label=a['subzone_label'],
             comment_field='Subzone: '+a['subzone_label'],
             note='Add independent editable annotation beside existing light label; preserve all other comments.'))
     return sorted(out,key=lambda x:x['light_id'])
