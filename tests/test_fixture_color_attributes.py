@@ -42,5 +42,25 @@ class ColorAttributesTests(unittest.TestCase):
                 Draft202012Validator(props[prefix+'_cri']).validate(101)
 
 
+    def test_v09_intake_projection_preserves_color_values_and_legacy_checks(self):
+        from generators.model_intake import check_model
+        model=json.loads((ROOT/'docs/reference-implementations/synthetic-bundles/lighting-model.json').read_text())
+        baseline=check_model(copy.deepcopy(model),'intake')
+        self.assertTrue(baseline['checks_pass'],baseline['issues'])
+        for idx,fixture in enumerate(model['fixture_types']):
+            fixture['source_cct_k']=3500 if idx%2==0 else None
+            fixture['source_cri']=90 if idx%2==0 else 80
+        for idx,light in enumerate(model['light_objects']):
+            light['design']['selected_cct_k']=3500 if idx%2==0 else None
+            light['design']['selected_cri']=None if idx%2==0 else 90
+        before=copy.deepcopy(model)
+        Draft202012Validator(SCHEMA).validate(model)
+        report=check_model(model,'intake')
+        self.assertTrue(report['checks_pass'],report['issues'][:10])
+        self.assertEqual(model,before,'Checking must not erase authoritative color data')
+        self.assertEqual(report['checks_pass'],baseline['checks_pass'])
+        self.assertNotIn('schema',{x['rule'] for x in report['issues']})
+
+
 if __name__=='__main__':
     unittest.main()
