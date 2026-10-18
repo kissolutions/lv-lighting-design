@@ -54,6 +54,8 @@ Carry the same category colors into the second package's light-point review, usi
 
 Gray also identifies service voids and confirmed out-of-scope/no-lighting areas. Exterior areas use low-opacity wine/burgundy fill. Show excluded regions as gray context with retained scope notes, without adding included takeoff records merely to color the map. Keep service-void identity, scope exclusion and confirmed no-lighting status separate; color alone establishes none of those source facts. For overlapping categories, confirmed gray status takes precedence, followed by exterior wine/burgundy, then the categories above. Retain low-opacity fills and source visibility.
 
+**M3 review-package generator:** The [M3 Sequence Assignment Companion v0.1](../ontology/canonical-model/m3-sequence-assignments-v0.1.md) produces an HTML narrative review and CSV schedules *before* Package 3 physical room-device markup. It renders one full narrative per SEQ/PSEQ identity and revision with all associated room/leaf assignments, explicitly including Light Reduction, daylight, status and owner decisions; separate all-Space/daylight review sheets are mandatory. The generator does not create live PDF markups, and the existing Package 3 requires narrative lock.
+
 ## M3 Narrative Review Data
 
 Organize the M3 review into **one section per sequence**: sequence number/stable ID and revision, full narrative, required functions/components, then a table of every assigned room/zone. Preserve the one-to-many narrative relationship. Follow the [shared sequence-section layout](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/room-classification-and-controls-review-playbook.md#m3-review-layout--one-section-per-sequence).
