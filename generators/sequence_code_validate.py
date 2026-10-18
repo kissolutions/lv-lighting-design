@@ -87,7 +87,10 @@ def validate(catalog,code_basis,context,sequence_assignment,prior=None):
         if rule['verification']!='primary_text_reviewed':
             findings.append(dict(rule_id=rule['id'],status=PENDING,reason='Rule source not yet verified against final unamended primary model code',section=rule['section'],sources=rule['source_urls']))
         for req in rule['requirements']:
-            key=req['key'];actual=values.get(key);result=check(actual,req)
+            key=req['key'];actual=values.get(key)
+            if req.get('allow_alternative') and values.get(req['allow_alternative']) is True:
+                continue
+            result=check(actual,req)
             if result==PENDING:
                 if req['op']=='eq':
                     # Proposal ONLY. Never modify original assignment or qualify it from a proposal.
