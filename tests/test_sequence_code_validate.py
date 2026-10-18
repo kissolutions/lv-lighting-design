@@ -97,6 +97,31 @@ class RuleProcessTests(unittest.TestCase):
         self.assertEqual(old['status'],'rule_checks_passed')
         self.assertEqual(new['status'],'conflict')
         self.assertTrue(new['delta']['new_findings'])
+    def test_specific_application_requires_both_manual_and_auto(self):
+        basis,space,assignment=context('2021')
+        space.update(specific_application=True,specific_application_type='supplemental_task_under_cabinet')
+        rule=dict(id='21-specific-task',edition='2021',section='C405.2.5',
+            verification='primary_text_reviewed',source_urls=['https://codes.iccsafe.org'],
+            applies=dict(specific_application=True,
+              specific_application_types=['supplemental_task_under_cabinet']),
+            requirements=[
+              dict(key='separate_from_general_lighting',op='eq',value=True),
+              dict(key='manual_control_available',op='eq',value=True),
+              dict(key='automatic_shutoff_method',op='one_of',
+                   value=['occupant_sensor','time_switch'])])
+        catalog=dict(catalog_id='TEST-SPECIFIC',revision='0.1.0',rules=[rule])
+        assignment['parameters'].update(separate_from_general_lighting=True,manual_control_available=True)
+        pending=validate(catalog,basis,space,assignment)
+        self.assertEqual(pending['status'],'needs_review')
+        self.assertTrue(any(f.get('parameter')=='automatic_shutoff_method' for f in pending['findings']))
+        assignment['parameters']['automatic_shutoff_method']='manual_only'
+        self.assertEqual(validate(catalog,basis,space,assignment)['status'],'conflict')
+        assignment['parameters']['automatic_shutoff_method']='occupant_sensor'
+        self.assertEqual(validate(catalog,basis,space,assignment)['status'],'rule_checks_passed')
+        space['specific_application_type']=None
+        unknown=validate(catalog,basis,space,assignment)
+        self.assertIn('21-specific-task',unknown['unresolved_rules'])
+
     def test_wrong_path_rejected(self):
         basis,space,a=context('2024')
         basis['compliance_path']='ashrae_90_1'
