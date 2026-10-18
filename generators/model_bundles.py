@@ -291,6 +291,15 @@ def check_v09(model, phase='intake'):
     if issues:
         return dict(checks_pass=False, phase=phase, issues=issues, deferred_issues=[], derived=None)
     projected = copy.deepcopy(model); projected.pop('bundle_routes'); projected['schema_version']='0.8.0'
+    # v0.9-only color attributes remain authoritative in the original model.
+    # Strip them only from the v0.8 compatibility projection, whose strict schema
+    # predates the optional paired-fixture schedule CCT/CRI fields.
+    for fixture in projected['fixture_types']:
+        for key in ('source_cct_k', 'source_cri'):
+            fixture.pop(key, None)
+    for light in projected['light_objects']:
+        for key in ('selected_cct_k', 'selected_cri'):
+            light['design'].pop(key, None)
     report = check_v08(projected, phase)
     if report['derived'] is not None:
         report['derived']['bundle_routes'] = bundle_view
