@@ -15,7 +15,7 @@ ai_role: model_contract
 The companion [JSON Schema](../../../schemas/m3-sequence-assignments-v0.1.schema.json) and [Python checker and review exporter](../../../generators/m3_sequence_review.py) are deliberately **outside** the existing lighting-project-v0.7/v0.8/v0.9 schemas. They reference the current model using `project_id`, `model_revision` and existing persistent `endpoint_zone_id` values. Do **not** add unregistered properties to old schemas or migrate real projects until a versioned canonical schema migration is approved.
 
 Companion top-level arrays:
-- `project_sequences[]`: self-contained project-scoped `PSEQ-###` definitions and full narrative/function descriptions; approved local records require owner evidence in the project
+- `project_sequences[]`: self-contained project-scoped `PSEQ-###` definitions and full narrative/function descriptions; approved local records require an explicit `approval_decision_id` pointing to a confirmed owner decision, independent of endpoint assignment acceptance
 - `assignments[]`: one per endpoint leaf, sequence ID/revision, status, owner decision, requirement and source-intent references, parameters, overrides
 - `daylight_determinations[]`: one per reviewed Space, yes/no/unresolved and evidence
 - `space_direction_reviews[]`: per-Space lit/unlit/served or unresolved disposition, associated leaf zones, physically inventoried Light Object IDs and evidence
