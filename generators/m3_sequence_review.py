@@ -44,6 +44,14 @@ def validate(model, companion, standard_catalog=None, locked=False):
             ident=(d.get('id'),d.get('revision'))
             if ident in seen:fail(ident,'Duplicate '+label+' sequence definition revision')
             seen.add(ident)
+    for definition in companion['project_sequences']:
+        approval_id=definition['approval_decision_id']
+        if definition['status']=='approved':
+            decision=decisions.get(approval_id)
+            if not decision or decision.get('status')!='confirmed':
+                fail(definition['id'],'Approved project sequence definition requires a confirmed owner decision')
+        elif approval_id is not None and approval_id not in decisions:
+            fail(definition['id'],'Unknown project sequence approval decision')
     pseq={(x['id'],x['revision']):x for x in companion['project_sequences']}
     std={(x.get('id'),x.get('revision')):x for x in standard_catalog if isinstance(x,dict)}
     seen=set()
