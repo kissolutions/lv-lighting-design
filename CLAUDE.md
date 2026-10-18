@@ -1,3 +1,5 @@
+
+**Mandatory M4 micro-channel packing:** Run [PROC-M4-CHANNEL-PACK v0.1](docs/design-playbooks/m4-channel-packing-v0.1.md) through `python -m generators.channel_pack MODEL.json reviewed_output_policy.json proposal.json` before selecting QDCD devices/outputs. Preserve owner/M3 zoning and source Light IDs, enforce **parallel electrical topology**, and optimize channel count toward **90 W** with **95 W max/100 W rated**. A mere per-fixture <=95 W test is not packing. CC sharing requires verified manufacturer-supported parallel cohorts; do not infer from Kirchhoff laws, and note existing canonical `cc-topology-review` cannot yet accept multi-load CC outputs. Output is a proposal until reconciled/accepted.
 # Agent Guidance - LV Lighting Design
 
 Applies to Claude, Codex, and other agents working in this repository.
