@@ -23,7 +23,7 @@ def example():
         emergency='Separately reviewed')
     companion=dict(schema_version='0.1.0',project_id='TEST',model_revision='M3-T1',
         project_sequences=[dict(id='PSEQ-001',revision='1',status='approved',
-            title='Synthetic private use',narrative='Owner-approved test narrative.',functions=f,source_refs=[])],
+            title='Synthetic private use',narrative='Owner-approved test narrative.',functions=f,source_refs=[],approval_decision_id='DEC-1')],
         assignments=[dict(endpoint_zone_id=z,sequence_id='PSEQ-001',sequence_revision='1',
             assignment_status='accepted',origin_basis='owner_custom',decision_id='DEC-1',
             parameters={},requirement_refs=['R1'],source_intent_refs=[],override_note=None) for z in ('Z-A','Z-B')],
@@ -76,6 +76,10 @@ class SequenceReviewTests(unittest.TestCase):
     def test_daylight_unknown_blocks_lock(self):
         model,c=example();c['daylight_determinations'][0]['determination']='unresolved'
         self.assertTrue(any('Daylight determination unresolved' in f['message'] for f in validate(model,c,locked=True)))
+
+    def test_custom_sequence_requires_separate_owner_approval(self):
+        model,c=example();c['project_sequences'][0]['approval_decision_id']=None
+        self.assertTrue(any('project sequence definition requires' in f['message'] for f in validate(model,c)))
 
     def test_project_and_revision_mismatch_rejected(self):
         model,c=example();c['model_revision']='OTHER'
