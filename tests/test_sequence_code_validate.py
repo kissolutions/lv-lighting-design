@@ -44,7 +44,7 @@ class RuleProcessTests(unittest.TestCase):
         self.assertEqual(a,before)
         self.assertEqual(r['status'],'needs_review')
         self.assertEqual(r['proposed_missing_parameters']['manual_off_available']['proposed_value'],True)
-        self.assertIn('vacancy_timeout_minutes',r['applied_rules'][0] or 'vacancy_timeout_minutes' if False else r['proposed_missing_parameters'])
+        self.assertIn('vacancy_timeout_minutes',r['proposed_missing_parameters'])
     def test_2021_accepted_values_pass(self):
         basis,space,a=context('2021')
         a['parameters'].update(vacancy_timeout_minutes=20,manual_on=True,manual_off_available=True)
