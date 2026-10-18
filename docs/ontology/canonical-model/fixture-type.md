@@ -21,6 +21,8 @@ For the current schedule, use [v0.5 electrical interfaces](electrical-interfaces
 
 This page records the v0.1 baseline. For current ownership and relationships, read [Device Hierarchy v0.2](device-hierarchy-v0.2.md). The v0.1 tools retain their original contract; new hierarchy data uses the dedicated v0.2 schema/checker.
 
+**Fixture dimming interface:** Use the [Fixture Dimming Interface Companion v0.1](fixture-dimming-interface-v0.1.md) and its enumerated schema to capture the source fixture's actual TRIAC/ELV phase-cut, 0–10 V, DALI, PWM or other dimming control interface alongside minimum dimming level, dim-to-off, sink/source mode, driver location and evidence. This is separate from existing `source_dimming_capability` and `source_driver_type`. The Fixture Type Schedule CSV includes these fields when a companion is supplied to the exporter.
+
 ## Purpose and Scope
 
 Original shared schedule facts for one fixture mark.
