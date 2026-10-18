@@ -14,6 +14,9 @@ related_pages:
 
 # Light Object
 
+**Optional color attributes (v0.9):** Source fixture types may carry `source_cct_k` and `source_cri`; selected Light Object `design` may carry `selected_cct_k` and `selected_cri`. All four are independently optional numbers or `null`. CCT is in Kelvin and must be positive; CRI is between 0 and 100 inclusive. Blank/null means unspecified, never zero. The Paired Fixture Schedule presents distinct **CCT (K)** and **CRI** columns for ORIGINAL and LV. Do not automatically copy original color specifications into a selected replacement or assume all Lights sharing a source designation have identical selected values.
+
+
 For M4, see [v0.6 electrical attributes](m4-electrical-attributes-v0.6.md): AC/DC power type is a peer of numeric voltage, min/max voltage remain explicit, and selected fixture dimming capability is physical rather than inferred from zone behavior.
 
 The [v0.5 extension](electrical-interfaces-v0.5.md) adds selected `design.input_voltage`, `input_power_mode` and `input_current_ma` at the assigned supply-channel interface. Preserve source fixture/type voltage independently; a replacement or verified downstream interface can differ. Voltage/mode/current checks supplement watts and compatibility groups without changing physical identity or Space/zone membership.
