@@ -274,7 +274,7 @@ def pack(model, policy):
                 proposed_channels=proposals,findings=findings,unpacked_light_ids=missing_ids,
                 totals=dict(input_light_count=len(source_by_id),proposed_channel_count=len(proposals),
                             average_channel_watts=(float(sum((Decimal(str(p["watts"])) for p in proposals),Decimal(0))/len(proposals)) if proposals else None),
-                            average_channel_utilization_pct=(float(sum((Decimal(str(p["watts"])) for p in proposals),Decimal(0))/len(proposals)/rated*100) if proposals else None,
+                            average_channel_utilization_pct=(float(sum((Decimal(str(p["watts"])) for p in proposals),Decimal(0))/len(proposals)/rated*100) if proposals else None),
                             total_unused_design_capacity_watts=float(sum((Decimal(str(p["unused_design_watts"])) for p in proposals),Decimal(0))),
                             total_input_watts=float(total_watts),
                             packed_watts=float(sum((Decimal(str(p["watts"])) for p in proposals), Decimal(0))),
