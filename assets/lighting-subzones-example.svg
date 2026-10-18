@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 490" width="960" height="490" role="img" aria-labelledby="title description">
+  <title id="title">Conference room lighting subzone assignment</title>
+  <desc id="description">An illustrative conference room with two independently dimmed lighting groups. Original Light Point tags L101 through L109 remain, while the new lowercase subzone badges a and b are added as separate annotation objects. Diagram for reuse in KIS Lighting Control Application Guide.</desc>
+  <defs>
+    <style>
+      .t { font-family: Arial,Helvetica,sans-serif; fill: #20354a; }
+      .small { font-size: 16px; }
+      .head { font-size: 25px; font-weight: 700; }
+      .label { font-size: 17px; font-weight: 700; }
+      .foot { font-size: 14px; fill: #4a5866; }
+      .point { stroke: #263747; fill: #fff; stroke-width: 2; }
+      .badge-a { fill: #cde8f8; stroke: #397fa8; stroke-width: 1.5; }
+      .badge-b { fill: #d4efdc; stroke: #4d956b; stroke-width: 1.5; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="960" height="490" rx="16" fill="#ffffff"/>
+  <text class="t head" x="34" y="46">Lighting Subzones — Conference Room 201</text>
+  <text class="t small" x="35" y="73">Original light points are unchanged; lowercase labels are added independently.</text>
+  <rect x="38" y="112" width="884" height="291" rx="9" fill="none" stroke="#304759" stroke-width="3"/>
+  <rect x="53" y="128" width="854" height="109" rx="7" fill="#e2f0fa" stroke="#8bb9d6" stroke-width="2" stroke-dasharray="7 5"/>
+  <rect x="53" y="247" width="854" height="141" rx="7" fill="#e2f4e8" stroke="#8dc5a0" stroke-width="2" stroke-dasharray="7 5"/>
+  <text class="t label" x="68" y="151">SUBZONE a — Perimeter / Downlights</text>
+  <text class="t label" x="68" y="273">SUBZONE b — Central / Linear</text>
+  <g id="original-light-points">
+    <g transform="translate(160 198)"><circle class="point" r="13"/><path d="M-8 -8L8 8 M8 -8L-8 8" stroke="#263747" stroke-width="2"/><text class="t small" x="20" y="-10">L101</text></g>
+    <g transform="translate(420 198)"><circle class="point" r="13"/><path d="M-8 -8L8 8 M8 -8L-8 8" stroke="#263747" stroke-width="2"/><text class="t small" x="20" y="-10">L102</text></g>
+    <g transform="translate(680 198)"><circle class="point" r="13"/><path d="M-8 -8L8 8 M8 -8L-8 8" stroke="#263747" stroke-width="2"/><text class="t small" x="20" y="-10">L103</text></g>
+    <g transform="translate(160 335)"><circle class="point" r="13"/><path d="M-8 -8L8 8 M8 -8L-8 8" stroke="#263747" stroke-width="2"/><text class="t small" x="20" y="-10">L107</text></g>
+    <g transform="translate(420 335)"><circle class="point" r="13"/><path d="M-8 -8L8 8 M8 -8L-8 8" stroke="#263747" stroke-width="2"/><text class="t small" x="20" y="-10">L108</text></g>
+    <g transform="translate(680 335)"><circle class="point" r="13"/><path d="M-8 -8L8 8 M8 -8L-8 8" stroke="#263747" stroke-width="2"/><text class="t small" x="20" y="-10">L109</text></g>
+  </g>
+  <g id="additive-subzone-annotations">
+    <g transform="translate(182 215)"><rect class="badge-a" width="23" height="23" rx="3"/><text class="t label" x="11.5" y="17" text-anchor="middle">a</text></g>
+    <g transform="translate(442 215)"><rect class="badge-a" width="23" height="23" rx="3"/><text class="t label" x="11.5" y="17" text-anchor="middle">a</text></g>
+    <g transform="translate(702 215)"><rect class="badge-a" width="23" height="23" rx="3"/><text class="t label" x="11.5" y="17" text-anchor="middle">a</text></g>
+    <g transform="translate(182 352)"><rect class="badge-b" width="23" height="23" rx="3"/><text class="t label" x="11.5" y="17" text-anchor="middle">b</text></g>
+    <g transform="translate(442 352)"><rect class="badge-b" width="23" height="23" rx="3"/><text class="t label" x="11.5" y="17" text-anchor="middle">b</text></g>
+    <g transform="translate(702 352)"><rect class="badge-b" width="23" height="23" rx="3"/><text class="t label" x="11.5" y="17" text-anchor="middle">b</text></g>
+  </g>
+  <g transform="translate(42 446)">
+    <circle cx="9" cy="0" r="9" class="point"/><text class="t foot" x="27" y="5">Original Light Point mark</text>
+    <rect x="263" y="-9" width="18" height="18" rx="3" class="badge-a"/><text class="t foot" x="290" y="5">Additive editable subzone annotation</text>
+    <text class="t foot" x="760" y="5">Illustrative / not to scale</text>
+  </g>
+</svg>
