@@ -8,7 +8,8 @@ from pathlib import Path
 from pypdf import PdfWriter,PdfReader
 from pypdf.generic import DictionaryObject,NameObject,TextStringObject,ArrayObject,FloatObject
 from generators.subzone_review import (validate,export,import_review,label_manifest,
-    proposed_zone_tree,sequence_reverification_impact,discussion_findings)
+    proposed_zone_tree,apply_accepted_zone_tree,sequence_reverification_impact,discussion_findings)
+from generators.model_zone_hierarchy import upgrade_v07
 from generators.subzone_pdf import render
 
 
@@ -103,6 +104,39 @@ class SubzoneTests(unittest.TestCase):
             with csvpath.open('w',newline='') as f:
                 w=csv.DictWriter(f,fieldnames=rows[0]);w.writeheader();w.writerows(rows[1:])
             with self.assertRaises(ValueError):import_review(m,r,csvpath)
+    def test_accepted_zone_tree_builds_schema_valid_v07_copy(self):
+        root=Path(__file__).resolve().parents[1]
+        model=json.loads((root/'docs/reference-implementations/synthetic-intake/lighting-model.json').read_text())
+        design=json.loads((root/'docs/reference-implementations/synthetic-intake/design-model.json').read_text())
+        model['decisions']=copy.deepcopy(design['decisions'])
+        model=upgrade_v07(model)
+        sid='SPACE-SYNTHETIC-A'
+        register=dict(schema_version='0.1.0',project_id=model['project']['id'],
+          model_revision=model['project']['model_revision'],review_revision='R1',
+          detection_findings=[dict(id='F1',space_id=sid,flag='SZ-04',confidence='VERIFIED',
+              status='confirmed',evidence='Two source switched groups',
+              source_ref_ids=['REF-SYNTHETIC'])],
+          spaces=[
+            dict(space_id=sid,detection_disposition='subzone_extraction_required',
+              code_screen='resolved_no_split',daylight_screen='resolved_no_split',
+              source_control_intent_status='complete',subzone_required=True,notes=''),
+            dict(space_id='SPACE-SYNTHETIC-B',detection_disposition='single_zone_candidate',
+              code_screen='resolved_no_split',daylight_screen='resolved_no_split',
+              source_control_intent_status='complete',subzone_required=False,notes='')],
+          daylight_areas=[],
+          assignments=[dict(space_id=sid,light_id=lid,subzone_label=lab,
+              zone_id='SZ-A-'+lab,basis='mep',confidence='VERIFIED',source_group=lab,
+              evidence='MEP label',owner_comment='') for lid,lab in [
+                ('LIGHT-SYNTHETIC-1','a'),('LIGHT-SYNTHETIC-3','b')]],
+          acceptance=dict(status='accepted',decision_id='DEC-SYNTHETIC',accepted_revision='R1'))
+        self.assertEqual(validate(model,register,accept=True),[])
+        rebuilt=apply_accepted_zone_tree(model,register)
+        self.assertEqual(model['light_zones'],[])
+        self.assertEqual(len(rebuilt['light_zones']),3)
+        self.assertEqual(len(next(z for z in rebuilt['light_zones'] if z['id']=='SZP-'+sid)['light_object_ids']),0)
+        self.assertEqual(set(next(s for s in rebuilt['spaces'] if s['id']==sid)['light_zone_ids']),
+            {'SZP-'+sid,'SZ-A-a','SZ-A-b'})
+
     def test_pdf_adds_editable_labels_and_upserts_original_comment(self):
         m,r=case()
         with tempfile.TemporaryDirectory() as d:
