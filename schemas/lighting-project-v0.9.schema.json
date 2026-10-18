@@ -1649,6 +1649,23 @@
             "keynote_only",
             "unknown"
           ]
+        },
+        "source_cct_k": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0,
+          "description": "Optional correlated color temperature in kelvin. Null or omitted means unspecified; never zero."
+        },
+        "source_cri": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Optional color rendering index (CRI). Null or omitted means unspecified; never zero."
         }
       },
       "allOf": [
@@ -1938,7 +1955,24 @@
                 }
               }
             }
-          ]
+          ],
+          "selected_cct_k": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0,
+            "description": "Optional correlated color temperature in kelvin. Null or omitted means unspecified; never zero."
+          },
+          "selected_cri": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Optional color rendering index (CRI). Null or omitted means unspecified; never zero."
+          }
         },
         "source_ref_ids": {
           "type": "array",
