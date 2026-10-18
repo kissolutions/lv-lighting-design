@@ -1,10 +1,12 @@
 """Dimming scheme and fixture interface regression cases."""
 import copy
+import json
 import tempfile
 import unittest
 from pathlib import Path
 from generators.dimming_interfaces import validate as fixture_validate, export as fixture_export
 from generators.m3_sequence_review import validate as m3_validate
+from generators.export_intake import export_intake
 from test_m3_sequence_review import example
 
 def setup_fixtures():
@@ -37,6 +39,24 @@ class DimmingInterfaceTests(unittest.TestCase):
     def test_no_dimming_cannot_report_minimum(self):
         model,r=setup_fixtures();r['fixtures'][0].update(dimming_interfaces=['none'],supported_dimming_schemes=['none'])
         self.assertTrue(any('null minimum' in x['message'] for x in fixture_validate(model,r)))
+    def test_existing_source_fixture_schedule_includes_dimming_interface(self):
+        path=Path(__file__).resolve().parents[1]/'docs/reference-implementations/synthetic-intake/lighting-model.json'
+        model=json.loads(path.read_text())
+        tid=model['fixture_types'][0]['id']
+        companion={'schema_version':'0.1.0','project_id':model['project']['id'],
+            'model_revision':model['project']['model_revision'],
+            'fixtures':[{'fixture_type_id':tid,'interface_basis':'source',
+                'dimming_interfaces':['unknown'],'supported_dimming_schemes':['unknown'],
+                'minimum_dim_percent':None,'dim_to_off':None,'signal_mode':'unknown',
+                'driver_location':'unknown','source_ref_ids':[],'notes':'Not yet in source'}]}
+        with tempfile.TemporaryDirectory() as folder:
+            report=export_intake(model,Path(folder)/'intake',allow_provisional=True,
+                dimming_register=companion)
+            csv_text=(Path(folder)/'intake/fixture_type_schedule.csv').read_text()
+            self.assertIn('source_dimming_interface',csv_text)
+            self.assertIn('source_minimum_dim_percent',csv_text)
+            self.assertIn('unknown',csv_text)
+
     def test_incomplete_source_schedule(self):
         model,r=setup_fixtures();r['fixtures']=[]
         self.assertTrue(any('missing' in x['message'] for x in fixture_validate(model,r,True)))
