@@ -276,7 +276,7 @@ def pack(model, policy):
                             total_input_watts=float(total_watts),
                             packed_watts=float(sum((Decimal(str(p["watts"]) for p in proposals), Decimal(0))),
                             zone_utilization={z:dict(channels=len(ws),watts=sum(ws),
-                                mean_watts_per_channel=sum(ws)/len(ws)) for z,ws in sorted(zcounts.items())}),
+                                mean_watts_per_channel=sum(ws)/len(ws)) for z,ws in sorted(zcounts.items())})),
                 note="Read-only candidate allocation. Manufacturer qualification, canonical CC validator integration, owner acceptance and controller assignment are separate gates.")
 
 
