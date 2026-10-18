@@ -17,7 +17,7 @@ RULES=dict(catalog_id='TEST-IECC',revision='0.1.0',rules=[
           dict(key='daylight_minimum_light_output_percent',op='max',value=15)]),
   dict(id='24-dimming',edition='2024',section='C405.2.3',
        verification='secondary_corroborated_needs_primary',source_urls=['https://assets.lutron.com'],
-       applies=dict(space_types=['enclosed_office','conference'],special_application=False,high_end_trim_exception=False),
+       applies=dict(space_types=['enclosed_office','conference'],special_application=False),
        requirements=[dict(key='dimming_scheme',op='eq',value='continuous'),
           dict(key='manual_minimum_power_percent',op='max',value=10),
           dict(key='manual_dim_to_off',op='eq',value=True)])])
@@ -72,13 +72,13 @@ class RuleProcessTests(unittest.TestCase):
         r=validate(RULES,basis,space,a)
         self.assertEqual(r['status'],'needs_review')
         self.assertFalse(r['compliance_certified'])
-    def test_high_end_trim_exception_requires_separate_review(self):
+    def test_high_end_trim_does_not_erase_dimming_performance(self):
         basis,space,a=context('2024',high_end_trim_exception=True)
         r=validate(RULES,basis,space,a)
         self.assertEqual(r['status'],'needs_review')
-        self.assertIn('COVERAGE',[f['rule_id'] for f in r['findings']])
+        self.assertIn('24-dimming',r['applied_rules'])
     def test_unknown_exception_not_false(self):
-        basis,space,a=context('2024',high_end_trim_exception=None)
+        basis,space,a=context('2024',special_application=None)
         r=validate(RULES,basis,space,a)
         self.assertIn('24-dimming',r['unresolved_rules'])
     def test_provisional_adoption_never_passes(self):
