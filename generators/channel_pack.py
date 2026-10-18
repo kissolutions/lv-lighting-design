@@ -230,8 +230,8 @@ def pack(model, policy):
                 continue
             bins, proven, exhausted = _pack_cc(items, ceiling, target, low_ma, high_ma)
             if bins is None:
-                findings.append(dict(zone_id=zone, issue="cc_output_range_infeasible",
-                                     status="blocking", light_ids=[x["id"] for x in items]))
+                findings.append(dict(zone_id=zone, issue="cc_allocation_unresolved" if exhausted else "cc_output_range_infeasible",
+                                     status="needs_review" if exhausted else "blocking", light_ids=[x["id"] for x in items]))
                 continue
         else:
             bins, proven, exhausted = _exact_bins(items, ceiling, target)
@@ -302,8 +302,14 @@ def _pack_cc(items, ceiling, target, min_ma, max_ma):
     best = None
     best_score = None
     bins = []
+    states = 0
+    exhausted = False
     def recurse(i):
-        nonlocal best,best_score
+        nonlocal best,best_score,states,exhausted
+        if states >= 125000:
+            exhausted = True
+            return
+        states += 1
         if best is not None and len(bins)>len(best):return
         if i == len(ordered):
             if any(not min_ma<=sum((x["branch_ma"] for x in b),Decimal(0))<=max_ma for b in bins):
@@ -326,7 +332,7 @@ def _pack_cc(items, ceiling, target, min_ma, max_ma):
         if best is None or len(bins)+1<=len(best):
             bins.append([x]);recurse(i+1);bins.pop()
     recurse(0)
-    return best, best is not None, False
+    return best, best is not None and not exhausted, exhausted
 
 
 def main():
