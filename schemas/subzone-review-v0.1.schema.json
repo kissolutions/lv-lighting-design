@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lighting Subzone Review Register v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "model_revision",
+    "review_revision",
+    "detection_findings",
+    "spaces",
+    "daylight_areas",
+    "assignments",
+    "acceptance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "detection_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "space_id",
+          "flag",
+          "confidence",
+          "status",
+          "evidence",
+          "source_ref_ids"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "space_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "flag": {
+            "enum": [
+              "SZ-01",
+              "SZ-02",
+              "SZ-03",
+              "SZ-04",
+              "SZ-05",
+              "SZ-06",
+              "SZ-07"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "VERIFIED"
+            ]
+          },
+          "status": {
+            "enum": [
+              "confirmed",
+              "probable",
+              "ambiguous",
+              "dismissed"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "spaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "space_id",
+          "detection_disposition",
+          "code_screen",
+          "daylight_screen",
+          "source_control_intent_status",
+          "subzone_required",
+          "notes"
+        ],
+        "properties": {
+          "space_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "detection_disposition": {
+            "enum": [
+              "single_zone_candidate",
+              "subzone_extraction_required",
+              "source_review_required",
+              "reprocess_required"
+            ]
+          },
+          "code_screen": {
+            "enum": [
+              "resolved_no_split",
+              "split_required",
+              "unresolved"
+            ]
+          },
+          "daylight_screen": {
+            "enum": [
+              "resolved_no_split",
+              "split_required",
+              "unresolved"
+            ]
+          },
+          "source_control_intent_status": {
+            "enum": [
+              "not_reviewed",
+              "complete",
+              "partial",
+              "ambiguous"
+            ]
+          },
+          "subzone_required": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "daylight_areas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "daylight_id",
+          "space_ids",
+          "light_ids",
+          "extent_basis",
+          "extent_note",
+          "source_ref_ids"
+        ],
+        "properties": {
+          "daylight_id": {
+            "type": "string",
+            "pattern": "^DL-[A-Za-z0-9_-]+$"
+          },
+          "space_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "light_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "extent_basis": {
+            "enum": [
+              "measured",
+              "owner_asserted",
+              "unresolved"
+            ]
+          },
+          "extent_note": {
+            "type": "string"
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "space_id",
+          "light_id",
+          "subzone_label",
+          "zone_id",
+          "basis",
+          "confidence",
+          "source_group",
+          "evidence",
+          "owner_comment"
+        ],
+        "properties": {
+          "space_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "light_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subzone_label": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-z]+$"
+          },
+          "zone_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "basis": {
+            "enum": [
+              "mep",
+              "code",
+              "daylight",
+              "owner",
+              "mixed",
+              "unresolved"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "VERIFIED"
+            ]
+          },
+          "source_group": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "owner_comment": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "decision_id",
+        "accepted_revision"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "submitted",
+            "accepted",
+            "reprocess_required"
+          ]
+        },
+        "decision_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "accepted_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
