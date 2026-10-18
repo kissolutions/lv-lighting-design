@@ -131,7 +131,7 @@ def proposed_zone_tree(model,register):
         s=spaces[sid]
         entries=[dict(zone_id=zid,subzone_label=lab,light_object_ids=sorted(lights))
             for (zid,lab),lights in sorted(groups.items(),key=lambda x:x[0][1])]
-        proposal.append(dict(space_id=sid,room_name=' '.join(x for x in (s.get('room_number'),s['name']) if x),
+        proposal.append(dict(space_id=sid,room_name=full_room_name(s),
             parent_zone_id='SZP-'+sid if len(entries)>1 else None,leaves=entries,
             note='Proposed hierarchy only. Physical output/channel associations need downstream reconciliation.'))
     return proposal
@@ -221,6 +221,16 @@ def sequence_reverification_impact(old_register,new_register):
     return sorted(affected)
 
 
+def full_room_name(space):
+    """Keep suite-prefixed room name first; append unique architectural room ref."""
+    name=str(space.get('name') or '').strip()
+    room=str(space.get('room_number') or '').strip()
+    if not room:return name
+    if not name:return room
+    if name==room or name.endswith(' ('+room+')'):return name
+    return name+' ('+room+')'
+
+
 def csv_rows(model,register):
     spaces={s['id']:s for s in model['spaces']}
     lights={l['id']:l for l in model['light_objects']}
@@ -231,7 +241,7 @@ def csv_rows(model,register):
             light_id=l['id'],light_label=l.get('label') or '',fixture_type_id=l['source']['fixture_type_id'],
             subzone_label=a['subzone_label'] or 'Unzoned',zone_id=a['zone_id'] or '',
             basis=a['basis'],confidence=a['confidence'],source_group=a['source_group'],evidence=a['evidence'],owner_comment=a['owner_comment']))
-    return sorted(rows,key=lambda a:(a['full_room_name'].casefold(),a['space_id'],a['subzone_label'],a['light_label'],a['light_id']))
+    return sorted(rows,key=lambda a:(a['space_id'],a['subzone_label'],a['light_label'],a['light_id']))
 
 
 def discussion_findings(register):
