@@ -69,7 +69,11 @@ def validate(model,register,accept=False):
             if any(x['space_id']==sid and x['subzone_label']==label and x['zone_id']!=zid for x in register['assignments']):
                 fail(lid,'Subzone label belongs to multiple Zone IDs in same Space.')
         if accept and label is None:fail(lid,'Unzoned scratch Light Point blocks acceptance and SEQ assignment.')
-    for sid in screen:
+    for sid,record in screen.items():
+        if record['detection_disposition']=='single_zone_candidate':
+            if any(a['space_id']==sid for a in register['assignments']):
+                fail(sid,'Single-zone fast-path Space must not enter detailed subzone CSV.')
+            continue
         expected={x for x,s in canonical.items() if s==sid}
         actual={a['light_id'] for a in register['assignments'] if a['space_id']==sid}
         if expected!=actual:fail(sid,'Review register must enumerate every accepted Light Point exactly once.')
@@ -192,7 +196,7 @@ def import_review(model,previous,edited_csv):
         lid=row['light_id'];orig=baseline[lid]
         for col in ('space_id','full_room_name','light_label','fixture_type_id'):
             if row.get(col)!=str(orig[col]):raise ValueError('Immutable CSV evidence/identity changed: '+lid+'/'+col)
-        a=expected[lid];label=row['subzone_label'].strip()
+        a=expected[lid];old_label=a['subzone_label'];label=row['subzone_label'].strip()
         if label=='Unzoned' or not label:
             a['subzone_label']=None;a['zone_id']=None
         else:
@@ -204,7 +208,7 @@ def import_review(model,previous,edited_csv):
                 if x['space_id']==a['space_id'] and x['zone_id'] is not None}
             a['zone_id']=keys.get(label) or 'SZ-'+a['space_id']+'-'+label
         a['owner_comment']=row.get('owner_comment','')
-        a['basis']='owner' if a['subzone_label']!=expected[lid]['subzone_label'] else a['basis']
+        a['basis']='owner' if a['subzone_label']!=old_label else a['basis']
     updated['acceptance']=dict(status='draft',decision_id=None,accepted_revision=None)
     updated['review_revision']=previous['review_revision']+'-R'
     issues=validate(model,updated)
