@@ -25,6 +25,8 @@ Approved **standard** sequences are not copied into project-authored definitions
 
 Parent zones carry no sequence reference and cannot appear in `assignments[]`. A leaf has at most one current assignment; on locked review all leaves must have one accepted assignment. Existing v0.7 parent aggregation and leaf member ownership are unchanged; daylight boundaries may cut across leaves and are recorded as evidence/constraints, not a conflicting second sequence. Owner-approved project sequences can still require further code verification.
 
+**Dimming-scheme revision:** [M3 companion schema v0.2](../../../schemas/m3-sequence-assignments-v0.2.schema.json) retains v0.1 project/assignment semantics and requires `functions.dimming_scheme` (`continuous`, `stepped`, `none`, `unknown`) plus `dimming_steps` where stepped. It supports a separately owner-reviewed `dimming_scheme_override` on individual endpoint assignments. The same validator/exporter recognizes both v0.1 and v0.2 and prints the effective dimming scheme. Sequence scheme is a behavior requirement, *not* the physical fixture dimming interface.
+
 ## Validator and output
 
 ```bash
