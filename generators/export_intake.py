@@ -11,7 +11,7 @@ from .model_intake import check_model, migrate_v03
 from .validate_model import read_model
 
 
-def export_intake(model, output_dir, allow_provisional=False):
+def export_intake(model, output_dir, allow_provisional=False, dimming_register=None):
     original_version = model['schema_version']
     if original_version in ('0.3.0', '0.3.1'):
         model = migrate_v03(model)
@@ -20,6 +20,14 @@ def export_intake(model, output_dir, allow_provisional=False):
         raise ValueError('Structural, reference, spatial or membership failures prevent export.')
     if not report['checks_pass'] and not allow_provisional:
         raise ValueError('Intake is unreconciled/blocked; use --allow-provisional for a clearly marked review draft.')
+    # The optional companion gives enum-validated interface fields without changing old model schemas.
+    dimming_by_type = {}
+    if dimming_register is not None:
+        from .dimming_interfaces import validate as validate_dimming
+        issues = validate_dimming(model, dimming_register, require_complete=False)
+        if issues:
+            raise ValueError('Fixture dimming interface validation failed: '+json.dumps(issues))
+        dimming_by_type = {r['fixture_type_id']: r for r in dimming_register['fixtures'] if r['interface_basis']=='source'}
     output_dir = Path(output_dir)
     if output_dir.exists() and any(output_dir.iterdir()):
         raise ValueError('Choose an empty output directory for this review revision.')
@@ -50,6 +58,7 @@ def export_intake(model, output_dir, allow_provisional=False):
     for tid, t in types.items():
         count = sum(l['source']['fixture_type_id'] == tid for l in lights.values())
         voltage = t.get('source_voltage', {})
+        dim = dimming_by_type.get(tid, {})
         type_rows.append(dict(fixture_type_id=tid, source_mark=t['source_mark'], schedule_presence=t.get('schedule_presence','unknown'), description=t['description'],
                               source_load_basis=t['source_load']['basis'], source_watts=t['source_load']['watts'],
                               source_voltage=voltage.get('nominal_v'), source_voltage_min_v=voltage.get('min_v'),
@@ -57,12 +66,20 @@ def export_intake(model, output_dir, allow_provisional=False):
                               source_power_mode=t.get('source_power_mode'), source_current_ma=t.get('source_current_ma'),
                               source_voltage_basis=t.get('source_voltage_basis'), source_voltage_note=t.get('source_voltage_note'),
                               source_driver_type=t.get('source_driver_type'), source_driver_note=t.get('source_driver_note'),
+                              source_dimming_capability=t.get('source_dimming_capability'),
+                              source_dimming_interface='; '.join(dim.get('dimming_interfaces', [])),
+                              source_dimming_schemes='; '.join(dim.get('supported_dimming_schemes', [])),
+                              source_minimum_dim_percent=dim.get('minimum_dim_percent'),source_dim_to_off=dim.get('dim_to_off'),
+                              source_dimming_signal_mode=dim.get('signal_mode'), source_dimming_driver_location=dim.get('driver_location'),
+                              source_dimming_note=dim.get('notes'),
                               occurrence_or_run_count=count, manufacturer_options=';'.join(t['manufacturer_options']),
                               source_ref_ids=';'.join(t['source_ref_ids'])))
     emit('fixture_type_schedule.csv', ['fixture_type_id', 'source_mark', 'schedule_presence', 'description', 'source_load_basis',
          'source_watts', 'source_voltage', 'source_voltage_min_v', 'source_voltage_max_v',
          'source_power_type', 'source_voltage_current_type', 'source_power_mode', 'source_current_ma', 'source_voltage_basis',
-         'source_voltage_note', 'source_driver_type', 'source_driver_note', 'occurrence_or_run_count',
+         'source_voltage_note', 'source_driver_type', 'source_driver_note', 'source_dimming_capability',
+         'source_dimming_interface', 'source_dimming_schemes', 'source_minimum_dim_percent',
+         'source_dim_to_off', 'source_dimming_signal_mode', 'source_dimming_driver_location', 'source_dimming_note', 'occurrence_or_run_count',
          'manufacturer_options', 'source_ref_ids'], type_rows)
     summary_rows = []
     for s in model['spaces']:
@@ -125,9 +142,11 @@ def main():
     parser.add_argument('model', type=Path)
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--allow-provisional', action='store_true')
+    parser.add_argument('--dimming-register', type=Path, help='Validated source/selected dimming companion JSON')
     args = parser.parse_args()
     try:
-        report = export_intake(read_model(args.model), args.output_dir, args.allow_provisional)
+        report = export_intake(read_model(args.model), args.output_dir, args.allow_provisional,
+                               json.loads(args.dimming_register.read_text()) if args.dimming_register else None)
     except (OSError, ValueError) as error:
         parser.exit(2, f'Cannot export: {error}\n')
     print(f'Review tables written to {args.output_dir}; no source/design state changed.')
