@@ -8,6 +8,8 @@ published: true
 tags: [lighting, subzone, M3, CSV, PDF, daylight]
 ---
 
+**Framework proposal U (2026-10-18):** The M1/M2 `source.drawing_anchor` is defined here as **top-left PDF-page coordinates in points** (PyMuPDF-style), and the derived subzone manifest explicitly declares `anchor_origin: top_left`. The PDF overlay converts Y to native bottom-left PDF user space using the **actual page height** (`pdf_y = page_height - y_top`). Only manifests explicitly marked `bottom_left` bypass the conversion. Verify original source document page dimensions/rotation/crop alignment as part of PDF reconciliation. Owner CSV `full_room_name` displays the full `name` first followed by `(room_number)`, e.g., `1100 Conference (11.002)`; grouping/sorting is by immutable `space_id` to prevent repeated room numbers from interleaving suites. No M1/M2 model-schema migration is required.
+
 # M3-B Lighting Subzone Detection, CSV Review and Markup v0.1
 
 **Parent rules:** [Subzone Detection and Extraction v0.1](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/lighting-subzone-detection-extraction-v0.1.md), [M3 Lifecycle](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/m3-lighting-sequence-lifecycle-v0.1.md). **Illustration:** [Reusable editable SVG](../../assets/lighting-subzones-example.svg), also available under `knowledgebase_wikijs/assets/diagrams/` for the lighting application guide.
