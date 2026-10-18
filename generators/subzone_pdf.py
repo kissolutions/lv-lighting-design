@@ -1,7 +1,9 @@
 """Add CSV-derived editable subzone labels to an existing accepted Light Point PDF.
 
 Original drawings/Light Point positions are never redrawn. Uses pypdf annotations.
-Supply explicit PDF page ID -> zero-based page index mapping. Run each revision
+Supply explicit PDF page ID -> zero-based page index mapping.
+Accepted M1/M2 drawing anchors are TOP_LEFT (PyMuPDF points) by default.
+A manifest record can opt into 'anchor_origin': 'bottom_left'. Run each revision
 on the ORIGINAL accepted M2 PDF, never on a prior subzone output.
 """
 import argparse
@@ -25,8 +27,18 @@ def render(source_pdf,output_pdf,manifest,page_map):
         idx=page_map[pageid]
         if not isinstance(idx,int) or not 0<=idx<len(writer.pages):raise ValueError('Page mapping out of range')
         x=float(anchor['x_pt']);y=float(anchor['y_pt'])
-        if not 0<=x<=float(writer.pages[idx].mediabox.width) or not 0<=y<=float(writer.pages[idx].mediabox.height):
+        origin=a.get('anchor_origin',anchor.get('origin','top_left'))
+        if origin not in ('top_left','bottom_left'):
+            raise ValueError('Unknown anchor origin for '+a['light_id']+': '+str(origin))
+        page=writer.pages[idx]
+        width=float(page.mediabox.width);height=float(page.mediabox.height)
+        if not 0<=x<=width or not 0<=y<=height:
+            raise ValueError('Light Point anchor outside page before conversion: '+a['light_id'])
+        if origin=='top_left':y=height-y
+        if not 0<=x<=width or not 0<=y<=height:
             raise ValueError('Light Point anchor outside PDF page: '+a['light_id'])
+        # PyMuPDF/M1/M2 top-left points convert to native PDF bottom-left
+        # coordinates using the actual page height; explicit bottom_left stays unchanged.
         # Place badge next to the existing anchor. The source Light Point stays unchanged.
         rect=ArrayObject([FloatObject(x+12),FloatObject(y-19),FloatObject(x+29),FloatObject(y-2)])
         annotation=DictionaryObject({
