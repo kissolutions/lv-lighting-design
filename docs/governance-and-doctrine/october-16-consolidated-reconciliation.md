@@ -124,9 +124,12 @@ Pathway construction costs and cable installation/electrical costs remain separa
 
 ### Paired Fixture Schedule
 
-One block per exact fixture designation: designation/context header, ORIGINAL row, then shaded LV row. Only the header uses column 1, for the designation. Every other row starts in column 2. Context names control requirements and served rooms. The columns are: Designation; Row; Description/part; Qty; Input V; Watts each; Driver; Dimming; Dim method; Compat. group; Channels; Status.
+One block per exact fixture designation: designation/context header, ORIGINAL row, then shaded LV row. Only the header uses column 1, for the designation. Every other row starts in column 2. Context names control requirements and served rooms. The columns are: Designation; Row; Description/part; Qty; Input V; Watts each; CCT (K); CRI; Driver; Dimming; Dim method; Compat. group; Channels; Status.
 
 ORIGINAL and LV use identical columns for vertical comparison. Unknown LV selections read TBD; never populate them from source AC specifications. Quantity agrees unless a recorded type split explains a difference. A trailing machine key may repeat designation outside the visible format. Meaning is carried by labels as well as shading. This is a View over source and selected records, not a third set of fixture facts.
+
+
+**CCT/CRI owner-approved amendment (2026-10-18):** Include **CCT (K)** and **CRI** as distinct optional numeric columns in both ORIGINAL and LV rows. Missing values display as blank (not zero or an invented specification). Original values derive from fixture-type `source_cct_k`/`source_cri`; LV values derive from selected per-Light-Object `design.selected_cct_k`/`design.selected_cri` until a separately governed selected-type register exists. Mixed selected values under a single designation require explicit type-level reconciliation/split, not silent aggregation. The reusable Paired Fixture Schedule generator remains outstanding (Item N).
 
 ### Basis of Design Set
 
