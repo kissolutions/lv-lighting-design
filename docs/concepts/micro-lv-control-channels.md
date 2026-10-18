@@ -51,23 +51,21 @@ Fixtures on one micro channel must have compatible:
 
 The M4 Class 2 baseline is 95 W maximum on a 100 W rated channel.
 
-## Preferred grouping behavior
+## Channel allocation objective — owner correction, October 18, 2026
 
-Within the hard constraints, prefer:
+**Call [PROC-M4-CHANNEL-PACK](../design-playbooks/m4-channel-packing-v0.1.md) for every M4 channel derivation, before assigning physical controller outputs.** This is a real, read-only executable service in `generators/channel_pack.py`, not merely a directive to stop after an allocation satisfies the 95 W limit.
 
-1. spatial adjacency and practical routing;
-2. same selected fixture type;
-3. simple service/commissioning identification;
-4. balanced utilization without exceeding 95 W; and
-5. minimal channel count only after the prior constraints are satisfied.
+Within hard electrical/functional boundaries, **minimize channel count first**; among equal-count feasible candidates, prefer utilization near **90 W per channel** (soft target). **95 W** is the nonnegotiable design maximum on the **100 W** rated Class 2 output, not the target. Report actual utilization per leaf zone and project, and whether optimality has been proved. Never force a 90 W target if practical routing/service or product requirements preclude it; capture those constraints in the input compatibility qualification/review.
 
-Same fixture type is a preferred simplifier, not automatically a universal electrical law. Mixed fixture types require explicit compatibility evidence; constant-current mixed-fixture topology remains a manual-review condition until the model supports it fully.
+Remote driver topology is **parallel only**. A two-wire daisy-chain run is not series-connected LEDs. Constant-current programmable remote driver output current is the sum of LED branch currents *when manufacturer-supported parallel operation is proven*. Do not mistake KCL for proof that the remote current regulator and the bare LED branches will share current stably. A verified approval/evidence cohort is required for multiple CC branches; no automatic series topology fallback.
+
+Same selected fixture type and proximity are preferences, not electrical compatibility tests. Known routing/practical placement constraints may force a reviewed deviation from numerical minimum; record that reason. Unknown voltage, current, load or CC parallel sharing evidence is not permission to pass one fixture per channel as optimized.
 
 ## Orientation-independent adjacency
 
 Do not implement adjacency as row/column clustering on a coordinate or as mandatory straight-run detection. Horizontal, vertical, diagonal, curved and grid arrangements must all be evaluated without favouring a drawing axis. Compare feasible compact partitions under the hard boundaries and the preference order above; a minimum channel count never overrides practical routing or service legibility. A fixture-count capacity formula applies only where compatible equal-load fixtures justify it; heterogeneous loads require actual load checks. Unknown loads remain unresolved, not repacked by assumed capacity.
 
-Before accepting a building-wide packing result, check layouts against the dominant plan axis, curves and grids. Verify every included light is assigned exactly once, total load is unchanged and all channel limits/control boundaries are preserved. The current checker validates entered assignments; this directive does not claim an implemented packing optimiser.
+Before accepting a building-wide packing result, check layouts against the dominant plan axis, curves and grids. Verify every included light is assigned exactly once, total load is unchanged and all channel limits/control boundaries are preserved. The dedicated packer now creates and evaluates channel proposals; existing canonical model validators still govern actual instantiated outputs. Multi-load CC output validation remains a separate evidence-contract integration gap, so packer reports are not themselves final design acceptance.
 
 ## Capability is not requirement
 
