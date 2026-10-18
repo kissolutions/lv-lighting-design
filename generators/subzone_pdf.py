@@ -31,6 +31,15 @@ def render(source_pdf,output_pdf,manifest,page_map):
         if origin not in ('top_left','bottom_left'):
             raise ValueError('Unknown anchor origin for '+a['light_id']+': '+str(origin))
         page=writer.pages[idx]
+        # The model stores DISPLAYED-page coordinates after crop/rotation.
+        # A plain height inversion only applies to unrotated uncropped pages;
+        # refuse ambiguous transforms rather than misplacing every label.
+        if int(page.get('/Rotate',0) or 0)%360:
+            raise ValueError('Rotated PDF page requires explicit displayed-to-native transform: '+str(pageid))
+        mb=[float(v) for v in page.mediabox]
+        cb=[float(v) for v in page.cropbox]
+        if mb!=cb or abs(mb[0])>1e-6 or abs(mb[1])>1e-6:
+            raise ValueError('Cropped or offset PDF page needs explicit coordinate transform: '+str(pageid))
         width=float(page.mediabox.width);height=float(page.mediabox.height)
         if not 0<=x<=width or not 0<=y<=height:
             raise ValueError('Light Point anchor outside page before conversion: '+a['light_id'])
