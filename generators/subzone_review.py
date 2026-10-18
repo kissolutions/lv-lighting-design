@@ -137,6 +137,75 @@ def proposed_zone_tree(model,register):
     return proposal
 
 
+
+def apply_accepted_zone_tree(model,register):
+    """Copy and safely instantiate a reviewed hierarchy in a provisional v0.7+ model.
+
+    Never rewire an existing assigned physical output/channel or replace zones shared
+    across Spaces. Source MEP groups remain source evidence. Owner accepts CSV
+    memberships, not M4 electrical/sequence implementation.
+    """
+    import copy
+    issues=validate(model,register,accept=True)
+    if issues:raise ValueError(json.dumps(issues))
+    value=copy.deepcopy(model)
+    if value.get('schema_version') not in ('0.7.0','0.8.0','0.9.0'):
+        raise ValueError('Canonical zone rebuild requires v0.7+ hierarchy model.')
+    proposed=proposed_zone_tree(model,register)
+    affected={x['space_id'] for x in proposed}
+    existing={z['id']:z for z in value['light_zones']}
+    # Only replace zone IDs directly associated with the affected Spaces. A zone
+    # serving multiple Spaces, or one with existing physical output links, blocks.
+    remove=set()
+    for sp in value['spaces']:
+        if sp['id'] in affected:remove.update(sp['light_zone_ids'])
+    for zone in value['light_zones']:
+        if zone.get('parent_zone_id') in remove:remove.add(zone['id'])
+    for sp in value['spaces']:
+        if sp['id'] not in affected and any(z in remove for z in sp['light_zone_ids']):
+            raise ValueError('Cannot replace a lighting zone shared with unaffected Space: '+sp['id'])
+    for z in value['light_zones']:
+        if z['id'] in remove and (z.get('controller_id') or z.get('controller_output')):
+            raise ValueError('Physical controller/output is assigned; require M4 explicit reassignment: '+z['id'])
+    for branch in value.get('branch_circuits',[]):
+        for unit in branch.get('power_units',[]):
+            for ch in unit.get('channels',[]):
+                if ch.get('light_zone_id') in remove:
+                    raise ValueError('Active electrical channel references a replaced zone: '+ch['id'])
+    new_ids={e['parent_zone_id'] for e in proposed if e['parent_zone_id']}
+    new_ids.update(z['zone_id'] for p in proposed for z in p['leaves'])
+    if (new_ids & (set(existing)-remove)):
+        raise ValueError('New subzone IDs collide with zones outside affected Spaces.')
+    # Drop only affected physical-free zones. Preserve unaffected accepted zones.
+    value['light_zones']=[z for z in value['light_zones'] if z['id'] not in remove]
+    for item in proposed:
+        sid=item['space_id'];sp=next(s for s in value['spaces'] if s['id']==sid)
+        source_refs=sorted({ref for f in register['detection_findings'] if f['space_id']==sid for ref in f['source_ref_ids']})
+        source_refs=source_refs or sp['source_ref_ids']
+        if not source_refs:raise ValueError('Cannot create provenance-free zones for '+sid)
+        def blank(zid,label,pid,lights):
+            return dict(id=zid,label=label,space_labels=[],control_group_ids=[],
+                controller_id=None,controller_output=None,driver_type=None,control_types=[],
+                on_off_type=None,normal_behavior=None,egress_type=None,emergency_behavior=None,
+                emergency_input_id=None,source_ref_ids=source_refs,decision_id=None,
+                label_mode='named',control_area_sq_ft=None,control_area_basis='unknown',
+                light_object_ids=lights,parent_zone_id=pid,
+                control_narrative=None,occupancy_aggregation=None)
+        parent=item['parent_zone_id']
+        if parent:
+            value['light_zones'].append(blank(parent,item['room_name']+' - Subzones',None,[]))
+        for z in item['leaves']:
+            value['light_zones'].append(blank(z['zone_id'],z['subzone_label'],parent,z['light_object_ids']))
+        sp['light_zone_ids']=[x['zone_id'] for x in item['leaves']]+([parent] if parent else [])
+    value['project']['controls_narrative_review']=dict(status='unreviewed',decision_id=None)
+    # Reconcile the resulting copy using the canonical version-specific schema.
+    from jsonschema import Draft202012Validator
+    schemafile=Path(__file__).resolve().parents[1]/('schemas/lighting-project-v'+value['schema_version'][:3]+'.schema.json')
+    errors=list(Draft202012Validator(json.loads(schemafile.read_text())).iter_errors(value))
+    if errors:raise ValueError('Rebuilt model fails schema: '+str(errors[0].message))
+    return value
+
+
 def sequence_reverification_impact(old_register,new_register):
     """Identify changed endpoints when late daylight or owner edits require reprocessing."""
     old={(a['space_id'],a['light_id']):(a['zone_id'],a['subzone_label']) for a in old_register['assignments']}
@@ -259,6 +328,7 @@ def main():
     p.add_argument('output',type=Path)
     p.add_argument('--owner-csv',type=Path,help='Import owner edits, then export revised register and markup manifest')
     p.add_argument('--lock-check',action='store_true')
+    p.add_argument('--build-accepted-model',action='store_true',help='Write copy of accepted v0.7+ zone hierarchy; never overwrite source model')
     a=p.parse_args()
     model=json.loads(a.model.read_text());reg=json.loads(a.register.read_text())
     if a.owner_csv:
@@ -268,6 +338,9 @@ def main():
         issues=validate(model,reg,accept=True)
         if issues:raise SystemExit(json.dumps(issues,indent=2))
     export(model,reg,a.output)
+    if a.build_accepted_model:
+        updated=apply_accepted_zone_tree(model,reg)
+        (a.output/'accepted_zone_model_copy.json').write_text(json.dumps(updated,indent=2)+'\n')
     if a.owner_csv:
         (a.output/'updated_subzone_register.json').write_text(json.dumps(reg,indent=2)+'\n')
         (a.output/'sequence_reverification_impact.json').write_text(json.dumps(sequence_reverification_impact(previous,reg),indent=2)+'\n')
