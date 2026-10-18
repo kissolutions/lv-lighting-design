@@ -22,6 +22,9 @@ def _hash(value):
 def applicability(rule,context):
     """True / False / None. Never interpret missing evidence as 'does not apply'."""
     c=rule['applies'];tests=[]
+    if 'specific_application_types' in c:
+        typ=context.get('specific_application_type')
+        tests.append(None if typ is None else typ in c['specific_application_types'])
     if 'space_types' in c:
         typ=context.get('space_type')
         tests.append(None if typ is None else typ in c['space_types'])
