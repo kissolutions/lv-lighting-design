@@ -117,6 +117,41 @@ def validate(model,register,accept=False):
     return issues
 
 
+
+def proposed_zone_tree(model,register):
+    """Return read-only parent/leaf hierarchy proposal; do not overwrite owner-accepted model."""
+    issues=validate(model,register,accept=True)
+    if issues:raise ValueError(json.dumps(issues))
+    byspace=defaultdict(lambda:defaultdict(list))
+    for a in register['assignments']:
+        byspace[a['space_id']][(a['zone_id'],a['subzone_label'])].append(a['light_id'])
+    spaces={s['id']:s for s in model['spaces']}
+    proposal=[]
+    for sid,groups in sorted(byspace.items()):
+        s=spaces[sid]
+        entries=[dict(zone_id=zid,subzone_label=lab,light_object_ids=sorted(lights))
+            for (zid,lab),lights in sorted(groups.items(),key=lambda x:x[0][1])]
+        proposal.append(dict(space_id=sid,room_name=' '.join(x for x in (s.get('room_number'),s['name']) if x),
+            parent_zone_id='SZP-'+sid if len(entries)>1 else None,leaves=entries,
+            note='Proposed hierarchy only. Physical output/channel associations need downstream reconciliation.'))
+    return proposal
+
+
+def sequence_reverification_impact(old_register,new_register):
+    """Identify changed endpoints when late daylight or owner edits require reprocessing."""
+    old={(a['space_id'],a['light_id']):(a['zone_id'],a['subzone_label']) for a in old_register['assignments']}
+    new={(a['space_id'],a['light_id']):(a['zone_id'],a['subzone_label']) for a in new_register['assignments']}
+    affected={sid for (sid,lid) in set(old)|set(new) if old.get((sid,lid))!=new.get((sid,lid))}
+    old_dl={d['daylight_id']:(tuple(sorted(d['space_ids'])),tuple(sorted(d['light_ids'])),d['extent_basis'],d['extent_note']) for d in old_register['daylight_areas']}
+    new_dl={d['daylight_id']:(tuple(sorted(d['space_ids'])),tuple(sorted(d['light_ids'])),d['extent_basis'],d['extent_note']) for d in new_register['daylight_areas']}
+    for did in set(old_dl)|set(new_dl):
+        if old_dl.get(did)!=new_dl.get(did):
+            for register in (old_register,new_register):
+                for d in register['daylight_areas']:
+                    if d['daylight_id']==did:affected.update(d['space_ids'])
+    return sorted(affected)
+
+
 def csv_rows(model,register):
     spaces={s['id']:s for s in model['spaces']}
     lights={l['id']:l for l in model['light_objects']}
@@ -175,6 +210,8 @@ def export(model,register,outdir):
             for r in rows:
                 w.writerow({k:("'"+str(v) if isinstance(v,str) and v.lstrip().startswith(('=','+','-','@')) else v) for k,v in r.items()})
     (out/'subzone_label_annotations.json').write_text(json.dumps(label_manifest(model,register),indent=2)+'\n')
+    if not validate(model,register,accept=True):
+        (out/'proposed_accepted_zone_tree.json').write_text(json.dumps(proposed_zone_tree(model,register),indent=2)+'\n')
     (out/'subzone_report.json').write_text(json.dumps(dict(project_id=register['project_id'],
         model_revision=register['model_revision'],review_revision=register['review_revision'],
         low_confidence_findings=len(discussion_findings(register)),
@@ -224,11 +261,15 @@ def main():
     p.add_argument('--lock-check',action='store_true')
     a=p.parse_args()
     model=json.loads(a.model.read_text());reg=json.loads(a.register.read_text())
-    if a.owner_csv:reg=import_review(model,reg,a.owner_csv)
+    if a.owner_csv:
+        previous=reg
+        reg=import_review(model,reg,a.owner_csv)
     if a.lock_check:
         issues=validate(model,reg,accept=True)
         if issues:raise SystemExit(json.dumps(issues,indent=2))
     export(model,reg,a.output)
-    if a.owner_csv:(a.output/'updated_subzone_register.json').write_text(json.dumps(reg,indent=2)+'\n')
+    if a.owner_csv:
+        (a.output/'updated_subzone_register.json').write_text(json.dumps(reg,indent=2)+'\n')
+        (a.output/'sequence_reverification_impact.json').write_text(json.dumps(sequence_reverification_impact(previous,reg),indent=2)+'\n')
 
 if __name__=='__main__':main()
