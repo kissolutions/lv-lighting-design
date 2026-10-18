@@ -137,6 +137,38 @@ class SubzoneTests(unittest.TestCase):
         self.assertEqual(set(next(s for s in rebuilt['spaces'] if s['id']==sid)['light_zone_ids']),
             {'SZP-'+sid,'SZ-A-a','SZ-A-b'})
 
+    def test_pdf_top_left_anchor_on_nonsquare_page(self):
+        m,r=case()
+        with tempfile.TemporaryDirectory() as d:
+            base=Path(d)/'input.pdf';output=Path(d)/'labelled.pdf'
+            w=PdfWriter();w.add_blank_page(width=400,height=800)
+            with base.open('wb') as f:w.write(f)
+            labels=label_manifest(m,r)
+            self.assertEqual(labels[0]['anchor_origin'],'top_left')
+            render(base,output,labels,{'PG1':0})
+            anns=[x.get_object() for x in PdfReader(str(output)).pages[0]['/Annots']]
+            byid={str(a.get('/NM')):a for a in anns}
+            rect=byid['SZLABEL-L101']['/Rect']
+            # top-left (100,200) on 400x800 -> native (100,600), badge +12,+29/-19,-2
+            self.assertEqual([float(x) for x in rect],[112.0,581.0,129.0,598.0])
+            bottom=copy.deepcopy(labels[:1])
+            bottom[0]['anchor_origin']='bottom_left'
+            other=Path(d)/'bottom.pdf'
+            render(base,other,bottom,{'PG1':0})
+            a=PdfReader(str(other)).pages[0]['/Annots'][0].get_object()
+            self.assertEqual([float(x) for x in a['/Rect']],[112.0,181.0,129.0,198.0])
+
+    def test_csv_suite_grouping_and_name_first(self):
+        m,r=case()
+        m['spaces'][0]['name']='1100 Conference'
+        m['spaces'][0]['room_number']='11.002'
+        m['spaces'][1]['name']='1140 Break Area'
+        m['spaces'][1]['room_number']='11.002'
+        from generators.subzone_review import csv_rows
+        rows=csv_rows(m,r)
+        self.assertTrue(all(row['full_room_name']=='1100 Conference (11.002)' for row in rows))
+        self.assertEqual([row['space_id'] for row in rows],['S201']*3)
+
     def test_pdf_adds_editable_labels_and_upserts_original_comment(self):
         m,r=case()
         with tempfile.TemporaryDirectory() as d:
