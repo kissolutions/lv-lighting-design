@@ -85,6 +85,7 @@ class Y4Tests(unittest.TestCase):
 
     def test_driver_minimum_and_maximum(self):
         self.b["design"]["channel_id"]=None
+        self.a["design"]["input_current_ma"]=900
         self.ch["output_current_ma"]=900
         self.assertIn("cc-output-below-driver-min",self.rules())
         self.assertIn("cc-branch-sum-below-driver-min",self.rules())
