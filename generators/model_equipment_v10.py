@@ -92,6 +92,42 @@ def check_v10(model, phase="intake"):
         if count > 1:
             fail("unique-ids", identifier, "Multiple canonical records reuse this identifier.")
     valid_ids = set(all_record_ids)
+    source_reference_ids = {ref["id"] for ref in model["source_references"]}
+
+    def current_range_issues(owner, rated, minimum, maximum, label):
+        """Check optional verified fixture operating range, not QDCD supply range."""
+        values=[v for v in (rated, minimum, maximum) if v is not None]
+        if values and any(Decimal(str(v)) <= 0 for v in values):
+            fail("cc-rated-current-range",owner,f"{label}: specified branch current must be positive.")
+        if minimum is not None and maximum is not None and Decimal(str(minimum)) > Decimal(str(maximum)):
+            fail("cc-rated-current-range",owner,f"{label}: allowable minimum mA exceeds maximum mA.")
+        if rated is not None and minimum is not None and Decimal(str(rated)) < Decimal(str(minimum)):
+            fail("cc-rated-current-range",owner,f"{label}: rated mA below manufacturer's permitted minimum.")
+        if rated is not None and maximum is not None and Decimal(str(rated)) > Decimal(str(maximum)):
+            fail("cc-rated-current-range",owner,f"{label}: rated mA exceeds manufacturer's permitted maximum.")
+
+    fixture_types={fixture["id"]:fixture for fixture in model["fixture_types"]}
+    for fixture in model["fixture_types"]:
+        current_range_issues(fixture["id"],
+            fixture.get("lv_cc_rated_current_ma"),
+            fixture.get("lv_cc_min_current_ma"),
+            fixture.get("lv_cc_max_current_ma"),"LV Fixture Type")
+        for rid in fixture.get("lv_cc_current_source_ref_ids",[]):
+            if rid not in source_reference_ids:
+                fail("cc-current-source-reference",fixture["id"],f"Unknown rated-current manufacturer source reference: {rid}")
+    for light in model["light_objects"]:
+        d=light["design"]
+        current_range_issues(light["id"],d.get("input_current_ma"),
+            d.get("input_current_min_ma"),d.get("input_current_max_ma"),"Selected Light Point")
+        for rid in d.get("input_current_source_ref_ids",[]):
+            if rid not in source_reference_ids:
+                fail("cc-current-source-reference",light["id"],f"Unknown selected current-rating source reference: {rid}")
+        f=fixture_types.get(light["source"]["fixture_type_id"])
+        if (f and d["input_power_mode"]=="constant_current" and
+            f.get("lv_cc_rated_current_ma") is not None and d["input_current_ma"] is not None
+            and Decimal(str(f["lv_cc_rated_current_ma"])) != Decimal(str(d["input_current_ma"]))):
+            fail("cc-selected-current-vs-fixture-type",light["id"],
+                 "Selected Light Point CC rated mA conflicts with the verified LV fixture-type rated mA.")
     for item in model["open_items"]:
         for identifier in item["affects_ids"]:
             if identifier not in valid_ids:
@@ -289,6 +325,18 @@ def check_v10(model, phase="intake"):
     # branch-circuit or AC-input records into canonical v0.10 project data.
     legacy = copy.deepcopy(model)
     legacy["schema_version"]="0.9.0"
+    # Optional v0.10 fixture-current provenance/range attributes do not exist
+    # in strict v0.9. These are checked natively above and then stripped ONLY
+    # from the in-memory backward-validation projection; keep the real model
+    # intact so unrelated current, emergency and CC findings remain visible.
+    for fixture in legacy["fixture_types"]:
+        for key in ("lv_cc_rated_current_ma","lv_cc_min_current_ma",
+                    "lv_cc_max_current_ma","lv_cc_current_source_ref_ids"):
+            fixture.pop(key,None)
+    for light in legacy["light_objects"]:
+        for key in ("input_current_min_ma","input_current_max_ma",
+                    "input_current_source_ref_ids"):
+            light["design"].pop(key,None)
     legacy.pop("distribution_units");legacy.pop("dc_power_feeds")
     raw_units=legacy.pop("power_units")
     by_id={u["id"]:u for u in raw_units}
