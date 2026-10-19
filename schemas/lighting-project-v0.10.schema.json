@@ -1742,6 +1742,39 @@
           "minimum": 0,
           "maximum": 100,
           "description": "Optional color rendering index (CRI). Null or omitted means unspecified; never zero."
+        },
+        "lv_cc_rated_current_ma": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0,
+          "description": "Selected remote-driver LED-module rated branch mA for the LV fixture type, confirmed at the luminaire interface; not the original AC source current."
+        },
+        "lv_cc_min_current_ma": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0,
+          "description": "Lowest manufacturer-permitted LED-module CC operating current (NOT driver 1-4A range or dimming command); omit when undocumented."
+        },
+        "lv_cc_max_current_ma": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0,
+          "description": "Highest manufacturer-permitted LED-module CC operating current (NOT driver 1-4A range or dimming command); omit when undocumented."
+        },
+        "lv_cc_current_source_ref_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+          },
+          "uniqueItems": true,
+          "description": "Manufacturer source references establishing the fixture-rated mA and optional permitted operating current limits. Empty/absent is unverified."
         }
       },
       "allOf": [
@@ -1763,7 +1796,8 @@
             }
           }
         }
-      ]
+      ],
+      "description": " Optional lv_cc_* fields describe selected LV LED module ratings, separately from original MEP source_current_ma; no inference between these fields."
     },
     "light": {
       "type": "object",
@@ -2027,6 +2061,31 @@
               "minimum": 0,
               "maximum": 100,
               "description": "Optional color rendering index (CRI). Null or omitted means unspecified; never zero."
+            },
+            "input_current_min_ma": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "exclusiveMinimum": 0,
+              "description": "Optional selected-light manufacturer-permitted minimum branch CC current; not QDCD driver current or dimming resolution."
+            },
+            "input_current_max_ma": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "exclusiveMinimum": 0,
+              "description": "Optional selected-light manufacturer-permitted maximum branch CC current; not QDCD driver current or dimming resolution."
+            },
+            "input_current_source_ref_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+              },
+              "uniqueItems": true,
+              "description": "Actual selected fixture/LED-module source refs substantiating input_current_ma (rated mA) and any operating range. Absent means provenance has not been established."
             }
           },
           "allOf": [
