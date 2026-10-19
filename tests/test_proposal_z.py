@@ -76,6 +76,24 @@ class ProposalZTests(unittest.TestCase):
                 self.assertEqual(cli["legacy_projection_status"], "complete")
                 self.assertEqual(cli["issues"], json.loads(json.dumps(result, default=str))["issues"])
 
+    def test_z1_upgrade_cli_preserves_numeric_type_and_refuses_overwrite(self):
+        source=json.loads(SOURCE.read_text())
+        source["light_objects"][0]["design"]["load"]["watts"]=20.125
+        with tempfile.TemporaryDirectory() as folder:
+            old=Path(folder)/"legacy.json"
+            new=Path(folder)/"v10.json"
+            old.write_text(model_json(source)+"\\n")
+            command=[sys.executable,"-m","generators.model_equipment_v10",
+                     str(old),"--upgrade-output",str(new)]
+            first=subprocess.run(command,cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(first.returncode,0,first.stderr)
+            content=json.loads(new.read_text())
+            self.assertIsInstance(content["light_objects"][0]["design"]["load"]["watts"],float)
+            self.assertEqual(content["light_objects"][0]["design"]["load"]["watts"],20.125)
+            again=subprocess.run(command,cwd=ROOT,capture_output=True,text=True)
+            self.assertNotEqual(again.returncode,0)
+            self.assertEqual(json.loads(new.read_text()),content)
+
     def test_z2_decimal_feeds_aggregate_exactly_and_detect_limit(self):
         model = dc_fixture()
         model["distribution_units"][0]["rated_total_output_watts"] = Decimal("50.12")
@@ -138,6 +156,13 @@ class ProposalZTests(unittest.TestCase):
         self.assertIn("dc-feed-rating", rules(intake, "deferred_issues"))
         self.assertIn("pdu-ac-circuit", rules(design))
         self.assertIn("dc-feed-rating", rules(design))
+
+    def test_z5_known_invalid_graph_reference_is_immediate_at_intake(self):
+        model=dc_fixture()
+        model["distribution_units"][0]["input_branch_circuit_id"]="NO-SUCH-BRANCH"
+        intake=check_v10(model,"intake")
+        self.assertIn("pdu-ac-circuit",rules(intake))
+        self.assertNotIn("pdu-ac-circuit",rules(intake,"deferred_issues"))
 
     def test_z6_dc_input_power_language_is_not_ac(self):
         model = dc_fixture()
