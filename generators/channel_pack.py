@@ -15,6 +15,8 @@ from collections import defaultdict
 from decimal import Decimal
 from pathlib import Path
 
+from .model_hierarchy import load_watts
+
 TARGET_W = Decimal("90")
 MAX_W = Decimal("95")
 
@@ -29,20 +31,24 @@ def decimal(value, label):
 
 
 def light_watts(light):
+    """Use the canonical model's linear-load arithmetic and basis names."""
     load = light["design"]["load"]
-    if load["basis"] == "per_fixture":
-        w = load["watts"]
-    elif load["basis"] == "per_linear_foot":
-        if load.get("watts") is None or load.get("length_ft") is None:
-            raise ValueError("Linear light lacks watts/ft or confirmed length")
-        w = decimal(load["watts"], "watts/ft") * decimal(load["length_ft"], "length_ft")
-    else:
-        raise ValueError("Unknown load basis")
-    w = decimal(w, "light watts")
-    if w <= 0:
+    if load.get("basis") not in ("per_fixture", "per_foot", "per_reference_length"):
+        raise ValueError("Unknown schema load basis")
+    if load["basis"] != "per_fixture":
+        if load.get("length_ft") is None or decimal(load["length_ft"], "length_ft") <= 0:
+            raise ValueError("Linear light requires a positive confirmed length")
+    if load["basis"] == "per_reference_length":
+        if (load.get("reference_length_ft") is None or
+                decimal(load["reference_length_ft"], "reference_length_ft") <= 0):
+            raise ValueError("Reference-length load requires a positive reference length")
+    watts = load_watts(load)
+    if watts is None:
+        raise ValueError("Light load lacks watts or an applicable required length")
+    result = decimal(watts, "light watts")
+    if result <= 0:
         raise ValueError("Light watts must be positive")
-    return w
-
+    return result
 
 def _exact_bins(items, ceiling, target, max_states=125000):
     """Minimize bin count (not first-feasible fill); minimize target deviation
@@ -162,20 +168,38 @@ def pack(model, policy):
 
     findings = []
     groups = defaultdict(list)
-    total_watts = Decimal(0)
+    known_model_watts = Decimal(0)
+    known_light_watts = {}
+    unknown_load_ids = []
     source_by_id = {l["id"]: l for l in model["light_objects"]}
     for lid in cohorts:
         if lid not in source_by_id:
             raise ValueError("Unknown CC cohort member: " + lid)
+    # Independently count every known physical load before checking endpoint
+    # assignment and electrical compatibility. Blocked lights are still
+    # connected loads: excluding them understates project demand.
     for light in model["light_objects"]:
         lid = light["id"]
+        try:
+            watts = light_watts(light)
+        except (ValueError, KeyError, TypeError, ArithmeticError) as error:
+            unknown_load_ids.append(lid)
+            findings.append(dict(light_id=lid, issue="model_load_incomplete_or_invalid",
+                                 status="blocking", detail=str(error)))
+            continue
+        known_light_watts[lid] = watts
+        known_model_watts += watts
+
+    for light in model["light_objects"]:
+        lid = light["id"]
+        if lid not in known_light_watts:
+            continue
         if lid not in zone_by_light:
             findings.append(dict(light_id=lid, issue="unassigned_endpoint_zone",status="blocking"))
             continue
         d = light["design"]
         try:
-            w = light_watts(light)
-            total_watts += w
+            w = known_light_watts[lid]
             if w > limit:
                 findings.append(dict(light_id=lid, issue="oversized_single_fixture",status="blocking"))
                 continue
@@ -256,6 +280,7 @@ def pack(model, policy):
 
     grouped_ids = [lid for item in proposals for lid in item["light_ids"]]
     missing_ids = sorted(set(source_by_id) - set(grouped_ids))
+    packed_known_watts = sum((known_light_watts[lid] for lid in grouped_ids), Decimal(0))
     if len(grouped_ids) != len(set(grouped_ids)):
         raise RuntimeError("Packing assigned a light more than once")
     blocked = any(f["status"] == "blocking" for f in findings) or bool(missing_ids)
@@ -276,8 +301,13 @@ def pack(model, policy):
                             average_channel_watts=(float(sum((Decimal(str(p["watts"])) for p in proposals),Decimal(0))/len(proposals)) if proposals else None),
                             average_channel_utilization_pct=(float(sum((Decimal(str(p["watts"])) for p in proposals),Decimal(0))/len(proposals)/rated*100) if proposals else None),
                             total_unused_design_capacity_watts=float(sum((Decimal(str(p["unused_design_watts"])) for p in proposals),Decimal(0))),
-                            total_input_watts=float(total_watts),
-                            packed_watts=float(sum((Decimal(str(p["watts"])) for p in proposals), Decimal(0))),
+                            total_input_watts=float(known_model_watts) if not unknown_load_ids else None,
+                            known_model_watts=float(known_model_watts),
+                            missing_model_load_light_ids=sorted(unknown_load_ids),
+                            packed_watts=float(packed_known_watts),
+                            excluded_known_watts=float(known_model_watts-packed_known_watts),
+                            load_balance_verified=not missing_ids and not unknown_load_ids
+                                and known_model_watts == packed_known_watts,
                             zone_utilization={z:dict(channels=len(ws),watts=sum(ws),
                                 mean_watts_per_channel=sum(ws)/len(ws)) for z,ws in sorted(zcounts.items())}),
                 note="Read-only candidate allocation. Manufacturer qualification, canonical CC validator integration, owner acceptance and controller assignment are separate gates.")
