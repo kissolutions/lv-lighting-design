@@ -142,6 +142,12 @@ def validate_y4(model, qualification=None):
                      "Parallel QDCD luminaires must have identical verified rated mA; nominal voltage is not a substitute.")
             expected = sum(branch_ma) if all(i is not None for i in branch_ma) else None
             selected = number(channel.get("output_current_ma"))
+            if expected is not None and expected < DEFAULTS["min_ma"]:
+                emit("cc-branch-sum-below-driver-min", cid,
+                     f"Required branch sum {expected} mA is below standard QDCD 1000 mA output minimum.")
+            if expected is not None and expected > DEFAULTS["max_ma"]:
+                emit("cc-branch-sum-above-driver-max", cid,
+                     f"Required branch sum {expected} mA exceeds QDCD 4000 mA limit.")
             if selected is None:
                 emit("cc-output-setpoint-missing", cid, "QDCD CC programmed total output current must be recorded.")
             else:
