@@ -65,7 +65,15 @@ def validate_y4(model, qualification=None):
     controllers = {c["integrated_power_unit_id"]: c for c in model["controllers"]
                    if c["integrated_power_unit_id"] is not None
                    and c["device_class"] and "QDCD" in c["device_class"].upper()}
+    supplemental = qualification.get("supplemental_sources", [])
+    supplemental_ids = [r["id"] for r in supplemental]
+    if len(supplemental_ids) != len(set(supplemental_ids)):
+        raise ValueError("Duplicate supplemental source IDs")
     source_refs = {r["id"] for r in model["source_references"]}
+    if source_refs.intersection(supplemental_ids):
+        raise ValueError("Supplemental source collides with project source ID")
+    verified_refs = source_refs | {r["id"] for r in supplemental if r["review_status"] == "verified_document"}
+    source_refs.update(supplemental_ids)
     decisions = {d["id"] for d in model["decisions"]}
     evidenced = {}
     for item in qualification["fixture_evidence"]:
@@ -95,6 +103,7 @@ def validate_y4(model, qualification=None):
             raise ValueError("Unknown QDCD programming manufacturer source reference")
     gaps = defaultdict(list)
     ratings_without_proof = defaultdict(list)
+    voltage_without_proof = defaultdict(list)
     unit_details = []
     qdcd_channels = 0
 
@@ -142,7 +151,8 @@ def validate_y4(model, qualification=None):
                      "Parallel QDCD luminaires must have identical verified rated mA; nominal voltage is not a substitute.")
             expected = sum(branch_ma) if all(i is not None for i in branch_ma) else None
             selected = number(channel.get("output_current_ma"))
-            if expected is not None and expected < DEFAULTS["min_ma"]:
+            required_below_min = expected is not None and expected < DEFAULTS["min_ma"]
+            if required_below_min:
                 emit("cc-branch-sum-below-driver-min", cid,
                      f"Required branch sum {expected} mA is below standard QDCD 1000 mA output minimum.")
             if expected is not None and expected > DEFAULTS["max_ma"]:
@@ -151,13 +161,29 @@ def validate_y4(model, qualification=None):
             if selected is None:
                 emit("cc-output-setpoint-missing", cid, "QDCD CC programmed total output current must be recorded.")
             else:
-                if selected < DEFAULTS["min_ma"]:
+                if selected < DEFAULTS["min_ma"] and not required_below_min:
                     emit("cc-output-below-driver-min", cid, f"Selected {selected} mA is below standard QDCD 1000 mA minimum.")
                 if selected > DEFAULTS["max_ma"]:
                     emit("cc-output-above-driver-max", cid, f"Selected {selected} mA exceeds QDCD 4000 mA maximum.")
                 if expected is not None and selected != expected:
-                    emit("cc-output-sum-mismatch", cid,
-                         f"Programmed {selected} mA does not equal parallel branch sum {expected} mA.")
+                    allowed = number(programming.get("allowed_setpoint_deviation_ma")) if programming else None
+                    # A tolerance is not an automatic waiver: it requires verified
+                    # module current bands and specific combination qualification.
+                    compatible = bool(allowed is not None and abs(selected - expected) <= allowed)
+                    if compatible:
+                        for light in attached:
+                            d = light["design"]
+                            lo, hi = number(d.get("input_current_min_ma")), number(d.get("input_current_max_ma"))
+                            if lo is None or hi is None or not lo <= selected / len(attached) <= hi:
+                                compatible = False
+                        key = tuple(sorted({l["source"]["fixture_type_id"] for l in attached}))
+                        combo = combinations.get(key)
+                        if len(attached) > 1 and (combo is None or combo["manufacturer_status"] != "fixture_combination_verified"
+                            or combo["project_review_status"] != "qualified" or not combo["manufacturer_evidence_ref_ids"]):
+                            compatible = False
+                    if not compatible:
+                        emit("cc-output-sum-mismatch", cid,
+                             f"Programmed {selected} mA differs from branch sum {expected} mA without qualified tolerance.")
                 if programming is not None:
                     step = number(programming["current_step_ma"])
                     origin = number(programming["current_step_origin_ma"])
@@ -176,14 +202,18 @@ def validate_y4(model, qualification=None):
                 record = evidenced.get(fid)
                 rated = number(light["design"].get("input_current_ma"))
                 if (record is None or record["basis"] != "manufacturer_verified"
+                    or not record["source_ref_ids"] or not set(record["source_ref_ids"]).issubset(verified_refs)
                     or rated != number(record["rated_current_ma"])):
-                    ratings_without_proof[fid].append(cid)
+                    ratings_without_proof[(fid, record["basis"] if record else "absent")].append(cid)
                 v = light["design"]["input_voltage"]
                 low, high = number(v.get("min_v")), number(v.get("max_v"))
-                if low is None or high is None:
-                    emit("cc-fixture-voltage-unverified", light["id"],
-                         "Selected LED-module operating/forward-voltage range requires verification.")
-                else:
+                ve = record.get("voltage_evidence") if record else None
+                proven_voltage = bool(ve and ve["basis"] == "manufacturer_verified"
+                    and ve["source_ref_ids"] and set(ve["source_ref_ids"]).issubset(verified_refs)
+                    and low == number(ve["min_v"]) and high == number(ve["max_v"]) and low != high)
+                if not proven_voltage:
+                    voltage_without_proof[fid].append(cid)
+                if low is not None and high is not None:
                     ranges.append((low, high))
                     if low < DEFAULTS["min_v"] or high > DEFAULTS["max_v"] or (dmin is not None and low < dmin) or (dmax is not None and high > dmax):
                         emit("cc-fixture-voltage-incompatible", light["id"],
@@ -191,17 +221,19 @@ def validate_y4(model, qualification=None):
             if len(ranges) == len(attached) and ranges and max(x[0] for x in ranges) > min(x[1] for x in ranges):
                 emit("cc-parallel-voltage-no-overlap", cid,
                      "Parallel fixtures do not have a common operating voltage interval.")
-            if len(attached) > 1:
-                key = tuple(sorted({l["source"]["fixture_type_id"] for l in attached}))
-                combo = combinations.get(key)
-                emergency = any(fixture_types[l["source"]["fixture_type_id"]].get("source_emergency_provision")
-                                for l in attached)
-                if (combo is None or combo["manufacturer_status"] != "fixture_combination_verified"
-                    or not combo["manufacturer_evidence_ref_ids"]
-                    or combo["project_review_status"] != "qualified"):
-                    gaps[("combination", key)].append(cid)
-                if emergency and (combo is None or combo["emergency_status"] != "qualified"):
-                    gaps[("emergency", key)].append(cid)
+            key = tuple(sorted({l["source"]["fixture_type_id"] for l in attached}))
+            combo = combinations.get(key)
+            emergency = any(fixture_types[l["source"]["fixture_type_id"]].get("source_emergency_provision")
+                            for l in attached)
+            if len(attached) > 1 and (combo is None or combo["manufacturer_status"] != "fixture_combination_verified"
+                or not combo["manufacturer_evidence_ref_ids"]
+                or not set(combo["manufacturer_evidence_ref_ids"]).issubset(verified_refs)
+                or combo["project_review_status"] != "qualified"):
+                gaps[("combination", key)].append(cid)
+            if emergency and (combo is None or combo["emergency_status"] != "qualified"
+                or not combo["manufacturer_evidence_ref_ids"]
+                or not set(combo["manufacturer_evidence_ref_ids"]).issubset(verified_refs)):
+                gaps[("emergency", key)].append(cid)
         if cc_in_unit:
             if known_unit_w > DEFAULTS["rated_unit_w"]:
                 emit("qdcd-unit-power-exceeded", unit["id"],
@@ -215,9 +247,13 @@ def validate_y4(model, qualification=None):
             unit_details.append(dict(unit_id=unit["id"], known_watts=str(known_unit_w),
                                      complete=not unit_unknown_w))
 
-    for fid, cids in sorted(ratings_without_proof.items()):
+    for (fid, basis), cids in sorted(ratings_without_proof.items()):
         emit("cc-fixture-rated-ma-unverified", fid,
-             "Fixture rated branch current lacks matching manufacturer-verified evidence in the Y4 qualification register.",
+             f"Fixture rated mA evidence basis: {basis}; manufacturer-verified LED-module source is still required.",
+             evidence_basis=basis, channel_ids=sorted(set(cids)))
+    for fid, cids in sorted(voltage_without_proof.items()):
+        emit("cc-fixture-voltage-unverified", fid,
+             "Selected LED-module forward voltage lacks independently manufacturer-verified operating-range evidence.",
              channel_ids=sorted(set(cids)))
     for (kind, key), cids in sorted(gaps.items()):
         rule = "cc-combination-qualification-pending" if kind == "combination" else "cc-emergency-qualification-pending"
