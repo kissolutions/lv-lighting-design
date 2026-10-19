@@ -4,6 +4,7 @@ from pathlib import Path
 from decimal import Decimal
 from jsonschema import Draft202012Validator
 from generators.model_zone_hierarchy import hierarchy_projection, upgrade_v07, SCHEMA
+from generators.model_equipment_v10 import upgrade_v10
 from generators.model_intake import check_model
 from generators.milestone_markup import calculated_label, render_order, boundary_style, schedules, export_schedules, validate_manifest, reconcile_annotation_return
 from generators.validate_topology import validate
@@ -19,6 +20,19 @@ class MilestoneTests(unittest.TestCase):
         for schema,seed in [('lighting-project-v0.7','lighting-project-v0.7'),('controller-power-topology-v1.1','controller-power-topology-v1.1'),('milestone-markup-v1','milestone-markup-v1')]:
             s=json.loads((ROOT/'schemas'/(schema+'.schema.json')).read_text());Draft202012Validator.check_schema(s)
             self.assertEqual(list(Draft202012Validator(s).iter_errors(json.loads((ROOT/'templates'/(seed+'.template.json')).read_text()))),[])
+    def test_v10_markup_manifest_and_microchannel_export(self):
+        upgraded=upgrade_v10(self.model)
+        # Markup identities must survive version changes; original annotations
+        # are not redrawn or renamed by the compatibility reader.
+        self.assertEqual(validate_manifest(self.manifest,upgraded,self.top),[])
+        baseline=schedules(self.model,self.top)['micro_channels']
+        modern=schedules(upgraded,self.top)['micro_channels']
+        self.assertEqual(baseline,modern)
+        with tempfile.TemporaryDirectory() as folder:
+            out=Path(folder)/'m4-review'
+            export_schedules(upgraded,None,out,4)
+            self.assertTrue((out/'micro_channels.csv').exists())
+
     def test_parent_derived_membership_and_no_duplicate_load(self):
         before=copy.deepcopy(self.model);report=check_model(self.model,'design')
         self.assertTrue(report['checks_pass'],report['issues']);self.assertEqual(self.model,before)
