@@ -112,6 +112,67 @@ class ElectricalModelV10Tests(unittest.TestCase):
         self.assertNotIn("zone-channel-map",{i["rule"] for i in result["issues"]})
         self.assertNotIn("schema",{i["rule"] for i in result["issues"]})
 
+    def test_optional_cc_ma_schedule_metadata_preserves_legacy_projection(self):
+        from generators.export_intake import export_intake
+        import csv
+        import tempfile
+        from decimal import Decimal
+        m=self.model
+        f=m["fixture_types"][0]
+        light=next(x for x in m["light_objects"] if x["source"]["fixture_type_id"]==f["id"])
+        ref=m["source_references"][0]["id"]
+        f.update(lv_cc_rated_current_ma=Decimal("1139.0"),
+                 lv_cc_min_current_ma=Decimal("1100"),
+                 lv_cc_max_current_ma=Decimal("1200"),
+                 lv_cc_current_source_ref_ids=[ref])
+        light["design"].update(input_current_ma=Decimal("1139.00"),
+                  input_current_min_ma=Decimal("1100"),
+                  input_current_max_ma=Decimal("1200"),
+                  input_current_source_ref_ids=[ref])
+        before=copy.deepcopy(m)
+        report=check_v10(m,"intake")
+        self.assertNotIn("schema",{x["rule"] for x in report["issues"]},report["issues"])
+        self.assertEqual(report["legacy_projection_status"],"complete",report["issues"])
+        self.assertNotIn("cc-rated-current-range",{x["rule"] for x in report["issues"]})
+        self.assertEqual(m,before)
+        with tempfile.TemporaryDirectory() as temp:
+            export_intake(m,temp,allow_provisional=True)
+            with open(Path(temp)/"fixture_type_schedule.csv",encoding="utf-8-sig",newline="") as h:
+                fixture_row=next(x for x in csv.DictReader(h) if x["fixture_type_id"]==f["id"])
+            with open(Path(temp)/"light_points.csv",encoding="utf-8-sig",newline="") as h:
+                point_row=next(x for x in csv.DictReader(h) if x["light_id"]==light["id"])
+            self.assertEqual(Decimal(fixture_row["lv_cc_rated_current_ma"]),Decimal("1139"))
+            self.assertEqual(Decimal(fixture_row["lv_cc_min_current_ma"]),Decimal("1100"))
+            self.assertEqual(Decimal(fixture_row["lv_cc_max_current_ma"]),Decimal("1200"))
+            self.assertEqual(fixture_row["lv_cc_current_source_ref_ids"],ref)
+            self.assertEqual(Decimal(point_row["lv_input_current_ma"]),Decimal("1139"))
+            self.assertEqual(Decimal(point_row["lv_input_current_min_ma"]),Decimal("1100"))
+            self.assertEqual(Decimal(point_row["lv_input_current_max_ma"]),Decimal("1200"))
+            self.assertEqual(point_row["lv_input_current_source_ref_ids"],ref)
+
+    def test_fixture_cc_range_contradiction_and_point_mismatch_detected(self):
+        m=self.model
+        f=m["fixture_types"][0]
+        light=next(x for x in m["light_objects"] if x["source"]["fixture_type_id"]==f["id"])
+        f.update(lv_cc_rated_current_ma=1139,lv_cc_min_current_ma=1200,
+                 lv_cc_max_current_ma=1100)
+        light["design"].update(input_power_mode="constant_current",
+                      input_current_ma=1000,
+                      input_current_min_ma=1100,input_current_max_ma=1250)
+        report=check_v10(m,"intake")
+        rules={x["rule"] for x in report["issues"]}
+        self.assertIn("cc-rated-current-range",rules)
+        self.assertIn("cc-selected-current-vs-fixture-type",rules)
+        self.assertEqual(report["legacy_projection_status"],"complete")
+
+    def test_unknown_cc_rating_source_id_does_not_hide_legacy_validation(self):
+        m=self.model
+        f=m["fixture_types"][0]
+        f["lv_cc_current_source_ref_ids"]=["OEM-NOT-IN-SOURCE-REGISTER"]
+        report=check_v10(m,"intake")
+        self.assertIn("cc-current-source-reference",{x["rule"] for x in report["issues"]})
+        self.assertEqual(report["legacy_projection_status"],"complete")
+
     def test_unlisted_zone_channel_detected(self):
         m=self.model
         zone=next(z for z in m["light_zones"] if z["channel_ids"])
