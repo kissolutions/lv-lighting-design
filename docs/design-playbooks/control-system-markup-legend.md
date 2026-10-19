@@ -40,7 +40,7 @@ Draw and label PDnet, SDCnet, PDU power feeds and luminaire routes separately; r
 
 Follow [milestone review packages](milestone-review-packages.md). Display tags OS-01, DS-01, WC-01 and WD-01 distinguish room devices; persistent internal/annotation IDs remain separate. Sensors/wall controls stay PURPLE; QDCD/CIO/SW controls BLUE; PDU RED. Tag changes do not change the `$`/`$D` glyphs.
 
-Final layers are rooms, lights, zones, lv_channels, controllers and cabling. Both device categories live on controllers. Takeoff rooms use light hatches; micro-channel maps use boxes without devices, output tag upper left and ceiling-rounded watts lower right. Finish each markup by bringing text in front of lines/shapes. Enveloped zones/channels use dashed boundaries with other styling preserved; no polyline detours. Calculated display quantities use ceiling to whole numbers while calculations stay precise.
+Final layers are rooms, lights, zones, lv_channels, controllers and cabling. Both device categories live on controllers. Takeoff rooms use light hatches; micro-channel maps use editable fixture-to-fixture chain Polylines rather than boxes, with QDCD output tags per Light Point and separate editable QDCD reach lines on controllers layer. No device symbols in the Package 4 microchannel review. Read the M4 chain owner-return playbook for snapping, ordering, ambiguity rejection and owner-directed output changes and ceiling-rounded watts lower right. Finish each markup by bringing text in front of lines/shapes. Enveloped zones/channels use dashed boundaries with other styling preserved; no polyline detours. Calculated display quantities use ceiling to whole numbers while calculations stay precise.
 
 ## Fixture Power Aggregator Identification
 
