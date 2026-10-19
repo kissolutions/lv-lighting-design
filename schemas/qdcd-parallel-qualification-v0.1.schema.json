@@ -87,6 +87,22 @@
               }
             },
             "description": "Independent LED-module forward-voltage evidence; 36-36 assumed project window is not a manufacturer operating range."
+          },
+          "allowed_min_current_ma": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0,
+            "description": "Optional verified minimum permitted branch mA for the actual selected LED module; not driver minimum."
+          },
+          "allowed_max_current_ma": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0,
+            "description": "Optional verified maximum permitted branch mA for the actual selected LED module; not dimming command range."
           }
         }
       }
