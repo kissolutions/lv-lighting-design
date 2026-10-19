@@ -10,6 +10,7 @@ from __future__ import annotations
 import copy
 import json
 from collections import Counter, defaultdict
+from decimal import Decimal
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
@@ -54,9 +55,10 @@ def check_v10(model, phase="intake"):
     graph constraints are always checked against the actual v0.10 records.
     """
     from .model_bundles import check_v09
-    issues = []
-    def fail(rule, entity, message):
-        issues.append(dict(rule=rule, entity_id=entity, message=message))
+    issues, deferred = [], []
+    def fail(rule, entity, message, *, design_only=False):
+        finding=dict(rule=rule, entity_id=entity, message=message)
+        (deferred if design_only and phase != 'design' else issues).append(finding)
     schema = json.loads(SCHEMA.read_text())
     errors = list(Draft202012Validator(schema).iter_errors(model))
     if errors:
@@ -91,19 +93,19 @@ def check_v10(model, phase="intake"):
             if u["ac_input_phases"] is not None:
                 fail("power-input",u["id"],"DC input has no AC phases.")
             if not u["input_feed_ids"]:
-                fail("dc-input-feeds",u["id"],"DC-fed power unit requires explicit PDU feed references.")
+                fail("dc-input-feeds",u["id"],"DC-fed power unit requires explicit PDU feed references.",design_only=True)
         elif u["input_power_type"] == "ac":
             if u["ac_input_phases"] not in (1,3):
-                fail("power-input",u["id"],"AC-fed unit needs known 1- or 3-phase input at design release.")
+                fail("power-input",u["id"],"AC-fed unit needs known 1- or 3-phase input at design release.",design_only=True)
             if u["input_feed_ids"]:
                 fail("power-input",u["id"],"AC input cannot claim PDU DC feeds.")
         else:
-            fail("power-input",u["id"],"Confirm AC or DC input.")
+            fail("power-input",u["id"],"Confirm AC or DC input.",design_only=True)
         v=u["input_voltage"]
         if v["min_v"] is not None and v["max_v"] is not None and v["min_v"]>v["max_v"]:
             fail("power-input",u["id"],"Invalid input operating voltage range.")
         if not any(v[k] is not None for k in ("nominal_v","min_v","max_v")):
-            fail("power-input",u["id"],"Power unit input voltage not established.")
+            fail("power-input",u["id"],"Power unit input voltage not established.",design_only=True)
     # Equipment/controller and output ownership remain separate from functional
     # zones: each programmable driver's outputs are physical channel objects.
     qdcd_units=set()
@@ -138,7 +140,7 @@ def check_v10(model, phase="intake"):
                 fail("ac-branch-map",uid,"DC-fed QDCD cannot be direct load of AC branch circuit.")
     for uid,u in units.items():
         if u["input_power_type"]=="ac" and len(ac_owners[uid])!=1:
-            fail("ac-branch-map",uid,"AC-fed unit must map to exactly one real AC branch circuit.")
+            fail("ac-branch-map",uid,"AC-fed unit must map to exactly one real AC branch circuit.",design_only=len(ac_owners[uid])==0)
         if u["input_power_type"]=="ac" and len(ac_owners[uid])==1:
             b=branches[ac_owners[uid][0]]
             if b["voltage_v"] is not None and u["input_voltage"]["nominal_v"] is not None and b["voltage_v"]!=u["input_voltage"]["nominal_v"]:
@@ -150,13 +152,13 @@ def check_v10(model, phase="intake"):
     pdu_outputs=defaultdict(list)
     input_claims=set()
     feed_ids=set()
-    delivered=defaultdict(float)
+    delivered=defaultdict(Decimal)
     for p in model["distribution_units"]:
         bid=p["input_branch_circuit_id"]
         if bid is not None and bid not in branches:
             fail("pdu-ac-circuit",p["id"],"PDU references nonexistent real branch circuit.")
         if p["input_power_type"]=="ac" and bid is None:
-            fail("pdu-ac-circuit",p["id"],"AC-fed PDU needs its actual upstream AC branch circuit.")
+            fail("pdu-ac-circuit",p["id"],"AC-fed PDU needs its actual upstream AC branch circuit.",design_only=True)
         if p["input_power_type"]=="dc" and bid is not None:
             fail("pdu-ac-circuit",p["id"],"DC-fed PDU cannot attach directly to an AC branch.")
     for feed in model["dc_power_feeds"]:
@@ -185,8 +187,8 @@ def check_v10(model, phase="intake"):
                 fail("qdcd-input-capacity",fid,"QDCD supports only four input positions.")
         pdu_outputs[feed["source_distribution_unit_id"]].append(feed)
         if feed["demand_watts"] is not None:
-            delivered[feed["source_distribution_unit_id"]]+=feed["demand_watts"]
-        if feed["rated_watts"] is not None and feed["demand_watts"] is not None and feed["demand_watts"]>feed["rated_watts"]:
+            delivered[feed["source_distribution_unit_id"]]+=Decimal(str(feed["demand_watts"]))
+        if feed["rated_watts"] is not None and feed["demand_watts"] is not None and Decimal(str(feed["demand_watts"]))>Decimal(str(feed["rated_watts"])):
             fail("dc-feed-load",fid,"Feed demand exceeds this PDU output rating.")
     claims=defaultdict(list)
     for feed in model["dc_power_feeds"]:
@@ -204,21 +206,21 @@ def check_v10(model, phase="intake"):
             fail("qdcd-input-capacity",uid,"QDCD exceeds four distinct DC input feeds.")
         confirmed=[f["demand_watts"] for f in inbound]
         if any(x is None for x in confirmed):
-            fail("dc-feed-load",uid,"Input demand cannot be fully checked with unknown feed demands.")
+            fail("dc-feed-load",uid,"Input demand cannot be fully checked with unknown feed demands.",design_only=True)
         else:
-            total=sum(confirmed)
-            if u["design_input_watts"] is not None and total<u["design_input_watts"]:
+            total=sum((Decimal(str(value)) for value in confirmed), Decimal(0))
+            if u["design_input_watts"] is not None and total<Decimal(str(u["design_input_watts"])):
                 fail("dc-feed-load",uid,"Summed DC feed demand is below recorded power-unit design input load.")
         known_rated=[f["rated_watts"] for f in inbound]
         if any(x is None for x in known_rated):
-            fail("dc-feed-rating",uid,"Confirm each upstream Class 2 feed rating.")
-        elif u["design_input_watts"] is not None and sum(known_rated)<u["design_input_watts"]:
+            fail("dc-feed-rating",uid,"Confirm each upstream Class 2 feed rating.",design_only=True)
+        elif u["design_input_watts"] is not None and sum((Decimal(str(v)) for v in known_rated), Decimal(0))<Decimal(str(u["design_input_watts"])):
             fail("dc-feed-rating",uid,"Summed available DC feed ratings cannot support power-unit design input.")
     for pid,p in pdus.items():
-        if p["rated_total_output_watts"] is not None and delivered[pid]>p["rated_total_output_watts"]:
+        if p["rated_total_output_watts"] is not None and delivered[pid]>Decimal(str(p["rated_total_output_watts"])):
             fail("pdu-total-load",pid,"Sum of known PDU output demands exceeds equipment rating.")
         if any(f["demand_watts"] is None for f in pdu_outputs[pid]):
-            fail("pdu-total-load",pid,"Cannot certify PDU total without feed demands.")
+            fail("pdu-total-load",pid,"Cannot certify PDU total without feed demands.",design_only=True)
     parent_ids={z["parent_zone_id"] for z in zones.values() if z["parent_zone_id"] is not None}
     for zid,z in zones.items():
         claimed=set(z["channel_ids"])
@@ -312,7 +314,7 @@ def check_v10(model, phase="intake"):
         if rule=="input-compatibility" and owner in dc_unit_ids:
             continue
         issues.append(entry)
-    deferred=legacy_report.get("deferred_issues",[])
+    deferred.extend(legacy_report.get("deferred_issues",[]))
     derived=legacy_report.get("derived") or {}
     derived["equipment_graph"]=dict(real_ac_branches=len(branches),pdus=len(pdus),
                                     remote_power_units=len(units),dc_feeds=len(feed_ids),
@@ -331,19 +333,21 @@ def main():
                         help="Write a new v0.10 JSON copy; never overwrite existing records.")
     parser.add_argument("--phase",choices=("inventory","intake","design"),default="intake")
     args=parser.parse_args()
-    source=json.loads(args.input.read_text())
+    from .validate_model import read_model
+    from .model_intake import model_json
+    source=read_model(args.input)
     if args.upgrade_output is None:
         if source.get("schema_version")!="0.10.0":
             parser.error("Input is not v0.10; use --upgrade-output for an explicit migration copy.")
         result=check_v10(source,args.phase)
-        print(json.dumps(result,indent=2))
+        print(json.dumps(result,indent=2,default=str))
         return 0 if result["checks_pass"] else 1
     if args.upgrade_output.exists():
         parser.error("Refusing to overwrite an existing review/model file.")
     result=upgrade_v10(source)
     Draft202012Validator(json.loads(SCHEMA.read_text())).validate(result)
     args.upgrade_output.parent.mkdir(parents=True,exist_ok=True)
-    args.upgrade_output.write_text(json.dumps(result,indent=2)+"\n")
+    args.upgrade_output.write_text(model_json(result)+"\n")
     print(json.dumps({"written":str(args.upgrade_output),"schema_version":"0.10.0",
                       "warning":"Legacy PDU-as-branch and DC-fed QDCD records require explicit reviewed electrical remapping; no inferred feeds."}))
     return 0
