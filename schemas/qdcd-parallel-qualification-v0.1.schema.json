@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Y4 QDCD parallel-CC qualification evidence v0.1",
+  "title": "Y4 QDCD parallel-CC qualification evidence v0.1 (backward-compatible provenance extension)",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -45,6 +45,48 @@
             "items": {
               "type": "string"
             }
+          },
+          "voltage_evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "basis",
+              "min_v",
+              "max_v",
+              "source_ref_ids"
+            ],
+            "properties": {
+              "basis": {
+                "enum": [
+                  "manufacturer_verified",
+                  "assumed",
+                  "calculated",
+                  "unknown"
+                ]
+              },
+              "min_v": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "exclusiveMinimum": 0
+              },
+              "max_v": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "exclusiveMinimum": 0
+              },
+              "source_ref_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Independent LED-module forward-voltage evidence; 36-36 assumed project window is not a manufacturer operating range."
           }
         }
       }
@@ -137,10 +179,74 @@
               "items": {
                 "type": "string"
               }
+            },
+            "allowed_setpoint_deviation_ma": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional separately documented permissible absolute deviation from summed manufacturer-rated branch mA, NOT regulation accuracy; requires verified per-fixture allowed-current bands and combination approval."
+            },
+            "step_rounding_mode": {
+              "enum": [
+                "nearest",
+                "floor",
+                "ceiling",
+                "exact_only",
+                "unknown"
+              ],
+              "description": "Observed or manufacturer-documented output setpoint rounding semantics; never infer from approximately 100mA."
             }
           }
         }
       ]
+    },
+    "supplemental_sources": {
+      "type": "array",
+      "description": "Optional read-only supplemental manufacturer evidence that postdates frozen canonical project sources.",
+      "uniqueItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "revision",
+          "source_location",
+          "review_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_location": {
+            "type": "string",
+            "minLength": 1
+          },
+          "review_status": {
+            "enum": [
+              "verified_document",
+              "pending"
+            ]
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-fA-F0-9]{64}$"
+          }
+        }
+      }
     }
   }
 }
