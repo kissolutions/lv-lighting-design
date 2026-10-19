@@ -174,6 +174,127 @@ class ProposalZTests(unittest.TestCase):
         self.assertTrue(messages)
         self.assertTrue(all("AC input watts" not in m for m in messages))
 
+    def test_z8_deferred_findings_use_same_x4_z4_z6_filter(self):
+        model = dc_fixture()
+        unit = model["power_units"][0]
+        # Ensure the legacy v0.9 projection generates otherwise-inapplicable
+        # AC phase/nominal voltage basis findings and a valid DC wattage finding.
+        unit["input_voltage"]["nominal_v"] = None
+        unit["rated_input_watts"] = None
+        model["distribution_units"][0]["input_branch_circuit_id"] = None
+        result = check_v10(model, "intake")
+        self.assertEqual(result["legacy_projection_status"], "complete", result["issues"])
+        self.assertIsNotNone(result["derived"])
+        deferred = result["deferred_issues"]
+        self.assertFalse(any(
+            entry["rule"] == "decision-basis"
+            and entry["entity_id"] == "X10-COMPATIBILITY-ONLY"
+            for entry in deferred
+        ), deferred)
+        self.assertFalse(any(
+            entry["rule"] == "power-unit-basis"
+            and entry["entity_id"] == unit["id"]
+            and ("input_phases" in entry["message"]
+                 or "input_voltage_v" in entry["message"])
+            for entry in deferred
+        ), deferred)
+        self.assertTrue(any(
+            entry["rule"] == "power-unit-basis" and
+            entry["entity_id"] == unit["id"] and
+            "rated_input_watts" in entry["message"]
+            for entry in deferred
+        ), deferred)
+        self.assertFalse(any(
+            "AC input watts" in entry["message"]
+            for entry in deferred
+            if entry["rule"] == "power-unit-basis" and
+               entry["entity_id"] == unit["id"]
+        ), deferred)
+        self.assertIn("pdu-ac-circuit", rules(result, "deferred_issues"))
+        self.assertNotIn("pdu-ac-circuit", rules(result))
+
+    def test_z9_milestone_markup_cli_with_topology_and_decimal_feed(self):
+        from generators.milestone_markup import export_schedules
+        from generators.validate_topology import validate
+        model = dc_fixture()
+        model["controllers"][0]["integrated_power_unit_id"] = "PU-SYNTHETIC"
+        model["controllers"][0]["device_class"] = "QDCD remote LED driver"
+        # The accepted topology contains one physical DC feed.
+        topology = json.loads(
+            (ROOT / "templates/controller-power-topology-v1.1.template.json")
+            .read_text()
+        )
+        topology["project_id"] = model["project"]["id"]
+        topology["model_revision"] = model["project"]["model_revision"]
+        def device(id, kind, canonical, outputs):
+            return dict(
+                id=id, kind=kind, canonical_entity_id=canonical,
+                model=None, smart=False, output_count=outputs,
+                rated_total_watts=None, available_input_watts=None,
+                connected_demand_watts=None, bus_demand_ma=0,
+                casambi=False, source_ref_ids=[],
+                location=dict(area_id=None, drawing_page_id=None,
+                              x_pt=None, y_pt=None, mounting="corridor_wall",
+                              owner_review="proposed"),
+                rationale=None, display_tag=id, name=id,
+                room_id=None, review_category="equipment"
+            )
+        topology["devices"] = [
+            device("PDU-DEVICE-1", "PDU", "PDU-001", 16),
+            device("QDCD-DEVICE-1", "QDCD", "CTRL-SYNTHETIC", 4)
+        ]
+        topology["channel_assignments"] = [{
+            "micro_channel_id": "CH-SYNTHETIC-1",
+            "device_id": "QDCD-DEVICE-1",
+            "output": 1, "connected_watts": 35.0,
+            "control_zone_ids": ["ZONE-SYNTHETIC-A"]
+        }]
+        topology["power_feeds"] = [{
+            "id": "FEED-TOPOLOGY", "pdu_id": "PDU-DEVICE-1",
+            "pdu_output": 1, "qdcd_id": "QDCD-DEVICE-1",
+            "qdcd_input": 1, "rated_watts": 100.0,
+            "demand_watts": 50.125, "source_ref_ids": []
+        }]
+        topology["reduced_feed_decisions"] = [{
+            "qdcd_id": "QDCD-DEVICE-1",
+            "rationale": "Synthetic one-input compatibility test only",
+            "decision_id": "DEC-SYNTHETIC", "hardware_verified": True,
+            "source_ref_ids": ["REF-SYNTHETIC"]
+        }]
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            model_path = root / "model.json"
+            topology_path = root / "topology.json"
+            model_path.write_text(model_json(model) + "\n")
+            topology_path.write_text(json.dumps(topology) + "\n")
+            parsed = read_model(model_path)
+            self.assertIsInstance(
+                parsed["dc_power_feeds"][0]["demand_watts"], Decimal
+            )
+            self.assertIsInstance(
+                topology["power_feeds"][0]["demand_watts"], float
+            )
+            before = copy.deepcopy(parsed)
+            findings, _ = validate(topology, parsed)
+            self.assertEqual(findings, [], findings)
+            self.assertEqual(parsed, before)
+            # Verify both the public function and the actual Package 5 CLI.
+            export_schedules(parsed, topology, root / "direct", through=5)
+            self.assertTrue((root / "direct" / "equipment.csv").exists())
+            run = subprocess.run([
+                sys.executable, "-m", "generators.milestone_markup",
+                str(model_path), str(root / "cli"),
+                "--topology", str(topology_path), "--through", "5"
+            ], cwd=ROOT, capture_output=True, text=True)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertTrue((root / "cli" / "equipment.csv").exists())
+            self.assertTrue((root / "cli" / "micro_channels.csv").exists())
+
+            topology["power_feeds"][0]["demand_watts"] = 50.135
+            mismatches, _ = validate(topology, parsed)
+            self.assertIn("equipment-feed-map",
+                          {entry["rule"] for entry in mismatches})
+
     def test_z7_shared_reader_and_microchannel_schedule_v10(self):
         v09 = json.loads(SOURCE.read_text())
         v10 = fixture()
