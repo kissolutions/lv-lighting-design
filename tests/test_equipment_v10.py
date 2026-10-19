@@ -84,7 +84,8 @@ class ElectricalModelV10Tests(unittest.TestCase):
     def test_real_ac_circuit_required_for_pdu(self):
         m,u=self._with_dc_qdcd()
         m["distribution_units"][0]["input_branch_circuit_id"]=None
-        self.assertIn("pdu-ac-circuit",{i["rule"] for i in check_v10(m)["issues"]})
+        self.assertIn("pdu-ac-circuit",{i["rule"] for i in check_v10(m,"design")["issues"]})
+        self.assertIn("pdu-ac-circuit",{i["rule"] for i in check_v10(m,"intake")["deferred_issues"]})
 
     def test_pdu_feed_capacity_and_no_double_claims(self):
         m,u=self._with_dc_qdcd()
