@@ -104,6 +104,31 @@ def check_v10(model, phase="intake"):
             fail("power-input",u["id"],"Invalid input operating voltage range.")
         if not any(v[k] is not None for k in ("nominal_v","min_v","max_v")):
             fail("power-input",u["id"],"Power unit input voltage not established.")
+    # Equipment/controller and output ownership remain separate from functional
+    # zones: each programmable driver's outputs are physical channel objects.
+    qdcd_units=set()
+    for c in controllers.values():
+        uid=c["integrated_power_unit_id"]
+        if uid is not None and uid not in units:
+            fail("controller-power-unit",c["id"],"Controller references an unknown integrated power unit.")
+        if c["device_class"] and "QDCD" in c["device_class"].upper():
+            if uid is None or uid not in units:
+                fail("qdcd-power-unit",c["id"],"QDCD must reference its physical programmable-driver power unit.")
+                continue
+            qdcd_units.add(uid)
+            u=units[uid]
+            if len(u["channels"])>4 or u["number_of_channels"] not in (4,None):
+                fail("qdcd-channel-capacity",c["id"],"QDCD contains four physical driver outputs; model capacity cannot exceed four.")
+            if len(u["input_feed_ids"])>4:
+                fail("qdcd-input-capacity",c["id"],"QDCD has at most four distinct DC input feed ports.")
+            for channel in u["channels"]:
+                if channel["controller_id"] not in (None,c["id"]):
+                    fail("qdcd-channel-map",channel["id"],"QDCD-owned output is mapped to another controller.")
+    for uid,u in units.items():
+        for channel in u["channels"]:
+            controller=controllers.get(channel["controller_id"])
+            if controller is not None and controller["integrated_power_unit_id"] not in (None,uid):
+                fail("controller-power-unit",channel["id"],"Controller's integrated driver does not own this channel.")
     ac_owners=defaultdict(list)
     for b in model["branch_circuits"]:
         for uid in b["power_unit_ids"]:
@@ -165,6 +190,24 @@ def check_v10(model, phase="intake"):
     for uid,u in units.items():
         if set(u["input_feed_ids"])!={f["id"] for f in model["dc_power_feeds"] if f["target_power_unit_id"]==uid}:
             fail("dc-feed-mapping",uid,"Power-unit input feed references do not match actual feed records.")
+    for uid,u in units.items():
+        if u["input_power_type"]!="dc":
+            continue
+        inbound=[f for f in model["dc_power_feeds"] if f["target_power_unit_id"]==uid]
+        if len(inbound)>4 and uid in qdcd_units:
+            fail("qdcd-input-capacity",uid,"QDCD exceeds four distinct DC input feeds.")
+        confirmed=[f["demand_watts"] for f in inbound]
+        if any(x is None for x in confirmed):
+            fail("dc-feed-load",uid,"Input demand cannot be fully checked with unknown feed demands.")
+        else:
+            total=sum(confirmed)
+            if u["design_input_watts"] is not None and total<u["design_input_watts"]:
+                fail("dc-feed-load",uid,"Summed DC feed demand is below recorded power-unit design input load.")
+        known_rated=[f["rated_watts"] for f in inbound]
+        if any(x is None for x in known_rated):
+            fail("dc-feed-rating",uid,"Confirm each upstream Class 2 feed rating.")
+        elif u["design_input_watts"] is not None and sum(known_rated)<u["design_input_watts"]:
+            fail("dc-feed-rating",uid,"Summed available DC feed ratings cannot support power-unit design input.")
     for pid,p in pdus.items():
         if p["rated_total_output_watts"] is not None and delivered[pid]>p["rated_total_output_watts"]:
             fail("pdu-total-load",pid,"Sum of known PDU output demands exceeds equipment rating.")
