@@ -220,6 +220,10 @@ def pack(model, policy):
 
     The approved CC cohort entries are scoped physical evidence supplied by
     the engineer, not implied from 'driverless', nominal V, or parallel wiring.
+    SmartDC's published parallel CC application requires the *same rated mA*
+    on every luminaire sharing the output (4 A and 100 W per channel max).
+    The fixture's recorded input_current_ma must be a verified rated branch
+    current; a calculated watts/nominal-volts estimate is not proof of rating.
     """
     target = decimal(policy.get("target_watts", 90), "target_watts")
     limit = decimal(policy.get("design_max_watts", 95), "design_max_watts")
@@ -321,12 +325,16 @@ def pack(model, policy):
                 vmax = decimal(voltage.get("max_v"), "fixture_max_voltage")
                 if not (min_v <= vmin <= nominal <= vmax <= max_v):
                     raise ValueError("Fixture voltage requirement outside supported driver compliance")
-                # No inferred acceptance of different LED characteristics.
+                # SmartDC QDCD 4CHDR1 parallel CC installation drawing,
+                # Rev A2 (2025-06-30): luminaires sharing one output MUST
+                # have the same rated mA. An approved compatibility cohort
+                # or identical nominal voltage never overrides that rule.
+                # Never infer a branch's nameplate rating from watts/volts.
                 key = (zone_by_light[lid], electrical, mode, str(nominal), compat,
-                       cohort if cohort else "UNVERIFIED-" + lid)
+                       cohort if cohort else "UNVERIFIED-" + lid, str(branch_ma))
             else:
                 branch_ma = None
-                key = (zone_by_light[lid], electrical, mode, str(nominal), compat, "CV")
+                key = (zone_by_light[lid], electrical, mode, str(nominal), compat, "CV", "n/a")
             source = light.get("source") or {}
             groups[key].append(dict(id=lid, watts=w, branch_ma=branch_ma,
                                     vmin=voltage.get("min_v"), vmax=voltage.get("max_v"),
@@ -339,7 +347,7 @@ def pack(model, policy):
     proposals = []
     optimality = []
     for key, items in sorted(groups.items()):
-        zone, electrical, mode, nominal, compat, cohort = key
+        zone, electrical, mode, nominal, compat, cohort, branch_rating_ma = key
         ceiling = limit
         if mode == "constant_current":
             # Regulated output current must remain in the evidenced range.
@@ -367,6 +375,9 @@ def pack(model, policy):
                                   compatibility_group=compat,
                                   topology="parallel", watts=float(watts),
                                   current_setpoint_ma=float(current_ma) if current_ma is not None else None,
+                                  cc_branch_rated_current_ma=(
+                                      float(decimal(branch_rating_ma, "rated_branch_current_ma"))
+                                      if mode == "constant_current" else None),
                                   utilization_pct=float(watts / rated * 100),
                                   unused_design_watts=float(limit - watts),
                                   target_deviation_watts=float(abs(target - watts)),
