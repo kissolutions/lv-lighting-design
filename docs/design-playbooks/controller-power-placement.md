@@ -17,6 +17,20 @@ related_pages:
 
 **M4 channel-gate update (2026-10-18):** Before Phase 1, run [PROC-M4-CHANNEL-PACK](m4-channel-packing-v0.1.md) on the accepted endpoint zones and selected fixture input data. Do not designate a channel merely because one fixture's load is <95 W; minimize feasible channels with a 90 W utilization target and a hard 95 W maximum. Keep physically daisy-chained wiring electrically parallel. Manufacturer-qualified CC parallel driver operation and operating limits are mandatory evidence; unresolved combinations block final acceptance. Reconcile packer candidate output with the canonical v0.9 model validator and obtain owner acceptance before final physical controller/output placement.
 
+## Canonical equipment mapping — X1/X2/X4 (v0.10)
+
+**New canonical contract:** [Electrical Equipment Graph v0.10](../ontology/canonical-model/electrical-equipment-graph-v0.10.md).
+
+- `branch_circuits[]` means **actual AC panel circuits** only. Never use an EPS PDU as a branch-circuit stand-in.
+- `distribution_units[]` represents each PDU as physical AC-to-DC equipment, with its actual upstream AC circuit reference.
+- `dc_power_feeds[]` represents a distinct physical PDU output -> QDCD input connection, with source/destination port identity and demand/rating.
+- `power_units[]` represents the physical LED-driver power stage. For a QDCD, this is **DC-fed** (`input_power_type=dc`, `ac_input_phases=null`), owns its four physical microchannels, and is referenced by the QDCD `controller.integrated_power_unit_id`.
+- Each endpoint `light_zone.channel_ids[]` references **all** its independently commanded microchannels. Each channel refers to the physical `controller_id` and `controller_output`; there is no single controller/output scalar on the zone.
+
+**Worked example:** `BC-1 (120 V AC) -> PDU-1 -> FEED-01 (PDU output 3) -> QDCD-1 (input 2) -> CH-101/CH-102 (physical QDCD outputs) -> Z-1100-A (one functional endpoint zone)`. Another QDCD can serve further channels in that same zone. Fixture grouping/owner changes remain governed by accepted M4 packing and markups.
+
+**Adoption gate:** Do not silently remap accepted Timmons or YMCA projects. Run explicit `upgrade_v10`, then reconcile legacy PDU aliases, actual AC circuits, DC feed endpoint/capacity evidence and output assignments with the original project/topology companion before release. Existing accepted drawings remain intact; version 0.9 stays valid for its original contracts. The v0.10 graph checker does not replace the manufacturer-evidence gate for CC output sharing, and the physical topology companion/export workflows require version-aware reconciliation.
+
 ## 1. Purpose and Use
 
 Run after micro LV channels have already been designated under the current v0.6 electrical contract. Read the [SmartDC/EPS device index](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/smartdc-allocation-index.md) and each selected device mini playbook. General hardware knowledge stays upstream; project assignments and markup stay here.
