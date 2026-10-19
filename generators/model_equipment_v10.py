@@ -170,13 +170,14 @@ def check_v10(model, phase="intake"):
             fail("pdu-total-load",pid,"Sum of known PDU output demands exceeds equipment rating.")
         if any(f["demand_watts"] is None for f in pdu_outputs[pid]):
             fail("pdu-total-load",pid,"Cannot certify PDU total without feed demands.")
+    parent_ids={z["parent_zone_id"] for z in zones.values() if z["parent_zone_id"] is not None}
     for zid,z in zones.items():
         claimed=set(z["channel_ids"])
         actual={cid for cid,c in channels.items() if c["light_zone_id"]==zid}
         if claimed!=actual:
             fail("zone-channel-map",zid,"Channel IDs must exactly equal channels whose light_zone_id is this zone.")
-        if z["parent_zone_id"] is not None and claimed:
-            fail("zone-channel-map",zid,"Parent zone cannot own physical output channels.")
+        if zid in parent_ids and claimed:
+            fail("zone-channel-map",zid,"Container/parent zone cannot own physical output channels.")
         for cid in claimed:
             c=channels.get(cid)
             if c is None:fail("zone-channel-map",zid,f"Unknown channel {cid}")
