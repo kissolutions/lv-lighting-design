@@ -125,7 +125,7 @@ def export_intake(model, output_dir, allow_provisional=False, dimming_register=N
          'blocking_phases', 'status', 'resolution', 'decision_id'],
          [{**i, 'affects_ids': ';'.join(i['affects_ids']), 'source_ref_ids': ';'.join(i['source_ref_ids']),
            'blocking_phases': ';'.join(i.get('blocking_phases', ('inventory', 'intake', 'design')))} for i in model['open_items']])
-    if original_version == '0.9.0':
+    if original_version in ('0.9.0', '0.10.0'):
         view = derived['bundle_routes']
         fields = ['bundle_id','flow','serves','controllers_terminating','cables_terminating',
                   'downstream_controllers','downstream_cables','cable_ids','length_ft']
