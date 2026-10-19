@@ -159,6 +159,36 @@ class Y4Tests(unittest.TestCase):
         q["combination_qualifications"][0]["manufacturer_evidence_ref_ids"]=["POST-FREEZE-A2"]
         self.assertNotIn("cc-combination-qualification-pending",self.rules(q))
 
+    def test_documented_step_tolerance_with_module_range_and_combination_proof(self):
+        q=copy.deepcopy(self.q)
+        q["driver_programming"]["allowed_setpoint_deviation_ma"]=100
+        q["fixture_evidence"][0]["allowed_min_current_ma"]=950
+        q["fixture_evidence"][0]["allowed_max_current_ma"]=1100
+        self.ch["output_current_ma"]=2100
+        self.assertNotIn("cc-output-sum-mismatch",self.rules(q))
+        self.assertNotIn("cc-output-step-incompatible",self.rules(q))
+        self.ch["output_current_ma"]=2200
+        self.assertIn("cc-output-sum-mismatch",self.rules(q))
+
+    def test_tolerance_must_not_waive_unproven_current_sharing(self):
+        q=copy.deepcopy(self.q)
+        q["driver_programming"]["allowed_setpoint_deviation_ma"]=100
+        self.ch["output_current_ma"]=2100
+        self.assertIn("cc-output-sum-mismatch",self.rules(q))
+        q["fixture_evidence"][0]["allowed_min_current_ma"]=950
+        q["fixture_evidence"][0]["allowed_max_current_ma"]=1100
+        q["combination_qualifications"][0]["manufacturer_status"]="general_topology_only"
+        self.assertIn("cc-output-sum-mismatch",self.rules(q))
+
+    def test_tolerance_must_not_waive_calculated_ratings(self):
+        q=copy.deepcopy(self.q)
+        q["driver_programming"]["allowed_setpoint_deviation_ma"]=100
+        q["fixture_evidence"][0]["allowed_min_current_ma"]=950
+        q["fixture_evidence"][0]["allowed_max_current_ma"]=1100
+        q["fixture_evidence"][0]["basis"]="calculated"
+        self.ch["output_current_ma"]=2100
+        self.assertIn("cc-output-sum-mismatch",self.rules(q))
+
     def test_read_only_and_stable_validation_shape(self):
         prior=copy.deepcopy(self.m)
         result=validate_y4(self.m,self.q)
