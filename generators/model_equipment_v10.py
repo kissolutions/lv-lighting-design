@@ -397,10 +397,23 @@ def check_v10(model, phase="intake"):
              "The v0.9 compatibility checker stopped before downstream electrical "
              "checks; its reduced finding count is incomplete and cannot be "
              "treated as a passing design review.")
+    # Y4 supersedes only the two legacy CC warnings; keep all other validation.
+    # The manufacturer authorizes parallel topology subject to specific fixture
+    # qualification, which is assessed independently against canonical equipment.
+    from .qdcd_y4 import validate_y4
+    y4_report = validate_y4(model)
     # Legacy 'power-unit-basis' (AC input requirement) and
     # zone-output scalar assignment errors are inapplicable to the new graph.
     # Keep *all other* legacy findings visible.
     dc_unit_ids={uid for uid,u in units.items() if u["input_power_type"]=="dc"}
+
+    # Legacy compatibility findings for QDCD CC channels/fixtures only.
+    # Unrelated legacy fixture current mismatches must not be suppressed.
+    qdcd_cc_ids = {channel["id"] for unit in units.values() if unit["id"] in qdcd_units
+                   for channel in unit["channels"] if channel["output_power_mode"] == "constant_current"}
+    y4_legacy_cc_entities = set(qdcd_cc_ids)
+    y4_legacy_cc_entities.update(light["id"] for light in model["light_objects"]
+                                 if light["design"]["channel_id"] in qdcd_cc_ids)
 
     def applicable_legacy_findings(findings):
         """Filter the same obsolete v0.9 rules from issues AND deferred issues.
@@ -415,6 +428,8 @@ def check_v10(model, phase="intake"):
             if rule=="decision-basis" and owner=="X10-COMPATIBILITY-ONLY" and orphan:
                 # Only the synthetic, unsaved v0.9 projection container lacks
                 # an owner decision. Never exempt real branches or equipment.
+                continue
+            if rule in ("cc-topology-review", "current-compatibility") and owner in y4_legacy_cc_entities:
                 continue
             if rule=="controller-assignment":
                 # v0.10 zone.channel_ids replaces the legacy scalar assignment.
@@ -431,12 +446,14 @@ def check_v10(model, phase="intake"):
 
     issues.extend(applicable_legacy_findings(legacy_report["issues"]))
     deferred.extend(applicable_legacy_findings(legacy_report.get("deferred_issues",[])))
+    (issues if phase == "design" else deferred).extend(y4_report["findings"])
     derived=legacy_report.get("derived")
     if derived is not None:
         derived["equipment_graph"]=dict(real_ac_branches=len(branches),pdus=len(pdus),
                                         remote_power_units=len(units),dc_feeds=len(feed_ids),
                                         zone_channel_ids={zid:list(z["channel_ids"]) for zid,z in zones.items()})
     return dict(checks_pass=not issues,phase=phase,issues=issues,
+                y4_validation_summary=y4_report["summary"],
                 deferred_issues=deferred,derived=derived,
                 legacy_projection_status="halted" if legacy_incomplete else "complete",
                 review_note=("Legacy downstream validation halted: the displayed issue count is incomplete."
