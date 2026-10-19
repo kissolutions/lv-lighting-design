@@ -234,7 +234,7 @@ def check_v10(model, phase="intake"):
         for unit in orphan:
             u=copy.deepcopy(unit)
             u["input_voltage_v"]=u.pop("input_voltage")["nominal_v"]
-            u["input_phases"]=None
+            u["input_phases"]=u.pop("ac_input_phases") if u["input_power_type"]=="ac" else None
             u.pop("input_power_type");u.pop("input_feed_ids")
             synthetic["power_units"].append(u)
         legacy["branch_circuits"].append(synthetic)
