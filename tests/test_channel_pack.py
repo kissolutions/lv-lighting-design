@@ -147,6 +147,8 @@ class ChannelPackingTests(unittest.TestCase):
         self.assertEqual(result["totals"]["proposed_channel_count"],2)
         self.assertEqual(result["totals"]["total_input_watts"],160)
         self.assertEqual(result["totals"]["packed_watts"],160)
+        self.assertEqual(result["totals"]["total_geometry_mst_span_pt"],20)
+        self.assertTrue(all(ch["geometry_mst_span_pt"]==10 for ch in result["proposed_channels"]))
 
     def test_y5_coordinate_rotation_does_not_change_grouping(self):
         m,p=sample([40,40,40,40])
