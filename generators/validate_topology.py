@@ -6,6 +6,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from jsonschema import Draft202012Validator
 
+from .model_access import iter_power_units
+
 SCHEMA = Path(__file__).resolve().parents[1] / 'schemas/controller-power-topology-v1.schema.json'
 
 
@@ -32,14 +34,11 @@ def validate(topology, model, final=False):
     zones = {r['id'] for r in model.get('light_zones', [])}
     pages = {r['id']: r for r in model.get('drawing_pages', [])}
     refs = {r['id'] for r in model.get('source_references', [])}
+    units = list(iter_power_units(model))
+    canonical.update(u['id'] for u in units)
     if model.get('schema_version') == '0.10.0':
-        units = model.get('power_units', [])
-        canonical.update(u['id'] for u in units)
-        canonical.update(d['id'] for d in model.get('distribution_units', []))
-        canonical.update(f['id'] for f in model.get('dc_power_feeds', []))
-    else:
-        units = [u for b in model.get('branch_circuits', []) for u in b['power_units']]
-        canonical.update(u['id'] for u in units)
+        canonical.update(d['id'] for d in model['distribution_units'])
+        canonical.update(f['id'] for f in model['dc_power_feeds'])
     channels = {c['id']:c for u in units for c in u['channels']}
     canonical.update(channels)
     if topology['project_id'] != model['project']['id']:
