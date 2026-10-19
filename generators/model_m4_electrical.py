@@ -63,8 +63,21 @@ def m4_interface_issues(model):
         if channel["validation_profile"] == "class2_100w_95w_design" and channel["design_limit_watts"] not in (None, 95):
             fail("channel-design-profile", cid, "The M4 Class 2 profile uses a 95 W maximum design limit on a 100 W rated channel.")
         if mode == "constant_current" and len(lights) > 1:
+            # SmartDC QDCD 4CHDR1, parallel static-CCT constant-current
+            # application wiring, Rev A2 (2025-06-30): every luminaire
+            # sharing the channel must have the SAME rated mA. This is
+            # independent of the channel setpoint (sum of branch mA) and
+            # cannot be inferred merely from equal nominal voltage.
+            branch_ratings = [light["design"]["input_current_ma"] for light in lights
+                              if light["design"]["input_power_mode"] == "constant_current"]
+            if len(branch_ratings) != len(lights) or any(x is None for x in branch_ratings):
+                fail("cc-parallel-rated-current-missing", cid,
+                     "Every parallel CC luminaire needs a verified nameplate branch mA rating; matching nominal voltage is insufficient.")
+            elif len(set(branch_ratings)) > 1:
+                fail("cc-parallel-rated-current-mismatch", cid,
+                     "SmartDC QDCD parallel CC application requires the same rated mA for each luminaire on one output, regardless of the summed output current setpoint.")
             fail("cc-topology-review", cid,
-                 "Multiple physical fixtures on one CC output require explicit supported topology evidence before mixed-fixture grouping is accepted.")
+                 "Multiple physical fixtures on one CC output require supported configuration evidence; same branch mA rating and aggregate current/power limits must be verified.")
 
         actual_zones = {light_zone.get(l["id"]) for l in lights}
         if None in actual_zones:
