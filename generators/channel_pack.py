@@ -331,7 +331,7 @@ def pack(model, policy):
                 # or identical nominal voltage never overrides that rule.
                 # Never infer a branch's nameplate rating from watts/volts.
                 key = (zone_by_light[lid], electrical, mode, str(nominal), compat,
-                       cohort if cohort else "UNVERIFIED-" + lid, str(branch_ma))
+                       cohort if cohort else "UNVERIFIED-" + lid, str(branch_ma.normalize()))
             else:
                 branch_ma = None
                 key = (zone_by_light[lid], electrical, mode, str(nominal), compat, "CV", "n/a")
