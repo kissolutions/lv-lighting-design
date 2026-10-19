@@ -48,4 +48,41 @@ class TopologyTests(unittest.TestCase):
         rules={i['rule'] for i in validate(self.top,self.model,final=True)[0]}
         self.assertIn('owner-location',rules);self.assertIn('input-budget',rules)
 
+
+    def _as_v10(self):
+        self.model['schema_version']='0.10.0'
+        self.model['branch_circuits']=[dict(id='BC-1',power_unit_ids=[])]
+        self.model['power_units']=[dict(id='PU-1',channels=[
+            dict(id='CH-1',light_zone_id='Z-1',controller_id='CTRL-1',controller_output=1),
+            dict(id='CH-2',light_zone_id='Z-1',controller_id='CTRL-1',controller_output=2)])]
+        self.model['controllers']=[dict(id='CTRL-1',integrated_power_unit_id='PU-1')]
+        self.model['distribution_units']=[dict(id='PDU-EPS-1')]
+        self.model['dc_power_feeds']=[dict(
+            id='CANON-F'+str(i),source_distribution_unit_id='PDU-EPS-1',
+            source_output=i,target_power_unit_id='PU-1',target_input=i,
+            demand_watts=45,rated_watts=100) for i in range(1,5)]
+        self.top['devices'][0]['canonical_entity_id']='PDU-EPS-1'
+        self.top['devices'][1]['canonical_entity_id']='CTRL-1'
+
+    def test_v10_companion_maps_real_pdu_qdcd_ports(self):
+        self._as_v10()
+        issues,_=validate(self.top,self.model)
+        self.assertFalse(issues,issues)
+
+    def test_v10_companion_detects_canonical_port_mismatch(self):
+        self._as_v10()
+        self.model['dc_power_feeds'][0]['source_output']=6
+        rules=self.rules()
+        self.assertIn('equipment-feed-map',rules)
+
+    def test_v10_companion_requires_pdu_equipment_identity(self):
+        self._as_v10()
+        self.top['devices'][0]['canonical_entity_id']=None
+        self.assertIn('equipment-graph-map',self.rules())
+
+    def test_v10_companion_rejects_output_mismatch(self):
+        self._as_v10()
+        self.model['power_units'][0]['channels'][0]['controller_output']=3
+        self.assertIn('equipment-output-map',self.rules())
+
 if __name__=='__main__':unittest.main()
