@@ -1,6 +1,6 @@
 # Y4 native QDCD parallel constant-current validation
 
-Status: development branch `y4/qualified-parallel-cc-validation`. This implementation is an independent, read-only engineering validator, **not authorization to redesign an accepted M4 project**.
+Status: v0.10 native Y4 electrical qualifier, regression accepted 2026-10-19. This implementation is an independent, read-only engineering validator, **not authorization to redesign an accepted M4 project**.
 
 ## Manufacturer support vs fixture-specific proof
 
@@ -14,9 +14,10 @@ The native Y4 checker `generators.qdcd_y4.validate_y4` checks actual v0.10 QDCD-
 
 `schemas/qdcd-parallel-qualification-v0.1.schema.json` is a separate, versioned companion; no old M4 project data is migrated or silently amended. It records:
 
-- `fixture_evidence`: fixture type, manufacturer-verified **selected LED-interface** branch mA vs calculated/unverified, and source IDs.
+- `fixture_evidence`: fixture type, manufacturer-verified **selected LED-interface** branch mA vs calculated/unverified, optional manufacturer-confirmed branch operating mA band and voltage-range evidence, and source IDs.
 - `combination_qualifications`: actual fixture type membership, manufacturer fixture-combination approval vs general-topology-only evidence, owner decision ID, project engineering review and emergency qualification.
-- `driver_programming`: manufacturer-verified current step, grid origin and source IDs. The datasheet's *approximately* 100 mA increment is not sufficient to assign an exact step without manufacturer confirmation.
+- `driver_programming`: manufacturer-verified current step, grid origin, optional separately documented current-sum deviation and source IDs. A nonzero deviation can only pass with manufacturer-verified fixture ratings and allowed branch-current bands, current-sharing combination qualification where multi-fixture, and valid programmed grid. The datasheet's *approximately* 100 mA increment is not sufficient to assign an exact step without manufacturer confirmation.
+- `supplemental_sources`: reviewed manufacturer documents obtained after the frozen project model was accepted, without modifying that model. General parallel examples do not count as particular combination qualification.
 
 A valid mA sum, equal numeric ratings, or owner acceptance of the markup never upgrades an unqualified combination to manufacturer-verified status. Missing qualification is reported grouped by fixture-type combination; actual electrical violations remain channel-specific. An engineering-approved exception must never be mislabeled manufacturer-verified.
 
@@ -33,6 +34,12 @@ The standalone output command rejects an existing output path. The canonical v0.
 ## Timmons read-only acceptance gate
 
 At M4-R14, expect 215 Light Points, 74 endpoint zones, 104 microchannels, 29 QDCDs, 6 PDUs and 91 DC feeds. Capture old **79 `cc-topology-review` + 190 `current-compatibility` = 269** findings and compare to new counts, itemized channel conflicts and evidence questions. Examine `CH-L069`, `CH-L119` and `CH-L144` for branch sums below the published QDCD 1 A minimum. Determine which fixture ratings derive from original manufacturer documentation and which were estimated from watts/nominal voltage. Do **not** change M4-R14 groups, chain geometry, QDCD assignment, PDFs or owner's markup history. Obtain the accepted canonical project model and actual manufacturer fixture rating records before claiming this acceptance test complete.
+
+## Timmons Y4 beta acceptance (2026-10-19)
+
+The accepted M4-R13 physical model used for M4-R14 testing was unchanged before and after validation. The original 79 topology and 190 per-light current false positives (269 total) were superseded by **129 Y4 CC findings** after beta corrections, while 117 unrelated findings remained identical. The corrected count includes 29 manufacturer-mA provenance gaps, 29 unverified forward-voltage cohorts, 29 unknown driver step settings, 26 fixture-combination qualifications, 13 emergency qualifications, and 3 below-1 A singleton pendant channels. The remaining potential electrical conflicts are CH-L069, CH-L119 and CH-L144; these mA values are based on W/36 V assumptions, not product datasheets.
+
+**Framework accepted for main branch:** no automatic project design approval follows. The three pendant conditions remain unresolved owner review items, and all fixture-specific evidence questions remain open.
 
 ## Limits before design release
 
