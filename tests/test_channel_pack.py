@@ -71,6 +71,43 @@ class ChannelPackingTests(unittest.TestCase):
         self.assertAlmostEqual(out["current_setpoint_ma"],2500,delta=.01)
         self.assertEqual(out["cc_parallel_evidence_cohort"],"OEM-COHORT")
 
+    def test_qdcd_parallel_requires_identical_branch_rated_ma(self):
+        # Manufacturer Rev A2: parallel CC luminaires need the same mA rating.
+        m,p=sample([36,39.6],mode="constant_current")
+        p["approved_parallel_cc_cohorts"]=[dict(
+            id="SAME-V-NOT-SAME-MA",approved=True,
+            evidence_ref_ids=["SMARTDC-QDCD-STATIC-CC-PARALLEL-A2"],
+            light_ids=["L001","L002"])]
+        result=pack(m,p)
+        self.assertEqual(result["totals"]["proposed_channel_count"],2)
+        self.assertEqual({tuple(c["light_ids"]) for c in result["proposed_channels"]},
+                         {("L001",),("L002",)})
+        self.assertEqual({c["cc_branch_rated_current_ma"] for c in result["proposed_channels"]},{1000,1100})
+        self.assertEqual(result["totals"]["packed_watts"],75.6)
+        self.assertTrue(result["totals"]["load_balance_verified"])
+
+    def test_equal_rated_ma_distinct_wattages_are_not_automatically_separated(self):
+        m,p=sample([36,35],mode="constant_current")
+        m["light_objects"][1]["design"]["input_current_ma"]=1000
+        p["approved_parallel_cc_cohorts"]=[dict(
+            id="VERIFIED",approved=True,evidence_ref_ids=["OEM-APPROVAL"],
+            light_ids=["L001","L002"])]
+        result=pack(m,p)
+        self.assertEqual(result["totals"]["proposed_channel_count"],1)
+        self.assertEqual(result["proposed_channels"][0]["cc_branch_rated_current_ma"],1000)
+        self.assertEqual(result["proposed_channels"][0]["current_setpoint_ma"],2000)
+
+    def test_equal_numeric_ratings_different_decimal_formats_share(self):
+        from decimal import Decimal
+        m,p=sample([36,36],mode="constant_current")
+        m["light_objects"][1]["design"]["input_current_ma"]=Decimal("1000.000")
+        p["approved_parallel_cc_cohorts"]=[dict(
+            id="VERIFIED",approved=True,evidence_ref_ids=["OEM-APPROVAL"],
+            light_ids=["L001","L002"])]
+        result=pack(m,p)
+        self.assertEqual(result["totals"]["proposed_channel_count"],1)
+        self.assertEqual(result["proposed_channels"][0]["current_setpoint_ma"],2000)
+
     def test_driver_cc_minimum_current_enforced(self):
         m,p=sample([18,18],mode="constant_current")
         p["approved_parallel_cc_cohorts"]=[dict(id="OEM-COHORT",approved=True,
