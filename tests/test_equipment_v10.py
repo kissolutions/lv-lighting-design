@@ -63,7 +63,7 @@ class ElectricalModelV10Tests(unittest.TestCase):
         m,u=self._with_dc_qdcd()
         report=check_v10(m)
         rules={i["rule"] for i in report["issues"]}
-        self.assertNotIn("schema",rules)
+        self.assertNotIn("schema",rules,report["issues"][:12])
         self.assertNotIn("power-input",rules)
         self.assertNotIn("ac-branch-map",rules)
         self.assertNotIn("dc-feed-mapping",rules)
