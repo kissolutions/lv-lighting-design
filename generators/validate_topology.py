@@ -3,6 +3,7 @@ import argparse
 import json
 import math
 from collections import Counter, defaultdict
+from decimal import Decimal
 from pathlib import Path
 from jsonschema import Draft202012Validator
 
@@ -149,7 +150,8 @@ def validate(topology, model, final=False):
             else:
                 for field in ('rated_watts','demand_watts'):
                     a=f[field];b=canonical_feed[field]
-                    if a is not None and b is not None and abs(a-b)>0.000001:
+                    if (a is not None and b is not None and
+                        abs(Decimal(str(a))-Decimal(str(b)))>Decimal('0.000001')):
                         fail('equipment-feed-map',f['id'],f'{field} disagrees with the canonical feed.')
         for f in model['dc_power_feeds']:
             endpoint=(f['source_distribution_unit_id'],f['source_output'],
