@@ -74,7 +74,7 @@ class Y4Tests(unittest.TestCase):
 
     def test_same_voltage_unequal_branch_ma_remains_engineering_conflict(self):
         self.b["design"]["input_current_ma"]=1100
-        self.ch["output_current_ma"]=2100
+        self.ch["output_current_ma"]=2150
         rules=self.rules()
         self.assertIn("cc-parallel-rated-current-mismatch",rules)
         self.assertIn("cc-output-step-incompatible",rules)
@@ -87,9 +87,11 @@ class Y4Tests(unittest.TestCase):
         self.b["design"]["channel_id"]=None
         self.ch["output_current_ma"]=900
         self.assertIn("cc-output-below-driver-min",self.rules())
+        self.assertIn("cc-branch-sum-below-driver-min",self.rules())
         self.a["design"]["input_current_ma"]=4500
         self.ch["output_current_ma"]=4500
         self.assertIn("cc-output-above-driver-max",self.rules())
+        self.assertIn("cc-branch-sum-above-driver-max",self.rules())
 
     def test_missing_exact_programming_evidence_is_not_assumed(self):
         q=copy.deepcopy(self.q)
@@ -109,10 +111,8 @@ class Y4Tests(unittest.TestCase):
         self.assertIn("qdcd-design-power-exceeded",self.rules())
         self.a["design"]["load"]["watts"]=60
         self.assertIn("qdcd-rated-power-exceeded",self.rules())
-        # Unit total power also counts CV channels with assigned loads.
-        for light in self.m["light_objects"][2:]:
-            light["design"]["channel_id"] = self.ch["id"]
-            light["design"]["load"]["watts"]=100
+        # Aggregate limit applies independently of an individual over-100 W channel.
+        self.a["design"]["load"]["watts"]=401
         self.assertIn("qdcd-unit-power-exceeded",self.rules())
 
     def test_general_parallel_document_is_not_fixture_combination_proof(self):
