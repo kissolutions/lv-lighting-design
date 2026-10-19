@@ -134,6 +134,60 @@ class ChannelPackingTests(unittest.TestCase):
         self.assertEqual(result["totals"]["packed_watts"],20)
         self.assertFalse(result["totals"]["load_balance_verified"])
 
+    def test_y5_geometry_breaks_equal_watt_ties_without_changing_count(self):
+        m,p=sample([40,40,40,40])
+        points=[(0,0),(100,0),(0,10),(100,10)]
+        for light,(x,y) in zip(m["light_objects"],points):
+            light["source"]=dict(drawing_page_id="PAGE-1",
+                                 drawing_anchor=dict(x_pt=x,y_pt=y))
+        result=pack(m,p)
+        groups={frozenset(ch["light_ids"]) for ch in result["proposed_channels"]}
+        self.assertEqual(groups,{frozenset(("L001","L003")),
+                                 frozenset(("L002","L004"))})
+        self.assertEqual(result["totals"]["proposed_channel_count"],2)
+        self.assertEqual(result["totals"]["total_input_watts"],160)
+        self.assertEqual(result["totals"]["packed_watts"],160)
+
+    def test_y5_coordinate_rotation_does_not_change_grouping(self):
+        m,p=sample([40,40,40,40])
+        points=[(0,0),(100,0),(0,10),(100,10)]
+        for light,(x,y) in zip(m["light_objects"],points):
+            light["source"]=dict(drawing_page_id="PAGE-1",
+                                 drawing_anchor=dict(x_pt=x,y_pt=y))
+        first=pack(m,p)
+        for light in m["light_objects"]:
+            point=light["source"]["drawing_anchor"]
+            point["x_pt"],point["y_pt"]=-point["y_pt"],point["x_pt"]
+        rotated=pack(m,p)
+        self.assertEqual(
+            {frozenset(ch["light_ids"]) for ch in first["proposed_channels"]},
+            {frozenset(ch["light_ids"]) for ch in rotated["proposed_channels"]})
+
+    def test_y5_cc_geometry_tie_preserves_additive_current(self):
+        m,p=sample([40,40,40,40],mode="constant_current")
+        p["approved_parallel_cc_cohorts"]=[dict(
+            id="OEM-COHORT",approved=True,evidence_ref_ids=["OEM-APPROVAL"],
+            light_ids=[x["id"] for x in m["light_objects"]])]
+        points=[(0,0),(100,0),(0,10),(100,10)]
+        for light,(x,y) in zip(m["light_objects"],points):
+            light["source"]=dict(drawing_page_id="PAGE-1",
+                                 drawing_anchor=dict(x_pt=x,y_pt=y))
+        result=pack(m,p)
+        groups={frozenset(ch["light_ids"]) for ch in result["proposed_channels"]}
+        self.assertEqual(groups,{frozenset(("L001","L003")),
+                                 frozenset(("L002","L004"))})
+        self.assertEqual(result["totals"]["proposed_channel_count"],2)
+        self.assertTrue(all(ch["current_setpoint_ma"]>2000 for ch in result["proposed_channels"]))
+
+    def test_y5_without_complete_same_page_geometry_uses_stable_legacy_tie(self):
+        m,p=sample([40,40,40,40])
+        for light in m["light_objects"]:
+            light["source"]=dict(drawing_page_id=None,drawing_anchor=None)
+        first=pack(m,p)
+        groups={frozenset(ch["light_ids"]) for ch in first["proposed_channels"]}
+        self.assertEqual(groups,{frozenset(("L001","L002")),
+                                 frozenset(("L003","L004"))})
+
     def test_no_series_topology(self):
         m,p=sample([20,20])
         p["topology"]="series"
