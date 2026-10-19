@@ -12,6 +12,7 @@ from collections import defaultdict
 from jsonschema import Draft202012Validator
 from .model_hierarchy import load_watts
 from .model_intake import check_model
+from .model_access import iter_power_units, iter_channels
 from .validate_model import read_model
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -52,7 +53,7 @@ def validate_manifest(manifest,model,topology=None):
     if issues:return issues
     if manifest['project_id']!=model['project']['id']:fail('project','Markup project ID differs from model.')
     if manifest['model_revision']!=model['project']['model_revision']:fail('revision','Markup model revision differs from paired model.')
-    channels={c['id'] for b in model['branch_circuits'] for u in b['power_units'] for c in u['channels']}
+    channels={c['id'] for c in iter_channels(model)}
     sets=dict(space={s['id'] for s in model['spaces']},light={l['id'] for l in model['light_objects']},zone={z['id'] for z in model['light_zones']},channel=channels,device={d['id'] for d in (topology or {}).get('devices',[])},route={r['id'] for r in (topology or {}).get('routes',[])})
     sets['route'].update(b['bundle_id'] for b in model.get('bundle_routes',{}).get('bundles',[]))
     pages={p['id']:p for p in model['drawing_pages']};anns={}
@@ -132,15 +133,13 @@ def schedules(model,topology=None):
         rows['room_devices' if category=='room_device' else 'equipment'].append(row)
     assigned={a['micro_channel_id']:a for a in topology.get('channel_assignments',[])};devices={d['id']:d for d in topology.get('devices',[])}
     rows['micro_channels']=[]
-    for branch in model['branch_circuits']:
-        for unit in branch['power_units']:
-            for c in unit['channels']:
-                ml=[l for l in lights.values() if l['design']['channel_id']==c['id']]
-                loads=[load_watts(l['design']['load']) for l in ml]
-                aux=c['auxiliary_load_watts']
-                watts=None if aux is None or any(w is None for w in loads) else sum(loads,Decimal(str(aux)))
-                a=assigned.get(c['id']);tag=c['id'] if not a else devices[a['device_id']].get('display_tag',a['device_id'])+':CH'+str(a['output'])
-                rows['micro_channels'].append(dict(micro_channel_id=c['id'],display_channel=tag,zone_id=c.get('light_zone_id'),connected_watts=calculated_label(watts),light_point_ids='; '.join(l['id'] for l in ml)))
+    for c in iter_channels(model):
+        ml=[l for l in lights.values() if l['design']['channel_id']==c['id']]
+        loads=[load_watts(l['design']['load']) for l in ml]
+        aux=c['auxiliary_load_watts']
+        watts=None if aux is None or any(w is None for w in loads) else sum(loads,Decimal(str(aux)))
+        a=assigned.get(c['id']);tag=c['id'] if not a else devices[a['device_id']].get('display_tag',a['device_id'])+':CH'+str(a['output'])
+        rows['micro_channels'].append(dict(micro_channel_id=c['id'],display_channel=tag,zone_id=c.get('light_zone_id'),connected_watts=calculated_label(watts),light_point_ids='; '.join(l['id'] for l in ml)))
     rows['cabling']=[dict(route_id=r['id'],network=r['network'],device_string='; '.join(r['device_ids']),length_ft=calculated_label(r['length_ft']),cio_id=r['cio_id'],spec_verified=r['spec_verified']) for r in topology.get('routes',[])]
     return rows
 
