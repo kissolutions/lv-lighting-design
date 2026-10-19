@@ -48,6 +48,27 @@ def upgrade_v10(model):
     return result
 
 
+
+def _canonical_record_ids(model):
+    """All real, referable v0.10 records, including PDUs and DC feeds.
+
+    The legacy checker predates two physical equipment collections. Their
+    identities remain first-class in the canonical model; compatibility
+    projections must not force the owner to relabel an open item.
+    """
+    ids = []
+    def walk(value):
+        if isinstance(value, dict):
+            if isinstance(value.get("id"), str):
+                ids.append(value["id"])
+            for item in value.values():
+                walk(item)
+        elif isinstance(value, list):
+            for item in value:
+                walk(item)
+    walk(model)
+    return ids
+
 def check_v10(model, phase="intake"):
     """Check new physical relationships and safely delegate unchanged v0.9 checks.
 
@@ -66,6 +87,16 @@ def check_v10(model, phase="intake"):
             fail("schema", "/".join(str(x) for x in e.absolute_path) or "model", e.message)
         return dict(checks_pass=False, phase=phase, issues=issues,
                     deferred_issues=[], derived=None)
+    all_record_ids = _canonical_record_ids(model)
+    for identifier, count in Counter(all_record_ids).items():
+        if count > 1:
+            fail("unique-ids", identifier, "Multiple canonical records reuse this identifier.")
+    valid_ids = set(all_record_ids)
+    for item in model["open_items"]:
+        for identifier in item["affects_ids"]:
+            if identifier not in valid_ids:
+                fail("reference-integrity", item["id"],
+                     f"Missing v0.10 affected object: {identifier}")
     units = {}
     channels = {}
     controllers = {c["id"]:c for c in model["controllers"]}
@@ -297,16 +328,42 @@ def check_v10(model, phase="intake"):
         first=channels.get(ids[0]) if ids else None
         z["controller_id"]=first["controller_id"] if first else None
         z["controller_output"]=first["controller_output"] if first else None
+
+    # A v0.9 schema cannot express distribution_units or dc_power_feeds.
+    # Independently validate the original v0.10 open-item targets above,
+    # then adapt only the in-memory reference list for legacy checks.
+    # The true affects_ids are never modified or replaced in the model.
+    new_equipment_ids = {item["id"] for key in ("distribution_units", "dc_power_feeds")
+                         for item in model[key]}
+    for item in legacy["open_items"]:
+        retained = [identifier for identifier in item["affects_ids"]
+                    if identifier not in new_equipment_ids]
+        if len(retained) != len(item["affects_ids"]):
+            # v0.9 requires a nonempty affects_ids list; this placeholder
+            # identifies the review container, not a fabricated PDU/feeder.
+            item["affects_ids"] = retained or [model["project"]["id"]]
     legacy_report=check_v09(legacy,phase)
+    legacy_incomplete = legacy_report.get("derived") is None
+    if legacy_incomplete:
+        fail("legacy-projection-incomplete",model["project"]["id"],
+             "The v0.9 compatibility checker stopped before downstream electrical "
+             "checks; its reduced finding count is incomplete and cannot be "
+             "treated as a passing design review.")
     # Legacy 'power-unit-basis' (AC input requirement) and
     # zone-output scalar assignment errors are inapplicable to the new graph.
     # Keep *all other* legacy findings visible.
     dc_unit_ids={uid for uid,u in units.items() if u["input_power_type"]=="dc"}
     for entry in legacy_report["issues"]:
         rule=entry["rule"];owner=entry["entity_id"];message=entry["message"]
+        if rule=="decision-basis" and owner=="X10-COMPATIBILITY-ONLY" and orphan:
+            # Only the synthetic, unsaved v0.9 projection container lacks
+            # an owner decision. Never exempt real branches or equipment.
+            continue
         if rule=="controller-assignment":
             # v0.10 zone.channel_ids is the replacement contract below.
             continue
+        if rule=="power-unit-basis" and owner in dc_unit_ids and "AC input watts" in message:
+            entry={**entry,"message":message.replace("AC input watts","DC input watts")}
         if rule=="power-unit-basis" and owner in dc_unit_ids and (
             "input_phases" in message or "input_voltage_v" in message
         ):
@@ -315,13 +372,17 @@ def check_v10(model, phase="intake"):
             continue
         issues.append(entry)
     deferred.extend(legacy_report.get("deferred_issues",[]))
-    derived=legacy_report.get("derived") or {}
-    derived["equipment_graph"]=dict(real_ac_branches=len(branches),pdus=len(pdus),
-                                    remote_power_units=len(units),dc_feeds=len(feed_ids),
-                                    zone_channel_ids={zid:list(z["channel_ids"]) for zid,z in zones.items()})
+    derived=legacy_report.get("derived")
+    if derived is not None:
+        derived["equipment_graph"]=dict(real_ac_branches=len(branches),pdus=len(pdus),
+                                        remote_power_units=len(units),dc_feeds=len(feed_ids),
+                                        zone_channel_ids={zid:list(z["channel_ids"]) for zid,z in zones.items()})
     return dict(checks_pass=not issues,phase=phase,issues=issues,
                 deferred_issues=deferred,derived=derived,
-                review_note="v0.10 electrical graph validated. Legacy projection is read-only; original source and acceptance state are unchanged.")
+                legacy_projection_status="halted" if legacy_incomplete else "complete",
+                review_note=("Legacy downstream validation halted: the displayed issue count is incomplete."
+                             if legacy_incomplete else
+                             "v0.10 electrical graph validated; legacy projection is read-only."))
 
 
 def main():
