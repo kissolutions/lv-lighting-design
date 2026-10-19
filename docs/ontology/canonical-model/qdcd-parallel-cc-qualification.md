@@ -44,6 +44,20 @@ The same callout limits **total current to 4 A per channel**, **total power to 1
 | Two equal-mA CC variants, one with emergency battery/transfer function | Needs the same current qualification **and** separate emergency behavior review; do not presume battery variant parity. |
 | One CC pendant requiring less than **1 A** | Outside the documented QDCD standard CC programming range absent special product confirmation or redesign. |
 
+## Canonical fixture-current schedule attributes (optional v0.10 extension)
+
+**Do not use the original `fixture_type.source_current_ma` as the selected remote-driver LED branch current.** That existing source attribute can describe the original MEP circuit/fixture AC input. The selected LV branch current is a distinct product interface.
+
+| Canonical level | New selected electrical attributes | Semantics |
+|---|---|---|
+| `fixture_type` | `lv_cc_rated_current_ma`, `lv_cc_min_current_ma`, `lv_cc_max_current_ma`, `lv_cc_current_source_ref_ids[]` | Selected fixture-type LED-module **rated** current and optional manufacturer-permitted normal supply current range with evidence. |
+| `light.design` | Existing `input_current_ma` (selected **rated branch current**), new `input_current_min_ma`, `input_current_max_ma`, `input_current_source_ref_ids[]` | Specific selected Light Point/interface values, including any reviewed per-instance substitution. |
+| QDCD channel | Existing `output_current_ma` and selected capability profile | Regulated **total output** current (sum of eligible rated branch currents), not the rating of an individual fixture. |
+
+All new fields are optional in the backward-compatible v0.10 schema; an **unknown** manufacturer min/max stays absent or null rather than taking on the QDCD's 1,000–4,000 mA output range or a dimming command window. A bare LED module need not have a published allowable mA interval. Adding an interval **does not waive exact equality of the declared rated mA** for manufacturer-approved parallel branches. The design checker detects contradictions (minimum > maximum or rated outside the manufacturer range), unknown source-reference IDs, and a selected Light Point rating inconsistent with an explicitly declared LV fixture-type rating. Missing optional data alone does not cause older accepted v0.10 files to fail.
+
+The framework's `export_intake` now reports the selected fixture-type fields in `fixture_type_schedule.csv` and the corresponding selected-light data in `light_points.csv`. Timmons's project-local **Paired Fixture Schedule** must also be updated by the project agent; it is not maintained by this framework. **No automatic transfer of the original source schedule mA to the selected LED-interface rating, and no automated derivation of mA from W/36V**, is allowed without an evidence-backed engineering selection.
+
 ## Implemented in current framework; remaining Y4 scope
 
 - **Packer** `generators.channel_pack`: CC partitioning now includes numeric `LightObject.design.input_current_ma` (per-fixture branch mA) **in addition to zone, AC/DC, CV/CC, voltage, compatibility group and cohort**. An allowed cohort containing different mA ratings is separated into distinct channel proposals, not combined. CC proposed channels report `cc_branch_rated_current_ma` separately from summed `current_setpoint_ma`. The packer cannot independently prove that the stored mA was copied from a manufacturer-rated source rather than calculated.
