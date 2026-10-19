@@ -139,6 +139,12 @@ def check_v10(model, phase="intake"):
     for uid,u in units.items():
         if u["input_power_type"]=="ac" and len(ac_owners[uid])!=1:
             fail("ac-branch-map",uid,"AC-fed unit must map to exactly one real AC branch circuit.")
+        if u["input_power_type"]=="ac" and len(ac_owners[uid])==1:
+            b=branches[ac_owners[uid][0]]
+            if b["voltage_v"] is not None and u["input_voltage"]["nominal_v"] is not None and b["voltage_v"]!=u["input_voltage"]["nominal_v"]:
+                fail("input-compatibility",uid,"Actual AC circuit voltage and converter AC input nominal disagree.")
+            if b["phases"] is not None and u["ac_input_phases"] is not None and b["phases"]!=u["ac_input_phases"]:
+                fail("input-compatibility",uid,"Actual AC circuit phases and converter AC input phases disagree.")
         if u["input_power_type"]=="dc" and ac_owners[uid]:
             fail("ac-branch-map",uid,"DC-fed unit cannot have direct AC branch mapping.")
     pdu_outputs=defaultdict(list)
@@ -221,6 +227,8 @@ def check_v10(model, phase="intake"):
             fail("zone-channel-map",zid,"Channel IDs must exactly equal channels whose light_zone_id is this zone.")
         if zid in parent_ids and claimed:
             fail("zone-channel-map",zid,"Container/parent zone cannot own physical output channels.")
+        if phase=="design" and zid not in parent_ids and z["light_object_ids"] and not claimed:
+            fail("zone-channel-map",zid,"A populated designed endpoint zone requires at least one assigned microchannel.")
         for cid in claimed:
             c=channels.get(cid)
             if c is None:fail("zone-channel-map",zid,f"Unknown channel {cid}")
@@ -291,9 +299,19 @@ def check_v10(model, phase="intake"):
     # Legacy 'power-unit-basis' (AC input requirement) and
     # zone-output scalar assignment errors are inapplicable to the new graph.
     # Keep *all other* legacy findings visible.
-    exempt={"power-unit-basis","input-compatibility","controller-assignment"}
+    dc_unit_ids={uid for uid,u in units.items() if u["input_power_type"]=="dc"}
     for entry in legacy_report["issues"]:
-        if entry["rule"] not in exempt:issues.append(entry)
+        rule=entry["rule"];owner=entry["entity_id"];message=entry["message"]
+        if rule=="controller-assignment":
+            # v0.10 zone.channel_ids is the replacement contract below.
+            continue
+        if rule=="power-unit-basis" and owner in dc_unit_ids and (
+            "input_phases" in message or "input_voltage_v" in message
+        ):
+            continue
+        if rule=="input-compatibility" and owner in dc_unit_ids:
+            continue
+        issues.append(entry)
     deferred=legacy_report.get("deferred_issues",[])
     derived=legacy_report.get("derived") or {}
     derived["equipment_graph"]=dict(real_ac_branches=len(branches),pdus=len(pdus),
