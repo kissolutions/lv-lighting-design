@@ -89,9 +89,21 @@ new_model = upgrade_v10(accepted_v09_model)  # returns a copy
 review = check_model(new_model, phase="intake")
 ```
 
-CLI: `python -m generators.model_equipment_v10 accepted_v09.json --upgrade-output new_v10_draft.json`, then `python -m generators.model_intake new_v10_draft.json --phase intake`. An existing output file is never overwritten.\n\nThe upgrader moves existing nested power units into root `power_units[]` and records original branch ownership through `branch.power_unit_ids[]`. It does **not** infer a PDU from a Timmons legacy branch that used a PDU name, and cannot fabricate manufacturer ratings, actual AC circuit, voltage-range data or PDU-to-QDCD DC feeds. Those require reviewed remapping with traceable evidence. Thus upgrading a prior Timmons workaround is **not** an electrical reconciliation or release.
+CLI: `python -m generators.model_equipment_v10 accepted_v09.json --upgrade-output new_v10_draft.json`, then `python -m generators.model_intake new_v10_draft.json --phase intake`. An existing output file is never overwritten.
+
+The upgrader moves existing nested power units into root `power_units[]` and records original branch ownership through `branch.power_unit_ids[]`. It does **not** infer a PDU from a Timmons legacy branch that used a PDU name, and cannot fabricate manufacturer ratings, actual AC circuit, voltage-range data or PDU-to-QDCD DC feeds. Those require reviewed remapping with traceable evidence. Thus upgrading a prior Timmons workaround is **not** an electrical reconciliation or release.
 
 The v0.10 validator checks electrical graph cardinality, upstream connections, DC phase exclusion, output/input collisions, channel ownership, PDU and per-feed capacity, as well as legacy validations via an **in-memory-only** compatibility projection. The synthetic compatibility container is not serialized or an actual branch circuit. The old legacy AC power-unit and scalar-zone controller checks are excluded in favor of the v0.10 contract; unrelated findings remain. This is the first contract revision: existing topology companion, export projections and all project-local drawing generators should be checked for v0.10 compatibility before operational deployment.
+
+## Proposal Z: validation robustness after field adoption
+
+The [Proposal Z closure record](../../governance-and-doctrine/proposal-z-v010-adoption.md) documents fixes to JSON/Decimal CLI handling, faithful v0.10 PDU/feed `open_items[].affects_ids` references, projection-only artifacts, phase-gated missing electrical data and the shared power-unit readers.
+
+**Safety gate:** Check `legacy_projection_status`. A `halted` value means the old model checks stopped early; the displayed count is incomplete, `derived` remains null, and `legacy-projection-incomplete` blocks acceptance. Never interpret the disappearance of existing current/CC/emergency findings as a successful check without confirming the legacy stage actually completed.
+
+**Phase gate:** Unavailable PDU AC circuits and upstream DC feed ratings remain **deferred** in inventory/intake, but must be resolved for design release. Known invalid references, duplicate port claims and known overloading remain blocking regardless of phase.
+
+**Consumer gate:** Use `generators.model_access.iter_power_units(model)` and `iter_channels(model)` in framework or project scripts; older versions nest power units beneath branches whereas v0.10 has independent root units. The maintained milestone/markup, bundle and topology readers have been upgraded. Client-specific spreadsheet and chain-return scripts must be migrated by the project agent before new drawing exports.
 
 ## Acceptance and issue disposition
 
