@@ -24,11 +24,11 @@ A valid mA sum, equal numeric ratings, or owner acceptance of the markup never u
 
 ```bash
 python -m generators.qdcd_y4 ACCEPTED_V010_M4.json --qualification Y4_EVIDENCE.json --output NEW_FINDINGS.json
-python -m generators.model_intake ACCEPTED_V010_M4.json --phase design
+python -m generators.model_equipment_v10 ACCEPTED_V010_M4.json --phase design --y4-qualification Y4_EVIDENCE.json
 python -m unittest tests.test_qdcd_y4 -v
 ```
 
-The standalone output command rejects an existing output path. The built-in `check_v10` invokes the conservative no-companion default; **a separate evidence companion does not automatically grant canonical design release**. Until a versioned project-attached qualification record is adopted by the canonical runner, a passing standalone evidence assessment and the conservative canonical finding set must be reconciled at owner review.
+The standalone output command rejects an existing output path. The canonical v0.10 checker accepts an explicit evidence companion using `--y4-qualification`; without it the conservative unqualified default is used. A passing result does not override unresolved project engineering review or constitute construction release.
 
 ## Timmons read-only acceptance gate
 
