@@ -320,3 +320,34 @@ def check_v10(model, phase="intake"):
     return dict(checks_pass=not issues,phase=phase,issues=issues,
                 deferred_issues=deferred,derived=derived,
                 review_note="v0.10 electrical graph validated. Legacy projection is read-only; original source and acceptance state are unchanged.")
+
+
+def main():
+    """Explicit, non-overwriting version upgrade or read-only validation."""
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("input",type=Path)
+    parser.add_argument("--upgrade-output",type=Path,
+                        help="Write a new v0.10 JSON copy; never overwrite existing records.")
+    parser.add_argument("--phase",choices=("inventory","intake","design"),default="intake")
+    args=parser.parse_args()
+    source=json.loads(args.input.read_text())
+    if args.upgrade_output is None:
+        if source.get("schema_version")!="0.10.0":
+            parser.error("Input is not v0.10; use --upgrade-output for an explicit migration copy.")
+        result=check_v10(source,args.phase)
+        print(json.dumps(result,indent=2))
+        return 0 if result["checks_pass"] else 1
+    if args.upgrade_output.exists():
+        parser.error("Refusing to overwrite an existing review/model file.")
+    result=upgrade_v10(source)
+    Draft202012Validator(json.loads(SCHEMA.read_text())).validate(result)
+    args.upgrade_output.parent.mkdir(parents=True,exist_ok=True)
+    args.upgrade_output.write_text(json.dumps(result,indent=2)+"\n")
+    print(json.dumps({"written":str(args.upgrade_output),"schema_version":"0.10.0",
+                      "warning":"Legacy PDU-as-branch and DC-fed QDCD records require explicit reviewed electrical remapping; no inferred feeds."}))
+    return 0
+
+
+if __name__=="__main__":
+    raise SystemExit(main())
