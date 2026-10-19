@@ -61,6 +61,8 @@ Remote driver topology is **parallel only**. A two-wire daisy-chain run is not s
 
 Same selected fixture type and proximity are preferences, not electrical compatibility tests. Known routing/practical placement constraints may force a reviewed deviation from numerical minimum; record that reason. Unknown voltage, current, load or CC parallel sharing evidence is not permission to pass one fixture per channel as optimized.
 
+The approved Package 4 visual handoff is an editable **PolyLine chain** connecting assigned fixture anchors, with a separate reach line showing assigned QDCD output and intended feed-entry light. These lines denote physical distribution order, not an electrical series string. The [owner chain-return playbook](../design-playbooks/m4-channel-chain-owner-return.md) governs snapping, ambiguity, output swaps, per-channel ID crosswalk and the M5 ordering handoff.
+
 ## Orientation-independent adjacency
 
 Do not implement adjacency as row/column clustering on a coordinate or as mandatory straight-run detection. Horizontal, vertical, diagonal, curved and grid arrangements must all be evaluated without favouring a drawing axis. Compare feasible compact partitions under the hard boundaries and the preference order above; a minimum channel count never overrides practical routing or service legibility. A fixture-count capacity formula applies only where compatible equal-load fixtures justify it; heterogeneous loads require actual load checks. Unknown loads remain unresolved, not repacked by assumed capacity.
