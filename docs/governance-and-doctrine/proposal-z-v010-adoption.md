@@ -23,6 +23,17 @@ ai_role: implementation_handoff
 | Z6 | DC driver input-wattage findings do not describe their power input as AC. The requirement to establish actual input power remains. | DC-specific wording test |
 | Z7 | Shared `generators.model_access.iter_power_units(model)` and `iter_channels(model)` resolve nested legacy power units or v0.10 root units. Framework consumers updated: `model_bundles.build`, `validate_topology`, `milestone_markup.schedules`, `milestone_markup.validate_manifest`, and v0.10 bundle-aware `export_intake`. `channel_pack` already reads light/zone data independently and needs no branch traversal. | v0.9/v0.10 reader parity, M4 schedule/markup, bundle, topology and intake export tests |
 
+## M4-R13 follow-up: Z8 and Z9
+
+Timmons M4-R13 confirmed that Z1–Z7 work with actual v0.10 data: both normal model-check CLIs agree; `legacy_projection_status=complete`; the design report has 386 findings, with the prior Z4-only artefact removed; v0.9 chain-return replay and v0.10 owner-edit regressions passed. The review markup retains 871 annotation identities and accepted geometry. These are **project-agent findings**, not a claim that this maintaining repository contains or reran the full Timmons files.
+
+| Item | Fix | Contract/regression |
+|---|---|---|
+| **Z8 — Intake deferred items** | Reuse one compatibility filter for both blocking `issues` and `deferred_issues`. Inapplicable AC-only `input_voltage_v` and `input_phases` findings on DC QDCDs and the synthetic `X10-COMPATIBILITY-ONLY` decision-basis artefact are removed in both paths. Valid DC input wattage findings remain, with `DC input watts` wording. | `tests/test_proposal_z.py::test_z8_deferred_findings_use_same_x4_z4_z6_filter` checks nonmutation, preserved genuine deferred input and PDU evidence, and absence of the inapplicable items. |
+| **Z9 — Mixed Decimal/float topology feed comparisons** | `validate_topology` converts companion and canonical `rated_watts`/`demand_watts` to `Decimal(str(value))` before comparing. Retains the existing strict >0.000001 difference threshold; does not round off or ignore actual mismatches. | `tests/test_proposal_z.py::test_z9_milestone_markup_cli_with_topology_and_decimal_feed` uses a Decimal-loaded canonical model and JSON-float companion, verifies the standard `milestone_markup --topology --through 5` CLI writes Package 5, verifies the input is unchanged, and asserts deliberately inconsistent demands still fail. |
+
+**M4-R13 adoption step:** Pull the latest framework SHA; retire no further project tools. Re-run both intake/design model commands and the `milestone_markup MODEL NEW_OUTPUT_DIR --topology TOPOLOGY --through 5` command. Confirm intake no longer includes the obsolete Z8 deferred items, all legitimate design findings remain present, the 871 accepted markup annotation IDs and 104 microchannels are preserved, and the Package 5 equipment schedule is produced without any re-design. The new test set cannot establish the exact post-change intake finding count for the private Timmons model, so report actual counts and rule/entity deltas; do not assert a fixed number in advance.
+
 ## Readiness gate
 
 The repaired v0.10 checker must **never** interpret a low issue count as success if `legacy_projection_status` is `halted`; review and resolve its blocking reason. Read the entire `issues` and `deferred_issues` arrays and keep distinct the phase in which a missing requirement becomes blocking. Running a model through `python -m generators.model_equipment_v10 ...` or `python -m generators.model_intake ...` is equivalent; **no private plain-float loader is required**.
@@ -46,7 +57,7 @@ python -m generators.model_equipment_v10 MODEL_v10.json --phase design
 python -m generators.model_intake MODEL_v10.json --phase design
 python -m generators.validate_topology TOPOLOGY_v1_1.json --model MODEL_v10.json
 python -m generators.export_intake MODEL_v10.json --output-dir NEW_REVIEW_DIR --allow-provisional
-python -m generators.milestone_markup MODEL_v10.json NEW_MILESTONE_DIR --topology TOPOLOGY_v1_1.json --through 4
+python -m generators.milestone_markup MODEL_v10.json NEW_MILESTONE_DIR --topology TOPOLOGY_v1_1.json --through 5
 ```
 
 **Review reminder:** `export_review` is the older v0.1-style design/facts exporter, not a v0.10 M4 exporter. Use `export_intake` and `milestone_markup` for the v0.10 canonical model. The old v0.9 schema and original project files remain supported and untouched.
