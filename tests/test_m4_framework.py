@@ -86,6 +86,37 @@ class M4FrameworkTests(unittest.TestCase):
             served["light_zone_ids"].append(other_zone["id"])
         self.assertIn("micro-channel-zone", self.rules())
 
+    def _prepare_parallel_cc(self):
+        self.light["design"].update(
+            input_voltage=dict(nominal_v=None,min_v=25,max_v=35),
+            input_power_mode="constant_current",input_current_ma=700,
+            channel_id=self.channel["id"])
+        self.channel.update(
+            voltage=dict(nominal_v=None,min_v=20,max_v=40),
+            output_power_mode="constant_current",output_current_ma=1400)
+        other = self.model["light_objects"][1]
+        other["design"].update(
+            input_voltage=dict(nominal_v=None,min_v=25,max_v=35),
+            input_power_type=self.light["design"]["input_power_type"],
+            input_power_mode="constant_current",input_current_ma=700,
+            channel_id=self.channel["id"],driver_type="driverless",
+            dimming_capability="dimmable")
+        return other
+
+    def test_parallel_cc_equal_voltage_but_unequal_rated_ma_is_rejected(self):
+        other=self._prepare_parallel_cc()
+        other["design"]["input_current_ma"]=750
+        self.assertIn("cc-parallel-rated-current-mismatch",self.rules())
+        other["design"]["input_current_ma"]=700
+        self.assertNotIn("cc-parallel-rated-current-mismatch",self.rules())
+        # Until the full Y4 replacement, the old topology evidence gate remains.
+        self.assertIn("cc-topology-review",self.rules())
+
+    def test_parallel_cc_missing_branch_rated_ma_is_rejected(self):
+        other=self._prepare_parallel_cc()
+        other["design"]["input_current_ma"]=None
+        self.assertIn("cc-parallel-rated-current-missing",self.rules())
+
     def test_95w_profile_rejects_larger_limit(self):
         self.channel["design_limit_watts"] = 96
         self.assertIn("schema", self.rules())
