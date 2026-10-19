@@ -370,6 +370,8 @@ def pack(model, policy):
                                   utilization_pct=float(watts / rated * 100),
                                   unused_design_watts=float(limit - watts),
                                   target_deviation_watts=float(abs(target - watts)),
+                                  geometry_mst_span_pt=(round(_mst_span_pt(members), 4)
+                                      if _mst_span_pt(members) is not None else None),
                                   cc_parallel_evidence_cohort=cohort if mode=="constant_current" and len(members)>1 else None))
         if exhausted:
             findings.append(dict(zone_id=zone, issue="search_budget_exhausted",
@@ -405,6 +407,10 @@ def pack(model, policy):
                             excluded_known_watts=float(known_model_watts-packed_known_watts),
                             load_balance_verified=not missing_ids and not unknown_load_ids
                                 and known_model_watts == packed_known_watts,
+                            total_geometry_mst_span_pt=(
+                                round(sum(p["geometry_mst_span_pt"] for p in proposals), 4)
+                                if proposals and all(p["geometry_mst_span_pt"] is not None
+                                                     for p in proposals) else None),
                             zone_utilization={z:dict(channels=len(ws),watts=sum(ws),
                                 mean_watts_per_channel=sum(ws)/len(ws)) for z,ws in sorted(zcounts.items())}),
                 note="Read-only candidate allocation. Manufacturer qualification, canonical CC validator integration, owner acceptance and controller assignment are separate gates.")
