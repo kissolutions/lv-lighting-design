@@ -353,25 +353,36 @@ def check_v10(model, phase="intake"):
     # zone-output scalar assignment errors are inapplicable to the new graph.
     # Keep *all other* legacy findings visible.
     dc_unit_ids={uid for uid,u in units.items() if u["input_power_type"]=="dc"}
-    for entry in legacy_report["issues"]:
-        rule=entry["rule"];owner=entry["entity_id"];message=entry["message"]
-        if rule=="decision-basis" and owner=="X10-COMPATIBILITY-ONLY" and orphan:
-            # Only the synthetic, unsaved v0.9 projection container lacks
-            # an owner decision. Never exempt real branches or equipment.
-            continue
-        if rule=="controller-assignment":
-            # v0.10 zone.channel_ids is the replacement contract below.
-            continue
-        if rule=="power-unit-basis" and owner in dc_unit_ids and "AC input watts" in message:
-            entry={**entry,"message":message.replace("AC input watts","DC input watts")}
-        if rule=="power-unit-basis" and owner in dc_unit_ids and (
-            "input_phases" in message or "input_voltage_v" in message
-        ):
-            continue
-        if rule=="input-compatibility" and owner in dc_unit_ids:
-            continue
-        issues.append(entry)
-    deferred.extend(legacy_report.get("deferred_issues",[]))
+
+    def applicable_legacy_findings(findings):
+        """Filter the same obsolete v0.9 rules from issues AND deferred issues.
+
+        Return fresh records; never mutate the legacy report or original model.
+        Keep valid DC input power-basis findings with neutral DC wording.
+        """
+        applicable=[]
+        for finding in findings:
+            entry=finding
+            rule=entry["rule"];owner=entry["entity_id"];message=entry["message"]
+            if rule=="decision-basis" and owner=="X10-COMPATIBILITY-ONLY" and orphan:
+                # Only the synthetic, unsaved v0.9 projection container lacks
+                # an owner decision. Never exempt real branches or equipment.
+                continue
+            if rule=="controller-assignment":
+                # v0.10 zone.channel_ids replaces the legacy scalar assignment.
+                continue
+            if rule=="power-unit-basis" and owner in dc_unit_ids:
+                if "input_phases" in message or "input_voltage_v" in message:
+                    continue
+                if "AC input watts" in message:
+                    entry={**entry,"message":message.replace("AC input watts","DC input watts")}
+            if rule=="input-compatibility" and owner in dc_unit_ids:
+                continue
+            applicable.append(entry)
+        return applicable
+
+    issues.extend(applicable_legacy_findings(legacy_report["issues"]))
+    deferred.extend(applicable_legacy_findings(legacy_report.get("deferred_issues",[])))
     derived=legacy_report.get("derived")
     if derived is not None:
         derived["equipment_graph"]=dict(real_ac_branches=len(branches),pdus=len(pdus),
