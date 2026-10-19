@@ -95,6 +95,17 @@ class M4FrameworkTests(unittest.TestCase):
             voltage=dict(nominal_v=None,min_v=20,max_v=40),
             output_power_mode="constant_current",output_current_ma=1400)
         other = self.model["light_objects"][1]
+        # Keep exactly the two intended test members on this output.
+        # The synthetic fixture may assign additional default CV members
+        # to the same channel, which otherwise masks rated-mA mismatch.
+        for candidate in self.model["light_objects"]:
+            if candidate not in (self.light,other) and candidate["design"]["channel_id"] == self.channel["id"]:
+                candidate["design"]["channel_id"] = None
+        for zone in self.model["light_zones"]:
+            if other["id"] in zone["light_object_ids"] and zone["id"] != self.zone["id"]:
+                zone["light_object_ids"].remove(other["id"])
+        if other["id"] not in self.zone["light_object_ids"]:
+            self.zone["light_object_ids"].append(other["id"])
         other["design"].update(
             input_voltage=dict(nominal_v=None,min_v=25,max_v=35),
             input_power_type=self.light["design"]["input_power_type"],
