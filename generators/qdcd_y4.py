@@ -169,17 +169,30 @@ def validate_y4(model, qualification=None):
                     allowed = number(programming.get("allowed_setpoint_deviation_ma")) if programming else None
                     # A tolerance is not an automatic waiver: it requires verified
                     # module current bands and specific combination qualification.
-                    compatible = bool(allowed is not None and abs(selected - expected) <= allowed)
+                    compatible = bool(allowed is not None and abs(selected - expected) <= allowed
+                        and programming["manufacturer_evidence_ref_ids"]
+                        and set(programming["manufacturer_evidence_ref_ids"]).issubset(verified_refs)
+                        and len(set(branch_ma)) == 1)
                     if compatible:
+                        # The companion records independently evidenced LED module
+                        # current bands, so a frozen project model can be validated.
+                        # For multi-luminaire channels manufacturer-qualified sharing
+                        # must additionally substantiate the nominal division.
                         for light in attached:
-                            d = light["design"]
-                            lo, hi = number(d.get("input_current_min_ma")), number(d.get("input_current_max_ma"))
+                            fid = light["source"]["fixture_type_id"]
+                            record = evidenced.get(fid)
+                            if record is None or record["basis"] != "manufacturer_verified" or not record["source_ref_ids"] or not set(record["source_ref_ids"]).issubset(verified_refs):
+                                compatible = False
+                                break
+                            lo, hi = number(record.get("allowed_min_current_ma")), number(record.get("allowed_max_current_ma"))
                             if lo is None or hi is None or not lo <= selected / len(attached) <= hi:
                                 compatible = False
+                                break
                         key = tuple(sorted({l["source"]["fixture_type_id"] for l in attached}))
                         combo = combinations.get(key)
                         if len(attached) > 1 and (combo is None or combo["manufacturer_status"] != "fixture_combination_verified"
-                            or combo["project_review_status"] != "qualified" or not combo["manufacturer_evidence_ref_ids"]):
+                            or combo["project_review_status"] != "qualified" or not combo["manufacturer_evidence_ref_ids"]
+                            or not set(combo["manufacturer_evidence_ref_ids"]).issubset(verified_refs)):
                             compatible = False
                     if not compatible:
                         emit("cc-output-sum-mismatch", cid,
