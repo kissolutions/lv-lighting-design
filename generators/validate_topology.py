@@ -32,9 +32,16 @@ def validate(topology, model, final=False):
     zones = {r['id'] for r in model.get('light_zones', [])}
     pages = {r['id']: r for r in model.get('drawing_pages', [])}
     refs = {r['id'] for r in model.get('source_references', [])}
-    channels = {c['id']: c for b in model.get('branch_circuits', []) for u in b['power_units'] for c in u['channels']}
+    if model.get('schema_version') == '0.10.0':
+        units = model.get('power_units', [])
+        canonical.update(u['id'] for u in units)
+        canonical.update(d['id'] for d in model.get('distribution_units', []))
+        canonical.update(f['id'] for f in model.get('dc_power_feeds', []))
+    else:
+        units = [u for b in model.get('branch_circuits', []) for u in b['power_units']]
+        canonical.update(u['id'] for u in units)
+    channels = {c['id']:c for u in units for c in u['channels']}
     canonical.update(channels)
-    canonical.update(u['id'] for b in model.get('branch_circuits', []) for u in b['power_units'])
     if topology['project_id'] != model['project']['id']:
         fail('project-link', topology['project_id'], 'Companion and lighting project IDs differ.')
     def reference(owner, value, allowed):
@@ -112,6 +119,55 @@ def validate(topology, model, final=False):
         if f['demand_watts'] is not None:pdu_demand[f['pdu_id']]+=f['demand_watts']
         if f['rated_watts'] is not None and f['demand_watts'] is not None and f['demand_watts']>f['rated_watts']:fail('feed-watts',owner,'Feed demand exceeds rating.')
         if final and (None in (f['rated_watts'],f['demand_watts']) or not f['source_ref_ids']):fail('feed-evidence',owner,'Confirm feed rating/demand and evidence.')
+    if model.get('schema_version')=='0.10.0':
+        # Canonical v0.10 equipment/port identities override historical
+        # companion-only power-feed conventions. Compare physical endpoints
+        # rather than human-readable provisional feed labels.
+        canonical_pdu={d['id']:d for d in model['distribution_units']}
+        canonical_unit={u['id']:u for u in model['power_units']}
+        controllers={c['id']:c for c in model['controllers']}
+        for d in devices.values():
+            if d['kind']=='PDU' and d['canonical_entity_id'] not in canonical_pdu:
+                fail('equipment-graph-map',d['id'],'PDU companion device must reference its v0.10 distribution-unit ID.')
+            if d['kind']=='QDCD':
+                ctl=controllers.get(d['canonical_entity_id'])
+                if ctl is None or ctl['integrated_power_unit_id'] not in canonical_unit:
+                    fail('equipment-graph-map',d['id'],'QDCD companion device must map to a real controller and integrated driver power unit.')
+        physical_companion=set()
+        for f in topology['power_feeds']:
+            pdu=devices.get(f['pdu_id']);qdcd=devices.get(f['qdcd_id'])
+            if not pdu or not qdcd:continue
+            ctl=controllers.get(qdcd['canonical_entity_id'])
+            if ctl is None:continue
+            endpoint=(pdu['canonical_entity_id'],f['pdu_output'],
+                      ctl['integrated_power_unit_id'],f['qdcd_input'])
+            physical_companion.add(endpoint)
+            canonical_feed=next((x for x in model['dc_power_feeds']
+                if (x['source_distribution_unit_id'],x['source_output'],
+                    x['target_power_unit_id'],x['target_input'])==endpoint),None)
+            if canonical_feed is None:
+                fail('equipment-feed-map',f['id'],'Companion feed has no matching canonical v0.10 DC power feed endpoints.')
+            else:
+                for field in ('rated_watts','demand_watts'):
+                    a=f[field];b=canonical_feed[field]
+                    if a is not None and b is not None and abs(a-b)>0.000001:
+                        fail('equipment-feed-map',f['id'],f'{field} disagrees with the canonical feed.')
+        for f in model['dc_power_feeds']:
+            endpoint=(f['source_distribution_unit_id'],f['source_output'],
+                      f['target_power_unit_id'],f['target_input'])
+            if endpoint not in physical_companion:
+                fail('equipment-feed-map',f['id'],'Canonical v0.10 DC feed absent from topology companion.')
+        for a in topology['channel_assignments']:
+            d=devices.get(a['device_id'])
+            if d is None:continue
+            c=channels.get(a['micro_channel_id'])
+            if c is None:continue
+            if d['kind']=='QDCD':
+                if d['canonical_entity_id']!=c.get('controller_id') or a['output']!=c.get('controller_output'):
+                    fail('equipment-output-map',a['micro_channel_id'],'QDCD output assignment differs from canonical channel controller/output identity.')
+                ctl=controllers.get(d['canonical_entity_id'])
+                if ctl and ctl['integrated_power_unit_id'] not in canonical_unit:
+                    fail('equipment-output-map',a['micro_channel_id'],'QDCD controller references an unmodeled power unit.')
     exceptions={x['qdcd_id']:x for x in topology['reduced_feed_decisions']}
     for e in topology['reduced_feed_decisions']:
         reference(e['qdcd_id'],e['qdcd_id'],devices);reference(e['qdcd_id'],e['decision_id'],canonical);evidence(e['qdcd_id'],e['source_ref_ids'])
