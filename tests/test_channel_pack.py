@@ -86,6 +86,54 @@ class ChannelPackingTests(unittest.TestCase):
         self.assertEqual(result["proposed_channels"],[])
         self.assertIn("L001",result["unpacked_light_ids"])
 
+    def test_linear_per_foot_basis_matches_canonical_load(self):
+        m,p=sample([20,20])
+        m["light_objects"][0]["design"]["load"]=dict(
+            basis="per_foot",watts=1.5,length_ft=20,reference_length_ft=None)
+        result=pack(m,p)
+        self.assertEqual(result["status"],"optimized")
+        self.assertEqual(result["totals"]["total_input_watts"],50)
+        self.assertEqual(result["totals"]["packed_watts"],50)
+        self.assertTrue(result["totals"]["load_balance_verified"])
+        self.assertEqual(result["totals"]["proposed_channel_count"],1)
+
+    def test_reference_length_basis_matches_canonical_load(self):
+        m,p=sample([20,20])
+        m["light_objects"][0]["design"]["load"]=dict(
+            basis="per_reference_length",watts=15,length_ft=8,reference_length_ft=4)
+        result=pack(m,p)
+        self.assertEqual(result["totals"]["total_input_watts"],50)
+        self.assertEqual(result["totals"]["packed_watts"],50)
+
+    def test_blocked_electrical_light_still_counts_in_model_total(self):
+        m,p=sample([41,41,20])
+        m["light_objects"][1]["design"]["compatibility_group"]=None
+        result=pack(m,p)
+        self.assertEqual(result["totals"]["total_input_watts"],102)
+        self.assertEqual(result["totals"]["known_model_watts"],102)
+        self.assertEqual(result["totals"]["packed_watts"],61)
+        self.assertEqual(result["totals"]["excluded_known_watts"],41)
+        self.assertFalse(result["totals"]["load_balance_verified"])
+        self.assertEqual(result["totals"]["missing_model_load_light_ids"],[])
+        self.assertIn("L002",result["unpacked_light_ids"])
+
+    def test_unassigned_zone_still_counts_in_model_total(self):
+        m,p=sample([41,41])
+        m["light_zones"][0]["light_object_ids"].remove("L002")
+        result=pack(m,p)
+        self.assertEqual(result["totals"]["total_input_watts"],82)
+        self.assertEqual(result["totals"]["excluded_known_watts"],41)
+
+    def test_unknown_watts_marks_project_total_incomplete(self):
+        m,p=sample([20,20])
+        m["light_objects"][1]["design"]["load"]["watts"]=None
+        result=pack(m,p)
+        self.assertIsNone(result["totals"]["total_input_watts"])
+        self.assertEqual(result["totals"]["known_model_watts"],20)
+        self.assertEqual(result["totals"]["missing_model_load_light_ids"],["L002"])
+        self.assertEqual(result["totals"]["packed_watts"],20)
+        self.assertFalse(result["totals"]["load_balance_verified"])
+
     def test_no_series_topology(self):
         m,p=sample([20,20])
         p["topology"]="series"
