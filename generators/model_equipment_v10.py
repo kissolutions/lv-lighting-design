@@ -69,7 +69,7 @@ def _canonical_record_ids(model):
     walk(model)
     return ids
 
-def check_v10(model, phase="intake"):
+def check_v10(model, phase="intake", y4_qualification=None):
     """Check new physical relationships and safely delegate unchanged v0.9 checks.
 
     The compatibility projection is *only* an in-memory translation. New
@@ -401,7 +401,7 @@ def check_v10(model, phase="intake"):
     # The manufacturer authorizes parallel topology subject to specific fixture
     # qualification, which is assessed independently against canonical equipment.
     from .qdcd_y4 import validate_y4
-    y4_report = validate_y4(model)
+    y4_report = validate_y4(model, y4_qualification)
     # Legacy 'power-unit-basis' (AC input requirement) and
     # zone-output scalar assignment errors are inapplicable to the new graph.
     # Keep *all other* legacy findings visible.
@@ -469,6 +469,8 @@ def main():
     parser.add_argument("--upgrade-output",type=Path,
                         help="Write a new v0.10 JSON copy; never overwrite existing records.")
     parser.add_argument("--phase",choices=("inventory","intake","design"),default="intake")
+    parser.add_argument("--y4-qualification",type=Path,
+                        help="Optional versioned fixture/combination/programming evidence for QDCD Y4 validation.")
     args=parser.parse_args()
     from .validate_model import read_model
     from .model_intake import model_json
@@ -476,7 +478,9 @@ def main():
     if args.upgrade_output is None:
         if source.get("schema_version")!="0.10.0":
             parser.error("Input is not v0.10; use --upgrade-output for an explicit migration copy.")
-        result=check_v10(source,args.phase)
+        qualification=(json.loads(args.y4_qualification.read_text(),parse_float=Decimal)
+                       if args.y4_qualification else None)
+        result=check_v10(source,args.phase,y4_qualification=qualification)
         print(json.dumps(result,indent=2,default=str))
         return 0 if result["checks_pass"] else 1
     if args.upgrade_output.exists():
