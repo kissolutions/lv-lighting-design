@@ -13,6 +13,8 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
+from .model_access import iter_power_units
+
 SCHEMAS = Path(__file__).resolve().parents[1] / 'schemas'
 RECORD_SCHEMA = json.loads((SCHEMAS / 'bundle-records-v0.9.schema.json').read_text())
 TABLES = RECORD_SCHEMA['properties']
@@ -235,7 +237,7 @@ def build(records, model=None):
             length_ft=lengths[bid])
     if model is not None:
         controllers = {c['id']:c for c in model['controllers']}
-        units = {u['id']:u for br in model['branch_circuits'] for u in br['power_units']}
+        units = {u['id']:u for u in iter_power_units(model)}
         channels = {c['id']:c for u in units.values() for c in u['channels']}
         pages = {p['id']:p for p in model['drawing_pages']}
         assumptions = {a['id'] for a in model['assumptions']}
