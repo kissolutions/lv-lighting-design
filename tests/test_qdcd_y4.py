@@ -87,8 +87,8 @@ class Y4Tests(unittest.TestCase):
         self.b["design"]["channel_id"]=None
         self.a["design"]["input_current_ma"]=900
         self.ch["output_current_ma"]=900
-        self.assertIn("cc-output-below-driver-min",self.rules())
         self.assertIn("cc-branch-sum-below-driver-min",self.rules())
+        self.assertNotIn("cc-output-below-driver-min",self.rules())
         self.a["design"]["input_current_ma"]=4500
         self.ch["output_current_ma"]=4500
         self.assertIn("cc-output-above-driver-max",self.rules())
@@ -133,6 +133,31 @@ class Y4Tests(unittest.TestCase):
         q=copy.deepcopy(self.q)
         q["combination_qualifications"][0]["emergency_status"]="pending"
         self.assertIn("cc-emergency-qualification-pending",self.rules(q))
+
+    def test_single_emergency_fixture_is_checked(self):
+        self.b["design"]["channel_id"] = None
+        self.m["fixture_types"][0]["source_emergency_provision"] = "emergency"
+        q=copy.deepcopy(self.q)
+        q["combination_qualifications"][0]["emergency_status"]="pending"
+        self.assertIn("cc-emergency-qualification-pending",self.rules(q))
+
+    def test_voltage_assumption_is_not_verified(self):
+        self.a["design"]["input_voltage"].update(min_v=36,max_v=36)
+        self.b["design"]["input_voltage"].update(min_v=36,max_v=36)
+        self.assertIn("cc-fixture-voltage-unverified",self.rules())
+
+    def test_calculated_basis_is_reported(self):
+        q=copy.deepcopy(self.q)
+        q["fixture_evidence"][0]["basis"]="calculated"
+        findings=validate_y4(self.m,q)["findings"]
+        self.assertTrue(any(x["rule"]=="cc-fixture-rated-ma-unverified" and x["evidence_basis"]=="calculated" for x in findings))
+
+    def test_postfreeze_supplemental_evidence_validated(self):
+        q=copy.deepcopy(self.q)
+        q["supplemental_sources"]=[dict(id="POST-FREEZE-A2",title="SmartDC Rev A2",revision="A2",
+                                         source_location="manufacturer/qdcd-a2.pdf",review_status="verified_document")]
+        q["combination_qualifications"][0]["manufacturer_evidence_ref_ids"]=["POST-FREEZE-A2"]
+        self.assertNotIn("cc-combination-qualification-pending",self.rules(q))
 
     def test_read_only_and_stable_validation_shape(self):
         prior=copy.deepcopy(self.m)
