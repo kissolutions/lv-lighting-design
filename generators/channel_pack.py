@@ -50,22 +50,111 @@ def light_watts(light):
         raise ValueError("Light watts must be positive")
     return result
 
+
+def _mst_span_pt(members):
+    """Orientation-neutral proximity metric in *plan points*, not routed feet.
+
+    Return None when any anchor/page identity is missing or points do not share
+    one page. Geometry never overrides an electrical or control constraint.
+    """
+    if len(members) < 2:
+        return 0.0
+    pages = {m.get("drawing_page_id") for m in members}
+    if None in pages or len(pages) != 1:
+        return None
+    points = [m.get("anchor") for m in members]
+    if any(not isinstance(p, dict) or p.get("x_pt") is None
+           or p.get("y_pt") is None for p in points):
+        return None
+    xy = [(float(p["x_pt"]), float(p["y_pt"])) for p in points]
+    visited = {0}
+    length = 0.0
+    while len(visited) < len(xy):
+        distance, destination = min(
+            (math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]), j)
+            for i in visited for j in range(len(xy)) if j not in visited
+        )
+        length += distance
+        visited.add(destination)
+    return length
+
+
+def _packing_score(bins, target, *, geometry_available):
+    totals = [sum((m["watts"] for m in b), Decimal(0)) for b in bins]
+    length = (round(sum(_mst_span_pt(b) for b in bins), 8)
+              if geometry_available else 0.0)
+    return (len(bins),
+            sum((abs(w - target) for w in totals), Decimal(0)),
+            length,
+            tuple(sorted(tuple(sorted(m["id"] for m in b)) for b in bins)))
+
+
+def _spatial_refine(bins, ceiling, target, current_bounds=None):
+    """Improve a feasible packing by deterministic pair exchanges.
+
+    Does not change bin count or worsen the total deviation from target;
+    never violates watt or CC current bounds. This is a local refinement,
+    **not** a proof of globally shortest MST.
+    """
+    if not bins or not all(_mst_span_pt(b) is not None for b in bins):
+        return bins
+    if not all(m.get("anchor") is not None and m.get("drawing_page_id") is not None
+               for b in bins for m in b):
+        return bins
+    result = [list(b) for b in bins]
+    baseline = _packing_score(result, target, geometry_available=True)
+    for _ in range(80):
+        improved = False
+        for a in range(len(result)):
+            if improved:
+                break
+            for b in range(a + 1, len(result)):
+                if improved:
+                    break
+                for ia, left in enumerate(result[a]):
+                    if improved:
+                        break
+                    for ib, right in enumerate(result[b]):
+                        next_a = result[a][:ia] + [right] + result[a][ia+1:]
+                        next_b = result[b][:ib] + [left] + result[b][ib+1:]
+                        if any(sum((m["watts"] for m in group),Decimal(0)) > ceiling
+                               for group in (next_a,next_b)):
+                            continue
+                        if current_bounds is not None:
+                            lo,hi=current_bounds
+                            if any(not lo <= sum((m["branch_ma"] for m in group),Decimal(0)) <= hi
+                                   for group in (next_a,next_b)):
+                                continue
+                        candidate = [list(group) for group in result]
+                        candidate[a],candidate[b] = next_a,next_b
+                        score = _packing_score(candidate,target,geometry_available=True)
+                        if score < baseline:
+                            result, baseline = candidate,score
+                            improved = True
+                            break
+        if not improved:
+            break
+    return result
+
+
 def _exact_bins(items, ceiling, target, max_states=125000):
     """Minimize bin count (not first-feasible fill); minimize target deviation
     among equal-count candidates. Exact for small cases unless search budget
     is exhausted, in which case report heuristic rather than claim optimality.
     """
     ordered = sorted(items, key=lambda x: (-x["watts"], x["id"]))
+    geometry_available = all(
+        m.get("drawing_page_id") is not None and isinstance(m.get("anchor"), dict)
+        and m["anchor"].get("x_pt") is not None and m["anchor"].get("y_pt") is not None
+        for m in ordered
+    ) and len({m.get("drawing_page_id") for m in ordered}) == 1
     best = None
     best_score = None
     states = 0
     exhausted = False
 
     def score(bins):
-        # Prefer near 90 W utilization, after minimizing the number of channels.
-        totals = [sum((l["watts"] for l in b), Decimal(0)) for b in bins]
-        return (len(bins), sum((abs(t - target) for t in totals), Decimal(0)),
-                tuple(sorted(tuple(sorted(l["id"] for l in b)) for b in bins)))
+        return _packing_score(bins, target, geometry_available=geometry_available)
 
     def consider(bins):
         nonlocal best, best_score
@@ -90,7 +179,8 @@ def _exact_bins(items, ceiling, target, max_states=125000):
         seen_totals = set()
         for b in bins:
             total = sum((x["watts"] for x in b), Decimal(0))
-            if total in seen_totals:
+            # Equal-load bins can have different physical proximity.
+            if not geometry_available and total in seen_totals:
                 continue
             seen_totals.add(total)
             if total + item["watts"] <= ceiling:
@@ -113,11 +203,15 @@ def _exact_bins(items, ceiling, target, max_states=125000):
             candidate.append(item)
     consider(first)
     lower_bound = math.ceil(sum((x["watts"] for x in items), Decimal(0)) / ceiling)
-    if len(first) != lower_bound and len(items) <= 18:
+    if (len(first) != lower_bound and len(items) <= 18) or (
+        geometry_available and len(items) <= 12
+    ):
         place(0)
-    elif len(first) == lower_bound:
-        # The count is proven optimal; do not claim target deviation globally minimal.
-        pass
+    # Refine across equal-watt assignments without changing count or target
+    # deviation. When search is budget-limited, report count proof separately
+    # from global geometric optimality.
+    if geometry_available:
+        best = _spatial_refine(best, ceiling, target)
     return best, len(best) == lower_bound, exhausted
 
 
@@ -233,8 +327,11 @@ def pack(model, policy):
             else:
                 branch_ma = None
                 key = (zone_by_light[lid], electrical, mode, str(nominal), compat, "CV")
+            source = light.get("source") or {}
             groups[key].append(dict(id=lid, watts=w, branch_ma=branch_ma,
-                                    vmin=voltage.get("min_v"), vmax=voltage.get("max_v")))
+                                    vmin=voltage.get("min_v"), vmax=voltage.get("max_v"),
+                                    drawing_page_id=source.get("drawing_page_id"),
+                                    anchor=source.get("drawing_anchor")))
         except (ValueError, KeyError, TypeError) as e:
             findings.append(dict(light_id=lid, issue="electrical_data_incomplete_or_invalid",
                                  status="blocking", detail=str(e)))
@@ -319,6 +416,11 @@ def _pack_cc(items, ceiling, target, min_ma, max_ma):
     both current bounds; no below-minimum singleton is silently accepted.
     """
     ordered = sorted(items, key=lambda x: (-x["watts"], x["id"]))
+    geometry_available = all(
+        m.get("drawing_page_id") is not None and isinstance(m.get("anchor"), dict)
+        and m["anchor"].get("x_pt") is not None and m["anchor"].get("y_pt") is not None
+        for m in ordered
+    ) and len({m.get("drawing_page_id") for m in ordered}) == 1
     if len(ordered) > 18:
         bins = []
         for x in ordered:
@@ -328,7 +430,8 @@ def _pack_cc(items, ceiling, target, min_ma, max_ma):
             else:b.append(x)
         if any(sum((x["branch_ma"] for x in b), Decimal(0))<min_ma for b in bins):
             return None, False, False
-        return bins, False, False
+        return (_spatial_refine(bins,ceiling,target,(min_ma,max_ma))
+                if geometry_available else bins), False, False
     best = None
     best_score = None
     bins = []
@@ -344,9 +447,7 @@ def _pack_cc(items, ceiling, target, min_ma, max_ma):
         if i == len(ordered):
             if any(not min_ma<=sum((x["branch_ma"] for x in b),Decimal(0))<=max_ma for b in bins):
                 return
-            totals=[sum((x["watts"] for x in b),Decimal(0)) for b in bins]
-            score=(len(bins),sum((abs(x-target) for x in totals),Decimal(0)),
-                   tuple(sorted(tuple(sorted(x["id"] for x in b)) for b in bins)))
+            score=_packing_score(bins,target,geometry_available=geometry_available)
             if best_score is None or score<best_score:
                 best_score=score;best=[list(b) for b in bins]
             return
@@ -355,13 +456,15 @@ def _pack_cc(items, ceiling, target, min_ma, max_ma):
         for b in bins:
             watts=sum((y["watts"] for y in b),Decimal(0))
             amps=sum((y["branch_ma"] for y in b),Decimal(0))
-            if (watts,amps) in seen:continue
+            if not geometry_available and (watts,amps) in seen:continue
             seen.add((watts,amps))
             if watts+x["watts"]<=ceiling and amps+x["branch_ma"]<=max_ma:
                 b.append(x);recurse(i+1);b.pop()
         if best is None or len(bins)+1<=len(best):
             bins.append([x]);recurse(i+1);bins.pop()
     recurse(0)
+    if best is not None and geometry_available:
+        best=_spatial_refine(best,ceiling,target,(min_ma,max_ma))
     return best, best is not None and not exhausted, exhausted
 
 
