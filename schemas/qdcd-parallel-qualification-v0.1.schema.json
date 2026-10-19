@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Y4 QDCD parallel-CC qualification evidence v0.1 (backward-compatible provenance extension)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_evidence",
+    "combination_qualifications",
+    "driver_programming"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "fixture_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_type_id",
+          "rated_current_ma",
+          "basis",
+          "source_ref_ids"
+        ],
+        "properties": {
+          "fixture_type_id": {
+            "type": "string"
+          },
+          "rated_current_ma": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "basis": {
+            "enum": [
+              "manufacturer_verified",
+              "calculated",
+              "unknown"
+            ]
+          },
+          "source_ref_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "voltage_evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "basis",
+              "min_v",
+              "max_v",
+              "source_ref_ids"
+            ],
+            "properties": {
+              "basis": {
+                "enum": [
+                  "manufacturer_verified",
+                  "assumed",
+                  "calculated",
+                  "unknown"
+                ]
+              },
+              "min_v": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "exclusiveMinimum": 0
+              },
+              "max_v": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "exclusiveMinimum": 0
+              },
+              "source_ref_ids": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Independent LED-module forward-voltage evidence; 36-36 assumed project window is not a manufacturer operating range."
+          },
+          "allowed_min_current_ma": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0,
+            "description": "Optional verified minimum permitted branch mA for the actual selected LED module; not driver minimum."
+          },
+          "allowed_max_current_ma": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0,
+            "description": "Optional verified maximum permitted branch mA for the actual selected LED module; not dimming command range."
+          }
+        }
+      }
+    },
+    "combination_qualifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture_type_ids",
+          "manufacturer_status",
+          "manufacturer_evidence_ref_ids",
+          "owner_decision_id",
+          "project_review_status",
+          "emergency_status"
+        ],
+        "properties": {
+          "fixture_type_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "manufacturer_status": {
+            "enum": [
+              "fixture_combination_verified",
+              "general_topology_only",
+              "unknown"
+            ]
+          },
+          "manufacturer_evidence_ref_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "owner_decision_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "project_review_status": {
+            "enum": [
+              "qualified",
+              "pending",
+              "rejected"
+            ]
+          },
+          "emergency_status": {
+            "enum": [
+              "qualified",
+              "pending",
+              "not_applicable"
+            ]
+          }
+        }
+      }
+    },
+    "driver_programming": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "current_step_ma",
+            "current_step_origin_ma",
+            "manufacturer_evidence_ref_ids"
+          ],
+          "properties": {
+            "current_step_ma": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "current_step_origin_ma": {
+              "type": "number",
+              "minimum": 0
+            },
+            "manufacturer_evidence_ref_ids": {
+              "type": "array",
+              "uniqueItems": true,
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            },
+            "allowed_setpoint_deviation_ma": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional separately documented permissible absolute deviation from summed manufacturer-rated branch mA, NOT regulation accuracy; requires verified per-fixture allowed-current bands and combination approval."
+            },
+            "step_rounding_mode": {
+              "enum": [
+                "nearest",
+                "floor",
+                "ceiling",
+                "exact_only",
+                "unknown"
+              ],
+              "description": "Observed or manufacturer-documented output setpoint rounding semantics; never infer from approximately 100mA."
+            }
+          }
+        }
+      ]
+    },
+    "supplemental_sources": {
+      "type": "array",
+      "description": "Optional read-only supplemental manufacturer evidence that postdates frozen canonical project sources.",
+      "uniqueItems": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "revision",
+          "source_location",
+          "review_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_location": {
+            "type": "string",
+            "minLength": 1
+          },
+          "review_status": {
+            "enum": [
+              "verified_document",
+              "pending"
+            ]
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-fA-F0-9]{64}$"
+          }
+        }
+      }
+    }
+  }
+}
