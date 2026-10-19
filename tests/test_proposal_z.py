@@ -82,7 +82,7 @@ class ProposalZTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             old=Path(folder)/"legacy.json"
             new=Path(folder)/"v10.json"
-            old.write_text(model_json(source)+"\\n")
+            old.write_text(model_json(source)+"\n")
             command=[sys.executable,"-m","generators.model_equipment_v10",
                      str(old),"--upgrade-output",str(new)]
             first=subprocess.run(command,cwd=ROOT,capture_output=True,text=True)
