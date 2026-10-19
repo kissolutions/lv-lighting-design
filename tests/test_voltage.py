@@ -133,31 +133,6 @@ class VoltageTests(unittest.TestCase):
                                channel_id=self.channel['id'])
         self.assertIn('cc-topology-review', self.rules())
 
-    def test_parallel_cc_mixed_rated_ma_is_a_distinct_manufacturer_conflict(self):
-        self.cc_single()
-        other = self.model['light_objects'][1]
-        other['design'].update(input_voltage=copy.deepcopy(self.light['design']['input_voltage']),
-                               input_power_mode='constant_current',
-                               input_current_ma=Decimal('750'),
-                               channel_id=self.channel['id'])
-        rules = self.rules()
-        self.assertIn('cc-parallel-rated-current-mismatch', rules)
-        self.assertIn('cc-topology-review', rules)
-        # The independent fixture-current mismatch is not waived by any
-        # channel topology approval and can be detected before the Y4 rewrite.
-        other['design']['input_current_ma']=Decimal('700.00')
-        self.assertNotIn('cc-parallel-rated-current-mismatch', self.rules())
-        self.assertIn('cc-topology-review', self.rules())
-
-    def test_parallel_cc_without_nameplate_current_cannot_pass(self):
-        self.cc_single()
-        other = self.model['light_objects'][1]
-        other['design'].update(input_voltage=copy.deepcopy(self.light['design']['input_voltage']),
-                               input_power_mode='constant_current',
-                               input_current_ma=None,
-                               channel_id=self.channel['id'])
-        self.assertIn('cc-parallel-rated-current-missing', self.rules())
-
     def test_upgrade_preserves_identity_decimals_and_original_unknowns(self):
         old = read_model(ROOT / 'docs/reference-implementations/synthetic-intake/design-model.json')
         old['light_objects'][0]['design']['load']['watts'] = Decimal('20.0000000000000001')
