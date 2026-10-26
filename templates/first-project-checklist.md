@@ -6,6 +6,7 @@ Copy this template into approved project storage outside Git. Follow the [workfl
 
 - [ ] Register project/model revision, source filenames/revisions, sheet/page identities, actual displayed dimensions and rotation.
 - [ ] Resolve the source/revision basis used for architectural/electrical overlays; retain discrepancies and locators.
+- [ ] Agent renders/inspects applicable source views; before bulk cross-drawing transfer, verify distributed architectural registration, preserve original/transformed coordinates separately, and then check object/semantic correspondence. Owner screenshots are targeted clarification, not a routine prerequisite. Follow [visual-spatial extraction](../docs/design-playbooks/visual-spatial-extraction.md).
 - [ ] Record scope, project energy-code basis and the responsible review/approval parties. WikiJS supplies general electrical lighting guidance.
 - [ ] Preserve the MEP control scheme as the starting basis. Redesign only when authority exists and adoption of the proposed departure is approved.
 
@@ -17,6 +18,7 @@ Copy this template into approved project storage outside Git. Follow the [workfl
 - [ ] No assumptions: every fact needs source evidence or identified owner confirmation. Preserve accepted owner corrections; unsupported values and untagged uses remain unknown.
 - [ ] Account for untagged rooms, circulation, stairs and unlit service areas. Describe location neutrally; do not infer purpose from shape.
 - [ ] Compare architectural floor/RCP/electrical labels and retain discrepancies. Relate open-to-below footprints to their occupied/served Space.
+- [ ] Visually compare source and saved footprints for all in-scope Spaces, including circulation/untagged pockets and gaps/overlaps. For M1 Light Point review, compare apparent count, arrangement and individual locations per Space; equal counts alone do not pass. Record pending scope and downstream effects explicitly.
 
 ## Boundary and area review
 
@@ -41,7 +43,8 @@ Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human r
 - [ ] Capture [source voltage beside source wattage](../docs/ontology/canonical-model/electrical-interfaces-v0.5.md), with AC/DC, nominal/range, CV/CC mode and drive current where supported. Identify fixture-input versus module-input/driver-output evidence; retain ambiguous wording and unknowns rather than inferring from watts.
 - [ ] Give each physical occurrence a stable internal ID; count by sheet/Space/type and reconcile repeated/duplicate coverage and exclusions.
 - [ ] Apply [linear run extraction](../docs/design-playbooks/m2-linear-fixture-extraction.md): connected/apparently continuous same-type paths count once through corners/repeated marks; clearly disconnected paths count separately. Check source linework beneath overlays, describe quantities as runs, and flag uncertain continuity, full-path length/load and feed/section topology.
-- [ ] Apply [M2 fixture display numbering](../docs/design-playbooks/m2-fixture-numbering.md): consecutive type blocks across the project, room subsets together, clockwise from top-left within room/type; retain unique labels, a type-block register and label-to-permanent-ID mapping. Review ambiguous traversal and coordinate any display-label revision across tables/PDFs.
+- [ ] Apply [M2 identity preservation](../docs/design-playbooks/m2-fixture-numbering.md): retain approved M1 names in one uninterrupted project-wide sequence, rooms and then points in row-by-row top-left-to-bottom-right grid order. Labels match names absent explicit owner override. Type-grouped schedules never authorize type-block/clockwise renumbering; retain label-to-permanent-ID/observation mapping and scoped split/merge findings.
+- [ ] Compare rendered source and saved Light Point markup per Space for count, arrangement, omissions, duplicates and individual locations; repeat affected checks after schedule/assembly interpretation or owner corrections. On a discrepancy, inspect a focused rendered crop before another corrective data pass.
 - [ ] Assign lights to the occupied/served Space, retaining their independent source sheet. Keep numeric mounting height unknown where only qualitative high mounting or an unassociated ceiling tag is supported. Create no default zones; run the served-Space sanity check after boundary derivation/counting.
 - [ ] Extract source control symbols, legends, schedules, keyed notes, details and sequences; distinguish lighting from receptacle controls.
 - [ ] Confirm substantial gray/hatched scope exclusions; inspect finish plans and review alcove/corridor/finish-transition boundary proposals.
@@ -98,6 +101,7 @@ Use the [M2 owner review checklist](m2-user-review-checklist.md) for the human r
 
 - [ ] Room boundary schedule before plans; known room tags/names shown; readable pagination.
 - [ ] Fixture schedule and every Light Point ID grouped by type; lightly hatched room membership; undercounter/strip reconciliation.
+- [ ] Base Light Point annotation shows only the approved ID beside a small circular canonical anchor, default 4 pt at native PDF scale. Marker and label have distinct saved IDs linked to the same object; verify metadata/edit/save/readback and intended-scale legibility. Label-only edits leave the anchor unchanged; preserve owner-returned anchor geometry. Later separate output/subzone/channel tags retain their own rules.
 - [ ] Narrative locked with owner decision; first-class open-office clusters and parent common control recorded.
 - [ ] Room-device schedule includes ID/tag/name/Room ID/name/zone/subzone/function; wall switch/scene/dimmer positions start with electrical-plan evidence (accepted owner positions prevail), with door/entry/glazing fallbacks only where source locations are unavailable; occupancy/daylight sensors also start with source design locations; use tile/zone, wall/corridor or daylight-placeholder fallbacks only without usable source locations; placement basis and missing geometry recorded; returned locations reconciled.
 - [ ] Micro-channel map boxes show assigned output at upper left and calculated watts at lower right; no devices; no invented output tags.

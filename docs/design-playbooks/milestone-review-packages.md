@@ -31,6 +31,12 @@ Six printable review packages accumulate into the final package. These deliverab
 
 Use as many schedule sheets and plan pages as needed for legibility. Repeat schedule column headings; keep identifiers and associations readable rather than shrinking everything onto one page. Include plan/page reference and scale/basis information when available. Calculated labels round upward to whole numbers; source/nameplate values and engineering data retain their original precision.
 
+## Visual review and Light Point presentation
+
+Before owner handoff, apply [visual-spatial extraction and Light Point markup](visual-spatial-extraction.md) to the rendered saved package. Package 1 includes a source-to-footprint completeness check; any M1 Light Point review and Package 2 include per-Space apparent-count, arrangement and individual-location reconciliation. Preserve zero-light Spaces, source-run/section differences, holdouts and pending findings explicitly. Equal totals do not prove correspondence; logged discrepancies do not make affected scope accepted. Present one consolidated review package with scoped exceptions rather than new per-room approval gates.
+
+On plan sheets, base Light Point markup is a small circular canonical anchor plus its approved ID-only adjacent label, 4 pt by default; fixture details remain in annotation metadata/linked records and front-sheet schedules. Marker and label are independently editable and identity-linked. Label-only moves do not change physical location. Verify actual saved metadata, legibility and edit/save/readback. Cross-drawing handoffs require both architectural/geometric registration and post-transfer object correspondence. Later M3/M4 auxiliary tags retain their separate contracts. These presentation/visual checks are supervised requirements, not new exporter capabilities.
+
 ## Finalized Room Map for the First Package
 
 After the owner finalizes the room boundaries, make every accepted room footprint a fillable closed area. Retain an existing editable `/Polygon` when it already represents the accepted boundary. Convert other representations, including `/Square`, to a live `/Polygon` preserving accepted geometry; open polylines and separate edge segments alone are insufficient. Preserve the accepted geometry, Space ID, label, source/level and review history. Replace the superseded primary footprint rather than leaving duplicate room-area objects. Preserve the annotation ID when supported; otherwise explicitly reconcile the old/new annotation IDs to the same Space in the markup register.
