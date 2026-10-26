@@ -29,6 +29,10 @@ Use [Physical intake v0.4](../ontology/canonical-model/physical-intake-v0.4.md),
 
 Begin with [architectural space intake](architectural-space-intake.md). Architectural floor/dimension plans establish room identities, occupied/served levels and boundaries. Reconcile architectural RCP and electrical label/revision discrepancies. MEP lighting plans, schedules, symbols, legends, keyed notes and control details establish fixture/control intent. Assign overhead fixtures to the Space they primarily illuminate while preserving their source sheet and mounting context.
 
+## Visual extraction and review
+
+Apply [LV visual-spatial extraction](visual-spatial-extraction.md) throughout the steps below: AI interprets, extracts and visually verifies before owner review. Render the applicable source and saved markup, checking counts, arrangement and individual correspondence per Space. Register source/target drawings using distributed architectural evidence before bulk transfer, then verify object-level meaning separately. A reported spatial discrepancy triggers a focused rendered review before another corrective data pass. Keep the base Light Point label ID-only beside its circular canonical anchor, 4 pt by default, with other facts in metadata. Preserve accepted owner geometry and scoped unresolved findings; structural validation cannot certify visual completeness.
+
 ## Working Steps
 
 During M2, apply [linear lighting run extraction](m2-linear-fixture-extraction.md): one continuous or apparently continuous same-type path counts as one source run, including corners and repeated labels; clearly disconnected paths count separately. Flag ambiguous continuity and preserve full-path length/load evidence without inferring section, feed or channel count.

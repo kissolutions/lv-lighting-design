@@ -9,7 +9,7 @@ invocation_triggers:
   systems_present: [low_voltage_lighting]
 decision_axes: [fixture_identity, source_schedule, room_membership, markup_readability, revision_traceability]
 related_pages:
-  - "phase-1-intake-process-map-v0.1.md"
+  - "phase-1-intake-process-map-v0.2.md"
   - "lighting-design-playbook.md"
   - "../concepts/fixture-identity-and-summary-counts.md"
   - "../ontology/canonical-model/light-object.md"
@@ -40,6 +40,10 @@ M1 names Light Points by visiting **rooms in top-left-to-bottom-right grid order
 - **Annotation identity:** Saved PDF `/NM` mapped through the annotation register to the appropriate object; geometric edits do not create new identities automatically.
 
 The existing `Light Object.label` and `id` fields remain the model fields of record where supported. Do not create duplicate canonical registers or replace immutable internal IDs with project-wide sequence numbers.
+
+## Visual verification and anchor handoff
+
+Carry M1's scoped [visual completeness evidence and anchor/label mapping](visual-spatial-extraction.md) into M2. Visually reconcile source marks, positions and interpreted physical occurrences per Space, including schedule/assembly-driven count differences; matching totals alone is insufficient. Recheck affected areas after split/merge, new sources or owner edits. Preserve the circular canonical anchor independently of its adjacent 4 pt default ID-only label and keep fixture facts in metadata/linked records. Label movement does not move the point or authorize renumbering. Cross-drawing transfer needs geometric registration plus object correspondence. Pending discrepancies remain pending for the affected scope rather than becoming approved through a checker pass.
 
 ## M2 procedure
 

@@ -46,6 +46,12 @@ Membership is independent of presentation: notching, nesting, drawing order and 
 
 Owner-returned footprints replace prior footprints wholesale and establish the working page frame. Replot the package onto the returned sheet frame, even when it is an electrical sheet rather than the original architectural intake sheet. Do not transform back through an unverified sheet registration. Record sheet/page revision, crop, rotation and coordinate basis; register all light anchors to that frame before containment. Preserve original source anchors and document the transformation/decision separately.
 
+## Visual completeness and anchor identity
+
+Apply [LV visual-spatial extraction](visual-spatial-extraction.md): inspect rendered source views and the saved markup before owner handoff, comparing count, arrangement and individual correspondence by Space. Check source/working-frame architectural registration before transfer, then verify object meaning and membership separately. On a spatial discrepancy, inspect the focused rendered area before another corrective data pass. Preserve accepted owner-returned circle centers as anchors; moving an ID label alone does not relocate a Light Point. Pending findings retain affected scope and downstream effects and do not count as completed inventory.
+
+The base Light Point presentation is an editable circle plus an adjacent approved ID-only FreeText label, 4 pt by default. Fixture facts remain in metadata/linked records. Both annotations map to the same object with distinct persistent IDs. In the current register the marker may use role `other`; `light_label` remains FreeText. Verify centering, font, metadata and label/anchor readback separately: the existing structural validator does not check those properties.
+
 ## Live annotations and register gate
 
 Every milestone plan markup must remain live, editable PDF annotations. Source plans and schedule pages may remain ordinary page content; newly delivered footprint/fill/symbol/label markup must not be baked into page content. Room footprints use `/Polygon` with `/Vertices`, `/IC`, `/CA` and stable `/NM`, including rectangular rooms. Light display labels use `/FreeText` with a nonempty `/AP` appearance stream and stable `/NM`. This supersedes earlier permission to retain `/Square` as the final room footprint subtype. No flattening or editing locks.

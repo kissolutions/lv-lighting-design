@@ -47,7 +47,7 @@ WikiJS owns the shared electrical lighting knowledge: space vocabulary, room-by-
 Redesign is conditional: identify a deficiency or implementation opportunity, establish authority to propose a change, document the proposal and its approval, then update the applied implementation while preserving the original scheme. A confirmed model decision alone does not establish approval by the responsible party. Unclear intent requires clarification, not an invented default.
 
 
-**Phase 1 process orchestration:** Follow [Phase 1 Intake Process Map v0.1](phase-1-intake-process-map-v0.1.md) for the agreed order: source registration/owner visual snippets → provisional light-point observation → AI/owner-first Space polygon generation → iterative owner correction and PDF intake → independent M1 verification → detailed M2 schedule-first light identification and controls intake. This refines process execution without renaming milestones or migrating schemas. The map distinguishes documented directives from software implementation and notes remaining BETA gaps.
+**Phase 1 process orchestration:** Follow [Phase 1 Intake Process Map v0.2](phase-1-intake-process-map-v0.2.md) for the agreed order: source registration/agent-rendered visual review → provisional light-point observation → AI/owner-first Space polygon generation → iterative owner correction and PDF intake → independent M1 verification → detailed M2 schedule-first light identification and controls intake. This refines process execution without renaming milestones or migrating schemas. The map distinguishes documented directives from software implementation and notes remaining BETA gaps.
 
 ## How to Read Readiness
 
@@ -191,6 +191,12 @@ Capture AHJ and area return-plenum status during basis/intake. After channel des
 Define the exterior-lighting workflow before treating exterior designs as covered by the framework. Resolve exterior area/fixture ownership and takeoff, functional zoning and controls narrative, applicable code-review routing, power/driver/channel selection (including larger-fixture aggregation when compatible), outdoor equipment/enclosure and routing evidence, and review deliverables. Record decisions through the existing owner-review process; no default exterior sequence or hardware selection is established by this flag.
 
 The accepted low-opacity wine/burgundy exterior room-map color is presentation guidance only. It does not resolve exterior lighting scope, controls, electrical compatibility or equipment suitability. Preserve known source intent and mark unsupported exterior design decisions as open. Shared exterior design/controls knowledge belongs in WikiJS; project/model/channel/markup implementation belongs in this LV extension.
+
+## Visual-spatial extraction and review evidence
+
+Use [LV visual-spatial extraction](visual-spatial-extraction.md) and its shared parent method before presenting room/Light Point markups. AI performs extraction and rendered visual verification; owner-first markup is optional and owner screenshots are targeted clarification. Check every in-scope Space for count, arrangement and individual object correspondence; check saved output as well as source. Cross-view handoffs require distributed architectural registration and a separate semantic/object check. Base Light Point markup is an editable circle plus approved ID-only label, 4 pt by default, with other facts in metadata/linked records. Anchor centers govern spatial logic, text offsets do not. On a discrepancy, visually inspect the area before another corrective data pass. Preserve accepted owner anchors and pending scope/downstream effects.
+
+Comparison tables and registration evidence can remain lightweight project review records; no schema fields are added. Existing structural validators cannot certify visual completeness, font/marker placement or an anchor/label return loop. These documented requirements do not establish a completed extractor or new compatibility proof.
 
 ## M1/M2 Beta Review Update
 

@@ -10,6 +10,8 @@ The model and documented method are sufficient to attempt a supervised one-room/
 
 ## Start here
 
+For drawing work, use [visual-spatial extraction and Light Point markup](docs/design-playbooks/visual-spatial-extraction.md): AI-led first-pass extraction, rendered visual completeness checks, geometric plus object-level cross-view verification, editable circular anchors and ID-only labels. Accepted owner geometry and existing approved numbering are preserved. The method documents supervised checks; it does not claim a new automated plan extractor.
+
 WikiJS owns room definitions, code analysis, controls selection/configuration, decision trees and the application guide. General [application-guide](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/lighting-control-application-guide.md) and [IECC draft profile](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/iecc-occupant-sensor-directives.md) content now lives there; the old local paths are navigation-only pointers. Follow the [classification/narrative handoff](docs/design-playbooks/lv-project-workflow-and-readiness.md#room-classification-and-controls-narrative-handoff) for owner-confirmed room types, authorized source-gap filling and reviewed primary-source fallback when WikiJS guidance is unfinished. Local system constraints narrow compatible selections while preserving required behavior.
 
 1. Read [repository guidance](CLAUDE.md) and the [repository boundary](docs/governance-and-doctrine/repository-boundary.md).

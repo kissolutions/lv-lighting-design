@@ -22,7 +22,9 @@ Use matching revisions. Keep the markup documents separate for now. Missing revi
 ## 1. Did We Capture the Right Lights?
 
 - [ ] The fixture-ID markup identifies the visible lights clearly; I can match each ID to its record.
-- [ ] Display numbers follow the [numbering rule](../docs/design-playbooks/m2-fixture-numbering.md): one consecutive block per schedule type, each room's same-type lights together, clockwise from top-left. The type-block register matches the counts; unclear paths or revisions are flagged. Permanent internal IDs are preserved.
+- [ ] Display labels preserve the [approved M1 sequence](../docs/design-playbooks/m2-fixture-numbering.md): continuous across the project, rooms and then points in row-by-row grid order, independent of fixture type. Labels match Light Point names unless I expressly override them. Type-grouped schedules do not renumber lights. Internal IDs and split/merge history are preserved.
+- [ ] The agent visually checked each in-scope room against the source and saved markup for count, pattern and individual locations, including omissions/duplicates even where totals match. Remaining ambiguities and affected pending scope are visible.
+- [ ] Each base Light Point is an editable circle plus its adjacent ID-only label, 4 pt by default. Fixture details are available in metadata/linked records. Moving text alone does not move the point; accepted circle positions and identities survive my edits. See [markup rules](../docs/design-playbooks/visual-spatial-extraction.md).
 - [ ] Room/type counts agree with the marked plan and review tables. The verification summary identifies its checked sheets and remaining count questions.
 - [ ] Lights are not counted twice because they appear on multiple plans. Existing, excluded and out-of-scope items have an explicit treatment.
 - [ ] [Linear lighting counts](../docs/design-playbooks/m2-linear-fixture-extraction.md) are consistent: one continuous/apparently continuous same-type path is one run, including corners and repeated labels; clearly disconnected paths are separate runs. The agent checked source linework beneath overlays and flagged uncertain continuity/lengths. Run counts are distinguished from manufactured sections and electrical feeds.
@@ -44,6 +46,7 @@ Questions / discrepancy IDs: __________
 - [ ] Every light has one primary served room/Space. No lights are left unassigned or duplicated between rooms.
 - [ ] Lights above a lower occupied floor belong to the room they illuminate; their actual source sheet is still recorded.
 - [ ] Accepted M1 boundary corrections are preserved. Any new boundary or membership question is identified for review.
+- [ ] Where information moved between drawings, architectural alignment was checked across the mapped area and the correct objects were then verified in their intended rooms/features. Original source positions remain traceable separately from target positions.
 - [ ] Mounting heights have a stated basis. A ceiling tag was not automatically assigned to every fixture in a room, and unsupported heights remain unknown.
 
 Questions / discrepancy IDs: __________
