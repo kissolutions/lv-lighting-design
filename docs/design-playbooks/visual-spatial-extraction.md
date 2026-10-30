@@ -19,6 +19,8 @@ related_pages:
 
 # LV Visual-Spatial Extraction and Light Point Markup
 
+**Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
+
 ## 1. Purpose and Use
 
 Apply the parent [Drawing-Based Spatial Extraction and Verification v0.1](https://github.com/kissolutions/knowledgebase_wikijs/blob/a5616fa089d94c824551997a9fa9a14c9a4d3a58/design-playbooks/drawing-spatial-extraction-v0.1.md) to M1 Rooms/Light Points, M2 fixture reconciliation and later drawing-derived device/route handoffs. This page owns LV presentation and milestone evidence, not a new canonical schema or automated extractor. Revision: 2026-10-25. Shared method pinned to parent commit `a5616fa`; its review branch need not be merged for these links to resolve.

@@ -14,6 +14,8 @@ related_pages:
 
 # Milestone Review PDF Packages
 
+**Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
+
 ## Purpose and Authority
 
 Six printable review packages accumulate into the final package. These deliverable numbers are not replacements for the existing M1/M2/M3/M4 workflow IDs. Each contains schedule pages first, followed by applicable source-plan markup sheets. Every package records project/model revision, source revisions, deliverable/review revision and review status. Accepted owner-returned geometry supersedes provisional placement; retain the earlier review record. Never silently replace an accepted section with an unreviewed revision.

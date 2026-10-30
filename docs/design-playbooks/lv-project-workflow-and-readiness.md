@@ -18,6 +18,8 @@ related_pages:
 
 # LV Project Workflow and Readiness
 
+**Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
+
 
 ## Parent Systems Engineering Architecture (v1.0)
 

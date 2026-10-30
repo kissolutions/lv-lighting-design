@@ -17,6 +17,8 @@ related_pages:
 
 # Low Voltage Lighting Design Playbook
 
+**Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
+
 ## Purpose and Authority
 
 Extract the MEP lighting/control scheme, check it against the general electrical lighting workflow in `knowledgebase_wikijs`, and implement it with compatible LV equipment. WikiJS owns room/code analysis, vocabulary, control selection/configuration, decision trees and the application guide. This repository owns project intake, the LV canonical model, channel/equipment grouping, validation and output conventions. Follow the [full workflow and readiness map](lv-project-workflow-and-readiness.md) for milestones and implementation gaps.

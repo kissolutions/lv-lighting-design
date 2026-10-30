@@ -14,6 +14,8 @@ related_pages:
 
 # Control-System Markup Legend
 
+**Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
+
 ## Legend
 
 | Component | Symbol | Color | Example |
@@ -22,11 +24,42 @@ related_pages:
 | CIO | Rectangle | BLUE | CIO-01 |
 | QDCD / driver controller | Square | BLUE | QDCD-01 |
 | Sensor aggregator | Diamond | BLUE | SW8-01 / SW4-01 |
-| Sensor | Diamond | PURPLE | OCC-01 / DL-01 |
-| Wall controller | `$` | PURPLE | WC-01 |
-| Wall dimming controller | `$D` | PURPLE | WC-02 |
+| Occupancy sensor | Diamond | RED | OCC-01 |
+| ALS / daylight sensor | Diamond | GREEN | DL-01 |
+| Combined ALS / occupancy sensor | Diamond | PURPLE | Preserve assigned device ID |
+| Wall controller | `---
+title: "Control-System Markup Legend"
+page_type: playbook
+page_status: draft
+confidence_level: medium
+domain_primary: low-voltage-lighting
+ai_role: prescriptive_standard
+invocation_triggers:
+  systems_present: [low_voltage_lighting, smartdc]
+decision_axes: [power_allocation, controls, equipment_placement, owner_review]
+related_pages:
+  - "https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/smartdc-allocation-index.md"
+---
 
-Device ID labels are mandatory, particularly shared rectangle/diamond shapes. `$D` is the accepted initial glyph; no special dollar-stroked D is required. Symbols show proposed physical locations. QDCD labels/callouts reference existing micro channels and outputs; sensor/wall labels reference served functional zones. Maintain visible proposal/owner-review status and annotation IDs mapped to device IDs.
+# Control-System Markup Legend
+
+**Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
+
+## Legend
+
+| Component | Symbol | Color | Example |
+|---|---|---|---|
+| PDU (current power component) | Rectangle | RED | PDU-01 |
+| CIO | Rectangle | BLUE | CIO-01 |
+| QDCD / driver controller | Square | BLUE | QDCD-01 |
+| Sensor aggregator | Diamond | BLUE | SW8-01 / SW4-01 |
+| Occupancy sensor | Diamond | RED | OCC-01 |
+| ALS / daylight sensor | Diamond | GREEN | DL-01 |
+| Combined ALS / occupancy sensor | Diamond | PURPLE | Preserve assigned device ID |
+ | BLUE | WC-01 |
+| Wall dimming controller | `$D` | BLUE | WC-02 |
+
+Device ID labels are required in Full and full-information Flattened forms, particularly shared rectangle/diamond shapes; explicitly defined Abridged forms omit external labels and retain identification in properties popups. `$D` is the accepted initial glyph; no special dollar-stroked D is required. Symbols show proposed physical locations. QDCD labels/callouts reference existing micro channels and outputs; sensor/wall labels reference served functional zones. Maintain visible proposal/owner-review status and annotation IDs mapped to device IDs.
 
 ## Light Point anchors and labels
 
@@ -42,7 +75,7 @@ Draw and label PDnet, SDCnet, PDU power feeds and luminaire routes separately; r
 
 ## Milestone Presentation and Device Tags
 
-Follow [milestone review packages](milestone-review-packages.md). Display tags OS-01, DS-01, WC-01 and WD-01 distinguish room devices; persistent internal/annotation IDs remain separate. Sensors/wall controls stay PURPLE; QDCD/CIO/SW controls BLUE; PDU RED. Tag changes do not change the `$`/`$D` glyphs.
+Follow [milestone review packages](milestone-review-packages.md). Display tags OS-01, DS-01, WC-01 and WD-01 distinguish room devices; persistent internal/annotation IDs remain separate. Room-device colors follow the presentation contract: wall controls BLUE, occupancy RED, ALS GREEN, combined ALS/occupancy PURPLE. QDCD/CIO/SW controls remain BLUE and PDU RED until the equipment presentation is redefined. Abridged Room Devices omit external ID labels while retaining popup identification. Tag changes do not change the `$`/`$D` glyphs.
 
 Final layers are rooms, lights, zones, lv_channels, controllers and cabling. Both device categories live on controllers. Takeoff rooms use light hatches; micro-channel maps use editable fixture-to-fixture chain Polylines rather than boxes, with QDCD output tags per Light Point and separate editable QDCD reach lines on controllers layer. No device symbols in the Package 4 microchannel review. Read the M4 chain owner-return playbook for snapping, ordering, ambiguity rejection and owner-directed output changes and ceiling-rounded watts lower right. Finish each markup by bringing text in front of lines/shapes. Enveloped zones/channels use dashed boundaries with other styling preserved; no polyline detours. Calculated display quantities use ceiling to whole numbers while calculations stay precise.
 

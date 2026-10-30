@@ -1,5 +1,7 @@
 # LV Lighting Design
 
+**Drawing presentation:** [Markup Deliverable Presentation Contracts](docs/design-playbooks/markup-deliverable-presentation-contracts.md) is the current authority for named markup forms, labels, colors, properties, 4 pt text / 1.00 margins and source-component versions. It supersedes conflicting older presentation descriptions; implementation gaps remain explicit.
+
 KIS Solutions' LV lighting implementation workspace. WikiJS owns the general electrical lighting workflow and design knowledge. This repository extracts/reconciles the MEP scheme, checks it through that knowledgebase, and records the LV model, grouping, validation and markup/output conventions.
 
 The current draft is [Electrical interfaces v0.5](docs/ontology/canonical-model/electrical-interfaces-v0.5.md), retaining [physical intake v0.4](docs/ontology/canonical-model/physical-intake-v0.4.md). Store physical lights once with primary served Space membership; logical lighting zones come later and no default zones are created. Use the [v0.5 schema](schemas/lighting-project-v0.5.schema.json), [seed](templates/lighting-project-v0.5.template.json), and [synthetic examples](docs/reference-implementations/synthetic-voltage/README.md). Source voltage is a peer of source wattage, separate from selected LV input. Design checks include fixed-voltage, AC/DC, power-mode and single-input CC current/range compatibility. Older contracts/tools remain available; an older pass does not perform these new checks.
