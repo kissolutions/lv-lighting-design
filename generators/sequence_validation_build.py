@@ -7,7 +7,7 @@ the canonical project schema, or owner approval decisions.
 import argparse
 import json
 from pathlib import Path
-from .sequence_code_validate import validate
+from .sequence_code_validate import validate, PROCESS_REV
 
 
 def build(model,companion,catalog,code_basis,space_contexts,standard_sequences=None,prior=None):
@@ -56,7 +56,7 @@ def build(model,companion,catalog,code_basis,space_contexts,standard_sequences=N
         results.append(result)
     status='conflict' if issues or any(r['status']=='conflict' for r in results) else (
       'needs_review' if not results or any(r['status']!='rule_checks_passed' for r in results) else 'rule_checks_passed')
-    return dict(process_id='PROC-SEQ-VALIDATE',process_revision='0.1.0',
+    return dict(process_id='PROC-SEQ-VALIDATE',process_revision=PROCESS_REV,
       project_id=companion['project_id'],model_revision=companion['model_revision'],
       catalog_revision=catalog['revision'],code_basis=code_basis,status=status,
       blocking_integration_issues=issues,results=results,

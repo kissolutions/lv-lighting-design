@@ -40,6 +40,7 @@ Illustrative context (NOT a statement about any real project):
       "space_id": "SPACE-201",
       "space_type": "conference",
       "area_sq_ft": 330,
+      "enclosed_full_height": null,
       "special_application": false,
       "daylight_control_required": null,
       "high_end_trim_exception": null
@@ -77,3 +78,15 @@ If a missing parameter can be derived exactly, `proposed_missing_parameters` rec
 The project must not claim a validated/certified sequence based only on an old M3 export that omitted the validation dependency. Approved 2021 and 2024 source evidence, proper ordinance/amendment review, and actual M4 fixture/controller electrical compatibility are independent of this first limited process.
 
 **Regression tests:** `tests/test_sequence_code_validate.py` and `tests/test_sequence_validation_build.py`. Source plan, switched-zone discovery and daylight polygon generation are not part of this validator.
+
+## Process 0.2.0 / catalog 0.2.0 occupant-sensor update (2026-11-01)
+
+Use evaluator/build process 0.2.0 or later with parent catalog 0.2.0; the catalog filename remains unchanged. Pin both engine and catalog repository revisions. Older engines do not interpret the new applicability keys and must not be paired with this catalog. The updated engine rejects catalog-declared future minimum process revisions and unsupported applicability keys rather than silently ignoring them.
+
+The external 2021 rules now separate restroom/locker-room full automatic-on permission from the general <=50% auto-on/manual-on/manual-off branch. They also cover the selected other-space categories at **<=300 SF inclusive**, requiring **confirmed floor-to-ceiling-height enclosure**. Record `enclosed_full_height: true | false | null` in each endpoint context; a room polygon or room name is insufficient evidence. Missing/invalid area or enclosure remains unresolved, not false. Known area above 300 or known false enclosure excludes that catch-all rule without claiming overall compliance. Existing exclusive upper-area logic (for example open offices <300 SF) is unchanged.
+
+Both new rule entries remain `secondary_corroborated_needs_primary`: their functional checks may be satisfied without becoming source-qualified. Keep `needs_review` and obtain final primary-text review before promoting the evidence status. Missing occupancy/timeout still produces findings, and a timeout over 20 minutes still conflicts. The exception does not force full auto-on or forbid an available manual switch.
+
+2024 rules and open-office limits are unchanged. Do not clear unrelated commissioning/code findings or modify accepted SEQ/PSEQ assignments when this catalog changes. Re-run into a new report and inspect deltas. These capabilities do not add unsupported fields to canonical Space schemas; the new enclosure fact belongs in the existing validation-context input.
+
+The existing `specific_application` boolean is also evaluated explicitly when a rule declares it; missing/nonboolean values remain unresolved. This avoids silently ignoring a supported specific-application prerequisite when rejecting unknown applicability keys.

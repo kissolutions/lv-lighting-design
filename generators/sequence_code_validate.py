@@ -8,10 +8,11 @@ comparisons. Provisional/secondary-only rule evidence cannot yield code-qualifie
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 
 PROCESS_ID='PROC-SEQ-VALIDATE'
-PROCESS_REV='0.1.0'
+PROCESS_REV='0.2.0'
 PASS='passed'; FAIL='conflict'; PENDING='needs_review'
 
 
@@ -19,9 +20,33 @@ def _hash(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 
+_APPLICABILITY_KEYS = {'specific_application_types','space_types','min_area_sq_ft',
+    'max_area_exclusive_sq_ft','max_area_sq_ft','enclosed_full_height',
+    'daylight_control_required','special_application','high_end_trim_exception',
+    'requires_no_compliant_occupancy_control','specific_application'}
+
+
+def _area(context):
+    value=context.get('area_sq_ft')
+    if not isinstance(value,(int,float)) or isinstance(value,bool):return None
+    return value if math.isfinite(value) and value>=0 else None
+
+
+def _revision(value):
+    parts=str(value).split('.')
+    if len(parts)!=3 or not all(p.isdigit() for p in parts):
+        raise ValueError('Expected a numeric three-part process revision')
+    return tuple(int(p) for p in parts)
+
+
 def applicability(rule,context):
     """True / False / None. Never interpret missing evidence as 'does not apply'."""
     c=rule['applies'];tests=[]
+    unknown=set(c)-_APPLICABILITY_KEYS
+    if unknown:raise ValueError('Unsupported rule applicability keys: '+', '.join(sorted(unknown)))
+    if 'specific_application' in c:
+        n=context.get('specific_application')
+        tests.append(None if not isinstance(n,bool) else n==c['specific_application'])
     if 'specific_application_types' in c:
         typ=context.get('specific_application_type')
         tests.append(None if typ is None else typ in c['specific_application_types'])
@@ -29,11 +54,17 @@ def applicability(rule,context):
         typ=context.get('space_type')
         tests.append(None if typ is None else typ in c['space_types'])
     if 'min_area_sq_ft' in c:
-        n=context.get('area_sq_ft')
+        n=_area(context)
         tests.append(None if n is None else n>=c['min_area_sq_ft'])
     if 'max_area_exclusive_sq_ft' in c:
-        n=context.get('area_sq_ft')
+        n=_area(context)
         tests.append(None if n is None else n<c['max_area_exclusive_sq_ft'])
+    if 'max_area_sq_ft' in c:
+        n=_area(context)
+        tests.append(None if n is None else n<=c['max_area_sq_ft'])
+    if 'enclosed_full_height' in c:
+        n=context.get('enclosed_full_height')
+        tests.append(None if not isinstance(n,bool) else n==c['enclosed_full_height'])
     if 'daylight_control_required' in c:
         n=context.get('daylight_control_required')
         tests.append(None if n is None else n==c['daylight_control_required'])
@@ -68,6 +99,9 @@ def validate(catalog,code_basis,context,sequence_assignment,prior=None):
     """Single endpoint validation; multiple independently callable runs supported."""
     if catalog.get('revision') is None or not isinstance(catalog.get('rules'),list):
         raise ValueError('Versioned rule catalog required')
+    minimum=catalog.get('minimum_process_revision')
+    if minimum is not None and _revision(PROCESS_REV)<_revision(minimum):
+        raise ValueError('Rule catalog requires newer process revision '+str(minimum))
     if code_basis.get('standard')!='IECC' or str(code_basis.get('edition')) not in ('2021','2024'):
         raise ValueError('Only IECC 2021 and 2024 implemented. No silent fallback.')
     if code_basis.get('compliance_path')!='prescriptive':
