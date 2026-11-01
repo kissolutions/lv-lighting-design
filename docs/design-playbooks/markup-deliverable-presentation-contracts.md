@@ -30,7 +30,7 @@ These definitions refine plan markups; they do not renumber M1–M6 or review pa
 
 | Form | Meaning |
 |---|---|
-| Full / Live | Default editable working component for iterative design handoff. Its specifically requested embedded reference components may already be flattened. Newly authored working annotations remain editable. |
+| Full / Live | Current-step working markups stay editable. All included markup components inherited from earlier frozen steps are flattened references. Retain each earlier step's separate live master. |
 | Flattened / External | Publication component retaining the full visible information defined for that component, flattened with selected properties popups enabled. |
 | Abridged / Integrated | Compact publication/reference component. Omit the external text specified below and retain object identification in properties popups. Content is explicitly defined per component. |
 
@@ -48,6 +48,29 @@ Presentation form is distinct from engineering/source revision, review status an
 - Include each shared source background, graphic and physical device once in a combined view. Reused components must not produce duplicate Light Points or room shapes.
 - Room boundaries are **not** a universal background. Include them only where the component definition calls for them.
 - Retain live masters. External flattening does not authorize flattening the editable design source. Locked/read-only external publication copies are distinct from unlocked owner-review masters; the detailed external issue/protection policy remains under reconciliation.
+
+### Frozen prior steps and current-step editing
+
+**Owner direction, 2026-11-01:** In every downstream working deliverable, **all included markups from earlier frozen steps are flattened**. Only the current step's active markups remain open for editing. This supersedes the older blanket “all markup stays editable at every stage” wording for inherited content.
+
+- Flatten derivative copies, never the frozen original or its retained live master. Retain the exact frozen source revision and component-to-page/layer mapping in the issue record.
+- Include only the prior components called for by the drawing composition. This rule does not add room boundaries to PDnet/SDCnet or restore any deliberately omitted component.
+- Flatten the inherited shapes, fills, symbols **and their text tags**. Use the full-information Flattened form unless the composition explicitly calls for Abridged; flattening alone does not remove labels.
+- Keep the defined properties popups and independent reference-layer visibility, where applicable. Insert inherited references below current-step markup. A locked live annotation is not a substitute for a flattened reference.
+- **M2 Lighting Takeoff explicitly imports M1 Room Boundaries — Flattened**, including the room graphics/text/properties required by that composition. M2 Light Point graphics, ID/type text and other active M2 annotations remain live under the current presentation/form-H rules.
+- Freezing a step preserves its recorded state; it does not automatically approve provisional facts, close exceptions or grant code acceptance.
+- To change inherited information, reopen the responsible earlier step, edit its live source under the existing review rules, freeze a new revision, and regenerate the dependent flattened references. Do not edit a flattened reference or silently alter the former frozen issue.
+- Keep immutable object identities across steps. If a current-step component enriches/replaces a previous rendering of the same objects, use one identified current representation rather than duplicating old flattened and new live symbols. Accepted prior facts/anchors remain protected.
+- The current editable-annotation register/readback scope covers the active step. Retain earlier source registers with their frozen steps and link them in the assembly record; do not require their flattened graphic annotation IDs to survive as live objects in the downstream PDF.
+- Verify flattened reference appearance/popups/layers separately from current live edit/save/readback. No inherited unflattened duplicates should remain as editable shapes/text. The existing strict live-PDF checker does not automatically classify flatten-generated popup annotations; do not bypass its identity checks by ignoring unknown annotations or changing arbitrary annotations to reference status.
+
+| Working deliverable | Earlier frozen content, if included | Editable content |
+|---|---|---|
+| M1 Room Boundaries | Any explicitly included earlier frozen reference | Current M1 boundary shapes and room text |
+| M2 Lighting Takeoff | **M1 Room Boundaries — Flattened** | Current M2 Light Point graphics, IDs/type marks and other active M2 markup |
+| Later milestone/step | Required components from every earlier frozen step, flattened (or Abridged where explicitly specified) | Only that step's active device/zone/channel/route/review markup |
+
+This is the composition/assembly policy. It does not claim that a general PDF flattener, popup-classification adapter or frozen-reference validator is implemented. A supplied live master remains editable in its own step even though its downstream reference copy is flattened.
 
 ### Flattening and popup behavior
 
@@ -185,6 +208,7 @@ CIO/module ID presentation follows existing equipment guidance until redefined. 
 |---|---|
 | Light Points | Current Light Point anchors, approved IDs, exact scheduled type marks |
 | Room Boundaries | Current accepted Space geometry, room records and classifications |
+| M2 Lighting Takeoff — Full / Live | M1 Room Boundaries — **Flattened** from the identified frozen M1 issue; current M2 Light Points — **Full / Live** |
 | Room Devices | Current physical room-device records and locations |
 | Energy Code — Full | Room Boundaries — Abridged; Room Devices — Full; current sequences |
 | Micro LV Channels — Full | Light Points — Abridged; accepted channel membership/order; channel-ID labels |
@@ -193,7 +217,7 @@ CIO/module ID presentation follows existing equipment guidance until redefined. 
 | SDCnet | Room Devices — Abridged; CIO/SW locations; SDCnet routes; device associations |
 | PDnet Bundles — Abridged / Reference | Current identified PDnet path geometry; set inclusion not yet fixed |
 
-Assembly may filter component content, but must explicitly record the chosen subset and deduplicate common objects. Source/model and component revisions remain recoverable. Regeneration changes a working issue, never an already frozen issue.
+Assembly may filter component content, but must explicitly record the chosen subset, flatten all included components from earlier frozen steps, and deduplicate common objects. Source/model and component revisions remain recoverable. Regeneration changes a working issue, never an already frozen issue.
 
 ## 12. Remaining defining passes
 

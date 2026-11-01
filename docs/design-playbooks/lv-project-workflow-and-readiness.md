@@ -18,6 +18,8 @@ related_pages:
 
 # LV Project Workflow and Readiness
 
+**Frozen-step composition update (2026-11-01):** [The presentation contract](markup-deliverable-presentation-contracts.md#frozen-prior-steps-and-current-step-editing) governs inherited content: all included markup from prior frozen steps is flattened in later deliverables, while the current step stays editable. M2 imports **M1 Room Boundaries — Flattened** beneath live M2 Light Points. Earlier editable-polygon/register directives below apply to the active source step and its retained master, not an inherited flattened copy. Retain properties/layers and source-revision links; freezing does not imply approval. No general flattening/popup adapter is claimed.
+
 **Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
 
 

@@ -20,7 +20,7 @@ LAYERS=('rooms','lights','zones','lv_channels','controllers','cabling')
 PACKAGES=('room_boundaries','lighting_takeoff','zones_room_devices','micro_channels','equipment','coordinated')
 TITLES=('Room Boundaries','Lighting Takeoff','Lighting Zones and Room Devices','Micro LV Channels','Controller and Power Equipment','Coordinated System')
 LAYER_FOR={'space':'rooms','light':'lights','zone':'zones','channel':'lv_channels','device':'controllers','route':'cabling'}
-ROOM_REVIEW_NOTE = ('Room footprints use editable single-ring polygons. Hosts are notched from an outer edge around carved-out Spaces; '
+ROOM_REVIEW_NOTE = ('Source room footprints use editable single-ring polygons. In later packages, included prior frozen-step room shapes and text are flattened references; only active-step markup stays editable. Hosts are notched from an outer edge around carved-out Spaces; '
     'no hairline/zero-width slits. Open-to-below voids extend to the wall where owner-directed; consumed wall strips are recorded. '
     'Rare retained islands leave the host whole and are shown in front, dashed, and in a deeper category shade. '
     'Area sf (check only): polygon areas are scale cross-checks, not quantity takeoffs; owner CAD governs area takeoffs. '
