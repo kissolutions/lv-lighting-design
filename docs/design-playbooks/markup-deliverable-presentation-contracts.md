@@ -17,7 +17,7 @@ related_pages:
 
 # LV Markup Deliverable Presentation Contracts
 
-Revision: 2026-10-30. Consolidates owner directions of October 29–30, 2026.
+Revision: 2026-11-01. Consolidates owner directions of October 29–30 and the final live FreeText form H selected November 1, 2026.
 Status: owner-directed presentation definitions; owner-authorized publication to main on October 30, 2026. Reusable generator implementation and viewer verification remain separate work. Draft page status does not reopen explicit owner decisions.
 
 ## 1. Authority and purpose
@@ -37,7 +37,9 @@ These definitions refine plan markups; they do not renumber M1–M6 or review pa
 Presentation form is distinct from engineering/source revision, review status and commercial estimate class. Record component name, form, source/model revision, placement/route revision where relevant, and output issue revision in the existing issue manifest or project issue record. Do not add unversioned fields to canonical schemas.
 
 - All markup text/ID annotations use **4 pt at native PDF scale**, with **1.00 text margins on all sides**, including single-line labels. Preserve this setting explicitly; do not silently autosize text or use zero margins.
-- Owner's limited Bluebeam testing identifies zero margins as the apparent trigger for text enlargement/color changes on movement. A second move can restore text appearance while leaving an oversized box. The owner-established working fix is 1.00 margins. This is scoped field evidence, not a universal viewer certification.
+- **Live FreeText form H (2026-11-01):** Follow [Live FreeText Form H](live-freetext-form-h.md). Write the 1.00 margin as `margin:1pt` in `/DS`; **do not write `/RD` or generated `/RC`**. Match `/DA`, `/DS` and explicit appearance font/size/color. `/DS` uses family before size, 4.6 pt leading, and the metric-sized layout. Appearance `/BBox` equals `/Rect` in page coordinates, with no placement matrix. The shared helper/normalizer and live-plan checker implement this profile.
+- The earlier margin-only causal explanation is superseded by later owner tests and annotation read-back: inconsistent styles, missing CSS margin, wrapping/color conversion and Foxit appearance rewriting contributed. The final owner-selected form H opened acceptably in Bluebeam; Foxit multi-line leading differences remain accepted. This is scoped field evidence, not universal viewer certification.
+- **Bluebeam is the editing tool; Foxit is view-only.** Normalize any Foxit-saved live PDF into a new revision before more Bluebeam editing. Use `python -m tools.normalize_freetext_ap INPUT.pdf NEW_REVISION.pdf`, then the live-plan checker. Preserve IDs, contents, layer membership and current label top-left; resizing label boxes/rebuilding appearances is intentional. Normalization does not recover already-lost positions.
 - Where testing is performed, inspect font, color, box dimensions and margins through two moves, save and reopen. Do not infer correctness from one unchanged-file round trip.
 - Render labels above linework. Move label offsets independently of physical anchors.
 - Keep editable graphic and text annotations separately identity-linked to their authoritative entity. Preserve immutable annotation IDs outside the short display metadata. Do not append machine payloads to the Light Point Subject.
@@ -228,5 +230,5 @@ Before handoff, verify the saved artifact against the selected composition: corr
 
 A flattened Abridged reference in a Full composite is intentionally not editable; its retained live source is the place to make authoritative changes. New working annotations remain editable. A Full file name alone does not prove all embedded references are live.
 
-This change is documentation only: no canonical schema, engineering validator, generator or existing project PDF is modified. Existing structural checks do not certify font/margin behavior, visual completeness, popup survival or viewer compatibility. No claimed PDF proof or construction acceptance follows from publishing this contract.
+The original October 30 contract was documentation only. The November 1 form-H implementation adds a live FreeText style/layout helper, updates the subzone writer, extends the saved-PDF checker, and provides a new-revision normalizer. Checks cover style/appearance agreement, CSS margins, width/height and Bluebeam-workflow BBox/matrix conventions; they do not certify native viewer behavior, visual completeness or popup survival. No engineering schema/validator or existing project PDF is changed by this framework update. No construction acceptance or maintaining-agent native-viewer proof is implied.
 

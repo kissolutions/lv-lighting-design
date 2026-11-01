@@ -8,6 +8,7 @@ from pathlib import Path
 from pypdf import PdfWriter
 from pypdf.generic import (DictionaryObject, NameObject, TextStringObject,
                           ArrayObject, FloatObject, DecodedStreamObject)
+from generators.freetext_style import apply_style
 from generators.model_intake_review import upgrade_v08
 from generators.model_intake import check_model
 from generators.milestone_markup import schedules, export_schedules, ROOM_REVIEW_NOTE
@@ -32,10 +33,9 @@ def pdf_fixture(missing_label=False, missing_ap=False, bad_room=False):
     if not missing_label:
         label=DictionaryObject({NameObject('/Type'):NameObject('/Annot'),NameObject('/Subtype'):NameObject('/FreeText'),
             NameObject('/Rect'):arr([30,30,100,50]),NameObject('/NM'):TextStringObject('LIGHT-NM'),NameObject('/Contents'):TextStringObject('L001')})
-        if not missing_ap:
-            stream=DecodedStreamObject();stream.set_data(b'q 0 0 10 10 re S Q')
-            stream.update({NameObject('/Type'):NameObject('/XObject'),NameObject('/Subtype'):NameObject('/Form'),NameObject('/BBox'):arr([0,0,70,20])})
-            label[NameObject('/AP')]=DictionaryObject({NameObject('/N'):writer._add_object(stream)})
+        apply_style(writer, label, rgb=(0, 0, 0))
+        if missing_ap:
+            label.pop(NameObject('/AP'))
         writer.add_annotation(0,label)
     buffer=io.BytesIO();writer.write(buffer);buffer.seek(0);return buffer
 

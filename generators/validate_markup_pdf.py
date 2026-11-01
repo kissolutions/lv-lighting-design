@@ -4,6 +4,7 @@ import csv
 import json
 from pathlib import Path
 from pypdf import PdfReader
+from .freetext_style import style_issues
 
 REGISTER_FIELDS=('annotation_id','entity_id','entity_type','role','plan_page_number',
                  'nested_in','source_tag','assembly_id')
@@ -80,6 +81,7 @@ def inspect_pdf(pdf, records, plan_pages):
                 if len(color) not in (1,3,4) or any(not 0<=float(c)<=1 for c in color):fail('Room fill /IC missing/invalid: '+aid)
                 if opacity is None or not 0<float(opacity)<=1:fail('Room opacity /CA missing/invalid: '+aid)
             if subtype=='/FreeText':
+                issues.extend(style_issues(a, str(aid)))
                 ap=a.get('/AP');ap=ap.get_object() if hasattr(ap,'get_object') else ap
                 normal=ap.get('/N') if ap else None
                 normal=normal.get_object() if hasattr(normal,'get_object') else normal

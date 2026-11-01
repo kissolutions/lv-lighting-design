@@ -9,6 +9,7 @@ on the ORIGINAL accepted M2 PDF, never on a prior subzone output.
 import argparse
 import json
 import re
+from .freetext_style import apply_style
 from pathlib import Path
 from pypdf import PdfReader,PdfWriter
 from pypdf.generic import DictionaryObject,NameObject,TextStringObject,ArrayObject,FloatObject,NumberObject
@@ -56,12 +57,15 @@ def render(source_pdf,output_pdf,manifest,page_map):
             NameObject('/Rect'):rect,
             NameObject('/NM'):TextStringObject(a['annotation_id']),
             NameObject('/Contents'):TextStringObject(a['display_label']),
-            NameObject('/DA'):TextStringObject('/Helv 11 Tf 0 0 0 rg'),
+            NameObject('/DA'):TextStringObject('/Helv 4 Tf 0 0 0 rg'),
             NameObject('/F'):NumberObject(4),
             NameObject('/T'):TextStringObject('KIS Subzone Label'),
             NameObject('/Subj'):TextStringObject('Subzone '+a['display_label']),
             NameObject('/C'):ArrayObject([FloatObject(.85),FloatObject(.92),FloatObject(.98)])
         })
+        # Form H sizes the 4 pt badge around the same top-left label origin.
+        # Neither this label box nor its appearance changes the Light Point anchor.
+        apply_style(writer, annotation, rgb=(0, 0, 0))
         writer.add_annotation(page_number=idx,annotation=annotation)
         # Match original annotation by persistent PDF /NM (source annotation ID),
         # then append/upsert one structured comment field without altering others.

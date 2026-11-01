@@ -10,6 +10,7 @@ from pypdf.generic import DictionaryObject,NameObject,TextStringObject,ArrayObje
 from generators.subzone_review import (validate,export,import_review,label_manifest,
     proposed_zone_tree,apply_accepted_zone_tree,sequence_reverification_impact,discussion_findings)
 from generators.model_zone_hierarchy import upgrade_v07
+from generators.freetext_style import label_rect, style_issues
 from generators.subzone_pdf import render
 
 
@@ -149,14 +150,17 @@ class SubzoneTests(unittest.TestCase):
             anns=[x.get_object() for x in PdfReader(str(output)).pages[0]['/Annots']]
             byid={str(a.get('/NM')):a for a in anns}
             rect=byid['SZLABEL-L101']['/Rect']
-            # top-left (100,200) on 400x800 -> native (100,600), badge +12,+29/-19,-2
-            self.assertEqual([float(x) for x in rect],[112.0,581.0,129.0,598.0])
+            # Source anchor (100,200) -> native (100,600); badge top-left stays (112,598).
+            # Only the label box changes to fit the required 4 pt form-H text.
+            self.assertEqual([float(x) for x in rect],label_rect(112,598,'a'))
+            self.assertEqual(style_issues(byid['SZLABEL-L101']),[])
             bottom=copy.deepcopy(labels[:1])
             bottom[0]['anchor_origin']='bottom_left'
             other=Path(d)/'bottom.pdf'
             render(base,other,bottom,{'PG1':0})
             a=PdfReader(str(other)).pages[0]['/Annots'][0].get_object()
-            self.assertEqual([float(x) for x in a['/Rect']],[112.0,181.0,129.0,198.0])
+            self.assertEqual([float(x) for x in a['/Rect']],label_rect(112,198,'a'))
+            self.assertEqual(style_issues(a),[])
 
     def test_pdf_rotated_page_requires_coordinate_reconciliation(self):
         m,r=case()
