@@ -49,7 +49,7 @@ Illustrative context (NOT a statement about any real project):
 }
 ```
 
-Input space types are the **reviewed** normalized energy-space tokens used by the rule data. Do not map an architectural room name to a token without confirmation. `daylight_control_required` is independently established after zone-area, wattage and exception screening; a window alone is insufficient. `null` is unresolved, not false.
+Input space types are the **reviewed** normalized energy-space tokens used by the rule data. Do not map an architectural room name to a token without confirmation. `daylight_control_required` is independently established after opening/zone qualification, power and exception screening; a window alone is insufficient. For IECC 2021 follow [the shared daylight review](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/iecc-2021-daylight-zone-review-v0.1.md), including overhang/obstruction evidence and corrected extents. `false` needs a supported controls-not-required determination; `null` is unresolved. Keep detailed geometry/evidence in linked project review records, without adding unversioned fields to canonical schemas. The evaluator does not calculate qualification or power thresholds. A false/skipped daylight result does not establish that a fixture group can be non-dimming.
 
 ## Per-assignment invocation
 
@@ -85,7 +85,7 @@ Use evaluator/build process 0.2.0 or later with parent catalog 0.2.0; the catalo
 
 The external 2021 rules now separate restroom/locker-room full automatic-on permission from the general <=50% auto-on/manual-on/manual-off branch. They also cover the selected other-space categories at **<=300 SF inclusive**, requiring **confirmed floor-to-ceiling-height enclosure**. Record `enclosed_full_height: true | false | null` in each endpoint context; a room polygon or room name is insufficient evidence. Missing/invalid area or enclosure remains unresolved, not false. Known area above 300 or known false enclosure excludes that catch-all rule without claiming overall compliance. Existing exclusive upper-area logic (for example open offices <300 SF) is unchanged.
 
-Both new rule entries remain `secondary_corroborated_needs_primary`: their functional checks may be satisfied without becoming source-qualified. Keep `needs_review` and obtain final primary-text review before promoting the evidence status. Missing occupancy/timeout still produces findings, and a timeout over 20 minutes still conflicts. The exception does not force full auto-on or forbid an available manual switch.
+At catalog 0.2.0 both new rule entries were `secondary_corroborated_needs_primary`. Catalog 0.2.2 subsequently marked only the restroom/locker-room rule `primary_text_reviewed` from the supplied section excerpt; the small-enclosed rule remains pending. Retain the pinned catalog's actual evidence status; satisfied functional checks do not close an unresolved source-evidence gap. Missing occupancy/timeout still produces findings, and a timeout over 20 minutes still conflicts. The exception does not force full auto-on or forbid an available manual switch.
 
 2024 rules and open-office limits are unchanged. Do not clear unrelated commissioning/code findings or modify accepted SEQ/PSEQ assignments when this catalog changes. Re-run into a new report and inspect deltas. These capabilities do not add unsupported fields to canonical Space schemas; the new enclosure fact belongs in the existing validation-context input.
 
