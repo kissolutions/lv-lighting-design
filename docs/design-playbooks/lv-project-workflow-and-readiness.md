@@ -103,6 +103,26 @@ Before M3 acceptance, produce a [separate narrative-versus-fixture cross-referen
 
 This is a manual/agent review directive; no automatic cross-reference validator, daylight geometry or structured sequence schema is claimed. M3 can close with identified downstream details deferred; missing direction and unresolved service contradictions remain M3 findings.
 
+## First-Pass M3 Auxiliary-Space Review
+
+**Owner direction, 2026-11-01:** On the first M3 classification/requirements pass, identify **all auxiliary/support Spaces**, including electrical and mechanical rooms, and explicitly raise questions about actual use/maintenance, sensing limitations, hazards from loss of lighting, continuous/emergency/security lighting and appropriate automatic shutoff/manual control. Follow [the shared first-pass inquiry](https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/room-classification-and-controls-review-playbook.md#step-1b--auxiliary-spaces-required-first-pass-m3-questions). List each affected Space in the initial owner review, reuse applicable recorded answers, and keep pending questions in existing review/open-item records. A room name establishes neither an exemption nor a safe automatic-OFF sequence. Unresolved consequential answers keep affected M3 direction and dependent distributor fixture requirements provisional; unrelated work proceeds. This is a required review step, not an implemented hazard classifier or schema extension.
+
+## Distributor Fixture Schedule — After M3 Requirements
+
+**Owner direction, 2026-11-01:** Generate the external fixture schedule for the lighting fixture distributor **after the energy-code and approved control requirements establish whether each included fixture group needs dimming**. This is a post-M3 requirements handoff for the included scope, distinct from the M2 source schedule and owner takeoff review.
+
+1. Start from the reviewed M2 fixture types, Light Point identities, quantities and scope dispositions. Preserve source schedule facts separately from the requested LV fixture/driver selections.
+2. Complete the applicable M3 energy-code requirements and adopted control direction for every included fixture group, including occupancy/manual operation, light reduction and daylight response where applicable. Resolve consequential exceptions and findings that could change fixture/driver selection. An unfinished code or sequence determination is not evidence that dimming is unnecessary.
+3. Record the required dimming scheme as **continuous, stepped or none**; stepped includes the required number of steps. Preserve known minimum output, dim-to-off and other selection-critical performance requirements with their basis. A code exception from dimming does not remove dimming required by the source design or approved owner direction.
+4. Once these prerequisites are met, generate the distributor schedule and associated BID-FX review package from the identified M2 and M3 revisions. Show each fixture type/group, reconciled quantity, required dimming behavior and known electrical/interface requirements. If one source fixture type serves groups with different requirements, distinguish those groups/quantities without renaming accepted source types or silently applying one group's requirements to all fixtures.
+5. Request the distributor's compatible fixture/driver selections, part numbers and product data, along with pricing/lead times as requested. Unknown vendor-dependent selections remain explicitly requested/TBD; do not invent an interface, LV voltage, CC/CV basis or part number. Required dimming behavior must already be determined before this distributor handoff. If it remains unresolved for any intended scope, hold the affected scope and identify the omission; do not present an incomplete schedule as the complete external package.
+
+M4 channel assignment, equipment placement and cable routing are not prerequisites for this fixture-selection request. Distributor responses supply product evidence for subsequent LV compatibility/load checks; sending the request does not establish product acceptance, purchase authorization or construction release. Later changes to adopted control requirements trigger an impact review and a new affected schedule/package revision.
+
+The M2 package still extracts and presents the **original MEP source fixture schedule before takeoff acceptance**, even while later dimming requirements are unresolved. That intake schedule is not the post-M3 distributor selection/pricing schedule.
+
+This adopts the distributor schedule's timing and requirements dependency only. The remaining external-package governance details are still bounded by [the BID-FX proposal status](markup-deliverable-presentation-contracts.md#13-external-bid-package-proposal-boundary). No new schema fields, automatic gate or package generator are claimed.
+
 ## Milestone Review Points
 
 For the M2 owner review, use the [plain-language checklist](../../templates/m2-user-review-checklist.md). Extraction/verification agents prepare the evidence and reconciliation; the owner reviews findings and records scoped acceptance. It supplements the milestone below without moving code/design approval into M2.
