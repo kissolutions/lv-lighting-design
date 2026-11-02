@@ -18,7 +18,7 @@ related_pages:
 
 # LV Markup Deliverable Presentation Contracts
 
-Revision: 2026-11-01. Consolidates owner directions of October 29–30 and the final live FreeText form H selected November 1, 2026.
+Revision: 2026-11-02. Consolidates owner directions of October 29–30, live FreeText form H and the November 1 flattened-reference field evidence adopted below.
 Status: owner-directed presentation definitions; owner-authorized publication to main on October 30, 2026. Reusable generator implementation and viewer verification remain separate work. Draft page status does not reopen explicit owner decisions.
 
 ## 1. Authority and purpose
@@ -71,13 +71,33 @@ Presentation form is distinct from engineering/source revision, review status an
 | M2 Lighting Takeoff | **M1 Room Boundaries — Flattened** | Current M2 Light Point graphics, IDs/type marks and other active M2 markup |
 | Later milestone/step | Required components from every earlier frozen step, flattened (or Abridged where explicitly specified) | Only that step's active device/zone/channel/route/review markup |
 
-This is the composition/assembly policy. It does not claim that a general PDF flattener, popup-classification adapter or frozen-reference validator is implemented. A supplied live master remains editable in its own step even though its downstream reference copy is flattened.
+This is the composition/assembly policy. The scoped FRL helper and structural checks below are implemented; they are not an annotation-to-content flattener or a popup-classification adapter. A supplied live master remains editable in its own step even though its downstream reference copy is flattened.
+
+### Flattened reference layer method
+
+**FRL adoption, 2026-11-02; owner field evidence, 2026-11-01.** Flattened prior-step references stay on independent layers so dense reference content can be turned off. Use one **Form XObject per reference component per page**, with its dictionary's `/OC` pointing to that component's OCG. Invoke it from an **added indirect stream** containing `q /Name Do Q`. Keep the component in native page PDF user space, with its own `/Resources` and a `/BBox` equal to the page `/MediaBox`. This Form is page content, not a live annotation or a FreeText appearance.
+
+- Preserve the existing `/Contents` stream references and bytes. Stream entries, including original entries in an array, must remain **indirect references**; never inline a stream or introduce a null entry. The helper isolates prior content with added indirect `q`/`Q` guards so a residual CAD transform/clip does not alter the new reference; original entries stay in order. An absent `/Contents` on an otherwise empty page is permitted.
+- Declare the reference OCG in catalog `/OCProperties /OCGs`, default ON and in `/D /Order`. Also declare and turn ON all background OCGs reached through page resources, including inherited resources, nested Forms and OCG membership dictionaries. Newly discovered background groups may be omitted from `/Order` to keep the layers panel concise. Preserve unrelated existing configurations, order and visibility.
+- Name each layer for its component, form and frozen source revision, for example `Light Points (Abridged, flattened reference M2-R3)`.
+- Use `generators.flattened_reference.add_flattened_layer(writer, page, ocg, content_ops, name)` on a writer-owned page, then `declare_page_ocgs(writer, plan_pages, markup_layers, include_background_in_order=False)`. Pages may be writer-owned PageObjects or 1-based writer page numbers. The helper preserves original streams/resources and chooses a collision-free Form resource name; optional Form resources can be supplied explicitly.
+- The helper paints already prepared operations; it does not infer geometry, remove source annotations, copy reference metadata, author popups or manage milestone identities. Assemble only the intended components, reconcile/remove inherited live duplicates through their source registers, and keep active-step annotations separate. Coordinates must already be registered; the helper does not convert frames.
+
+**Anonymized owner test:** With a direct original stream left in `/Contents`, Bluebeam omitted appended reference graphics and greyed their layer while Foxit/Poppler showed them. With background OCGs omitted from the catalog, Sumatra/MuPDF lost the CAD background while Bluebeam/Foxit showed it. Fixing the indirect streams and declaring background groups, using a Form XObject with `/OC`, showed the reference in Bluebeam (including layer toggle), Foxit Reader/Editor and Sumatra. A no-layer control also displayed after the stream fix. The field report says `qpdf --check` warned on defective builds and passed fixed builds.
+
+This is one-project field evidence, not universal certification or a new maintaining-agent Bluebeam test. **In-content BDC layering after the stream fix was not tested in Bluebeam.** The structural checker can recognize BDC use but that does not establish viewer compatibility; the helper generates the field-verified Form method. Locked live annotations remain a rejected substitute.
 
 ### Flattening and popup behavior
 
 Bluebeam's Flatten Markups supports **Show Properties in Popup**, with selected properties, and flattening to layers. Plainly drawing graphics into page content does not automatically reproduce popups. Select Subject for Light Point identification and the defined room/device information for their popups. Preserve independent layer visibility where the composition requires it. Verify popup behavior and layer controls in the actual saved publication and intended viewer; do not promise cross-viewer equivalence.
 
+**Scoped internal-reference fallback:** Until a generator popup method is verified, an internal downstream working set may carry reference identification in the relevant **current-step live annotation popups**, while the reference graphic has no popup. For example, each micro-channel line's popup lists its associated Light Points as ID + type. Record the reference component/source revision, identification carrier and **no reference popups** explicitly in the issue manifest/README; retain the source register and any richer metadata there. Do not imply full room/device properties were reproduced when only identification is carried. If no relevant live object can carry the identification, this fallback is unavailable.
+
+This fallback is an explicit internal FRL delivery limitation, not a redefinition of the full-information component forms. It **does not apply to external bidder PDFs**, which still require their defined properties popups. Use Bluebeam native flattening with properties enabled, or another separately verified popup-preserving method, for those issues. Do not retain locked live reference graphics to simulate a popup. The current live checker continues to reject unknown/locked annotations and is not a publication-popup validator.
+
 Reference: [Bluebeam Flatten Markups](https://support.bluebeam.com/user-manual/menus/document/flatten-markups.html). This reference supports the application method, not proof of a framework generator.
+
+Structural source: [PDF 32000-1:2008](https://opensource.adobe.com/dc-acrobat-sdk-docs/standards/pdfstandards/pdf/PDF32000_2008.pdf), page content/stream objects and optional-content sections 8.11.3.3–8.11.4.2. The Form helper does not implement arbitrary PDF repair.
 
 ## 3. Light Points
 
@@ -253,7 +273,18 @@ The DD1–DD17 source addenda remain unrecovered. Do not claim their formulas or
 
 Before handoff, verify the saved artifact against the selected composition: correct input revisions, required/absent layers, colors and labels, 4 pt text / 1.00 margins, accepted locations/chain order, exact Light Point Subject, room/device properties, layer visibility and popup retention after flattening. Check that reference lines are not reported as measured routes.
 
+For FRL reference content, additionally verify:
+
+- Every present plan-page `/Contents` entry is an indirect stream, with no direct/null entries; `qpdf --check` exits cleanly without warnings on the saved issue.
+- Every referenced background/reference OCG is declared, including groups in inherited/nested resources. Expected reference layers are declared, default ON and actually invoked with non-empty painting content on each page that should carry them. Declaration or an unused resource alone is insufficient.
+- In Bluebeam and one spec-strict viewer (MuPDF/Sumatra), verify both the background and reference graphics, and the reference layer toggle. Foxit-only or Poppler-only checks did not expose the field defects and are insufficient.
+- Verify required popups, or the permitted **internal** identification-carrier fallback and recorded absence, separately. Structural checks do not prove visibility, popup preservation, clipping/opacity correctness or OCMD visibility logic.
+
+`python -m generators.validate_markup_pdf SET.pdf ACTIVE_REGISTER.csv --plan-pages 2 3 --reference-layers "Light Points (Abridged, flattened reference M2-R3)"` adds the named reference-layer checks to the existing live checks. CLI names are required on **all selected plan pages**. For differing per-page composition, Python `inspect_pdf(..., reference_layers={name: [2, 3]})` declares the exact 1-based page scope; do not infer applicability from whether content happens to exist. Run `qpdf --check SET.pdf` separately; the Python checker does not invoke qpdf or replace viewer testing. Its existing active-annotation identity, editability and zero-live-object checks remain in force.
+
+Earlier issues are not regenerated automatically. On an authorized reissue, inspect/repair the working derivative and create a new issue, preserving the frozen original.
+
 A flattened Abridged reference in a Full composite is intentionally not editable; its retained live source is the place to make authoritative changes. Current-step internal working annotations remain editable; issued external bidder design content is all flattened under the external contract. A Full file name alone does not prove all embedded references are live.
 
-The original October 30 contract was documentation only. The November 1 form-H implementation adds a live FreeText style/layout helper, updates the subzone writer, extends the saved-PDF checker, and provides a new-revision normalizer. Checks cover style/appearance agreement, CSS margins, width/height and Bluebeam-workflow BBox/matrix conventions; they do not certify native viewer behavior, visual completeness or popup survival. No engineering schema/validator or existing project PDF is changed by this framework update. No construction acceptance or maintaining-agent native-viewer proof is implied.
+The original October 30 contract was documentation only. The November 1 form-H implementation adds a live FreeText style/layout helper, updates the subzone writer, extends the saved-PDF checker, and provides a new-revision normalizer. November 2 adds the scoped FRL Form/OCG helper and structural checks. These checks do not certify native viewer behavior, visual completeness or popup survival. No engineering schema/check or existing project PDF is changed by FRL; synthetic verification and the owner's reported viewer evidence retain separate scope. No construction acceptance or maintaining-agent native Bluebeam proof is implied.
 

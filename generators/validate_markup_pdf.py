@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from pypdf import PdfReader
 from .freetext_style import style_issues
+from .flattened_reference import reference_structure_issues
 
 REGISTER_FIELDS=('annotation_id','entity_id','entity_type','role','plan_page_number',
                  'nested_in','source_tag','assembly_id')
@@ -30,10 +31,13 @@ def write_annotation_register(path, records, model):
         writer=csv.DictWriter(f,fieldnames=REGISTER_FIELDS);writer.writeheader();writer.writerows(rows)
 
 
-def inspect_pdf(pdf, records, plan_pages):
+def inspect_pdf(pdf, records, plan_pages, reference_layers=None):
     """plan_pages uses final-PDF 1-based page numbers, excluding schedule pages.
 
     Register roles: room_footprint, light_label, other. Checks actual saved objects.
+    Optional reference_layers names must have default-ON painting content on
+    every selected plan page (or use a name -> 1-based pages mapping via Python).
+    Flattened content is never a substitute for current-step live annotations.
     """
     reader=PdfReader(pdf);issues=[];counts={};expected={};actual={}
     def fail(message):issues.append(message)
@@ -87,6 +91,7 @@ def inspect_pdf(pdf, records, plan_pages):
                 normal=normal.get_object() if hasattr(normal,'get_object') else normal
                 if not hasattr(normal,'get_data') or not normal.get_data():fail('FreeText appearance stream missing/empty: '+aid)
     for aid in set(expected)-set(actual):fail('Registered annotation missing from PDF: '+aid)
+    issues.extend(reference_structure_issues(reader,plan_pages,reference_layers))
     return dict(checks_pass=not issues,issues=issues,annotations_per_plan_page=counts)
 
 
@@ -94,9 +99,10 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('pdf',type=Path);p.add_argument('register',type=Path)
     p.add_argument('--plan-pages',type=int,nargs='+',required=True)
+    p.add_argument('--reference-layers',nargs='+',help='Named flattened layers required on every selected plan page.')
     args=p.parse_args()
     with args.register.open(newline='') as f:records=list(csv.DictReader(f))
-    report=inspect_pdf(args.pdf,records,args.plan_pages)
+    report=inspect_pdf(args.pdf,records,args.plan_pages,args.reference_layers)
     print(json.dumps(report,indent=2));return 0 if report['checks_pass'] else 1
 
 
