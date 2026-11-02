@@ -9,6 +9,7 @@ invocation_triggers:
   systems_present: [low_voltage_lighting]
 decision_axes: [deliverable_composition, annotation_presentation, publication_edition, owner_handoff]
 related_pages:
+  - "external-bid-packages.md"
   - "milestone-review-packages.md"
   - "control-system-markup-legend.md"
   - "lv-project-workflow-and-readiness.md"
@@ -24,7 +25,7 @@ Status: owner-directed presentation definitions; owner-authorized publication to
 
 Presentation inconsistency is an identified framework deficiency. A deliverable's content, composition, labels, colors, editability and dependencies are explicit contracts, not choices to reinvent during each project. This page takes precedence over conflicting older presentation wording for the deliverables defined here. Preserve source authority, engineering checks, accepted geometry, stable IDs, assignments and chain order.
 
-These definitions refine plan markups; they do not renumber M1–M6 or review packages P1–P6, replace schedule contracts, approve construction, or silently adopt an entire external bid-package proposal.
+These definitions refine plan markups; they do not renumber M1–M6 or review packages P1–P6, replace named schedule contracts or approve construction. The explicit owner-adopted external package rules are now in [External LV Bid Packages](external-bid-packages.md); unreviewed technical/default details in the original proposal are not adopted by implication.
 
 ## 2. Forms, identity and shared rules
 
@@ -47,7 +48,7 @@ Presentation form is distinct from engineering/source revision, review status an
 - Compose from authoritative records and registered geometry, using the named presentation contracts. Do not use a flattened PDF as a new quantity/location database.
 - Include each shared source background, graphic and physical device once in a combined view. Reused components must not produce duplicate Light Points or room shapes.
 - Room boundaries are **not** a universal background. Include them only where the component definition calls for them.
-- Retain live masters. External flattening does not authorize flattening the editable design source. Locked/read-only external publication copies are distinct from unlocked owner-review masters; the detailed external issue/protection policy remains under reconciliation.
+- Retain live masters. All external bidder PDF design content is **fully flattened with defined properties popups retained and markup recovery disabled**. Locked live annotations are not a substitute. Bidders may add their own overlay markups and return separate schedules/proposals; these are not the internal design readback stream. Preserve layers/navigation where defined. Follow [the external publication/response contract](external-bid-packages.md#52-external-pdf-publication); external flattening never authorizes destroying the live source.
 
 ### Frozen prior steps and current-step editing
 
@@ -234,27 +235,25 @@ Do not invent these definitions during packaging. Use established older guidance
 
 ## 13. External bid-package proposal boundary
 
-The separate external package proposal identifies BID-FX (fixture supplier), BID-CTL (controls vendor) and BID-LV (installer). Preserve their audience-specific intent alongside P1–P6 and the existing Full/Abridged Basis of Design sets; do not silently replace those families.
+**Owner-adopted reconciliation, 2026-11-01:** [External LV Bid Packages](external-bid-packages.md) now defines BID-FX, BID-CTL and BID-LV as a distinct external family alongside internal P1–P6 and the named Basis of Design sets. This historical heading/anchor remains for existing links; the package/publication decisions below are no longer merely proposed.
 
-Recorded package direction:
+| Package | Adopted composition and dependency |
+|---|---|
+| BID-FX | Fixture schedule, Light Points — Flattened / External, individual Light Point list and optional data companion. Reviewed M2 quantities plus adopted M3 dimming/control requirements; not merely external P2. |
+| BID-CTL | Device schedule, scoped services, **logical single-line fan-outs** and detailed device/connection list. **No physical routing** or routing prerequisite. Optional location context does not import a routed coordinated set. |
+| BID-LV | Scope-first response/directives, cable and installation schedules/specifications, separate printed device/power/control sheet sets, detailed tables/alternates/open items and editable bid-response workbook. Physical route/quantity basis is required, with accepted/proposed content explicit. |
 
-- BID-FX: fixture schedule, typed Light Point plan sheets, individual Light Point table; workbook companion.
-- BID-CTL: orderable device schedule, layered per-level room/sequence/device/connection/network views, physical device list; workbook companion.
-- BID-LV: scope/directives, cable schedule, installation quantities/support specification, separate printed device/power/control sheets, detailed segments/support tables, alternates/open items and spreadsheet bid form.
+**Every external bidder PDF is fully flattened with defined tooltips/popups retained; disable markup recovery.** Preserve layers/navigation where specified. No locked live design-object substitute and no permissions preventing bidders' new overlay notes. Bidder markups, independent fixture schedules and quotations are separate responses; reconcile proposed changes into authoritative records before issuing a revision.
 
-**Adopted BID-FX timing — owner direction, 2026-11-01:** Generate the external distributor fixture schedule after reviewed M2 takeoff and M3 energy-code/adopted control requirements establish dimming needs for the included fixture groups. Follow [the distributor schedule gate](lv-project-workflow-and-readiness.md#distributor-fixture-schedule--after-m3-requirements). Carry required continuous/stepped/none behavior into the vendor request; M2 source schedules remain earlier intake evidence. This timing does not require M4 channels, equipment placement or cable routing.
+Reuse established colors/symbols and accepted chain order. Schedule-first applies to BID-FX/BID-CTL; BID-LV remains scope-first. Every designated frozen draft and issued file set is immutable; supersede rather than overwrite. Use the canonical package/revision naming and issue record in the linked contract.
 
-Apart from that explicit timing/requirements dependency, these remain **proposal-level package definitions**, not proof of reusable generators or wholesale adoption of their project examples. No real project counts, client files or product-specific defaults are imported here.
-
-The DD1–DD17 source proposals were not available in this reconciliation. Beyond the explicitly adopted BID-FX timing/requirements dependency above, external entry criteria, confidence vocabulary, allowances, naming/freeze rules and bid-form details cannot be claimed fully reconciled without them. Outstanding conflicts include schedule-first versus installer scope-first order; accepted-only source language versus explicitly proposed routes; frozen-draft replacement; equipment legends; and publication protection policy.
-
-Support-spacing, cable separation, truss attachment, hard-ceiling treatment, voltages, network power/length limits, termination methods and scope allocations require project/evidence basis. Unverified technical citations in the external proposal are not adopted standards. Estimate class, presentation form and commercial price commitment remain distinct.
+The DD1–DD17 source addenda remain unrecovered. Do not claim their formulas or engineering defaults were reviewed. Support-spacing, cable separation, truss attachment, hard-ceiling treatment, voltages, network power/length limits, termination methods and scope allocations remain project/evidence-based. These adopted package contracts do not implement generators, verify beta technical citations, assign an estimate class or approve construction.
 
 ## 14. Delivery verification and implementation limits
 
 Before handoff, verify the saved artifact against the selected composition: correct input revisions, required/absent layers, colors and labels, 4 pt text / 1.00 margins, accepted locations/chain order, exact Light Point Subject, room/device properties, layer visibility and popup retention after flattening. Check that reference lines are not reported as measured routes.
 
-A flattened Abridged reference in a Full composite is intentionally not editable; its retained live source is the place to make authoritative changes. New working annotations remain editable. A Full file name alone does not prove all embedded references are live.
+A flattened Abridged reference in a Full composite is intentionally not editable; its retained live source is the place to make authoritative changes. Current-step internal working annotations remain editable; issued external bidder design content is all flattened under the external contract. A Full file name alone does not prove all embedded references are live.
 
 The original October 30 contract was documentation only. The November 1 form-H implementation adds a live FreeText style/layout helper, updates the subzone writer, extends the saved-PDF checker, and provides a new-revision normalizer. Checks cover style/appearance agreement, CSS margins, width/height and Bluebeam-workflow BBox/matrix conventions; they do not certify native viewer behavior, visual completeness or popup survival. No engineering schema/validator or existing project PDF is changed by this framework update. No construction acceptance or maintaining-agent native-viewer proof is implied.
 

@@ -70,7 +70,8 @@ This is an October 2026 audit of the local documentation and tools, not a declar
 | 7. Assign zones and equipment | Functional zones, independent controller outputs, emergency command/backup paths, physical equipment identity | Hierarchy and Space references/checks implemented | Detailed source-to-implementation mapping, locations, sensor coverage, all outage paths, and project emergency performance review |
 | 8. Group supply channels | Light-to-channel assignments, limits/margins, units and aggregate capacity, reviewed one-room grouping | Arithmetic, reference, output-capacity, and declared backup checks implemented | Grouping remains manual; routing practicality/product constraints need review; no optimizer |
 | 9. Produce first design markup | One-room or one-sheet LV review PDF, IDs/legend, supporting load/assignment tables, open items | Model provides IDs, point anchors, relationships, and derived values | Full PDF writer/label layout and arbitrary frame transforms remain to develop; live-annotation gate implemented, tested Bluebeam Polygon readback owner-reported proven |
-| 10. Coordinate installer package | Locations, routes/endpoints, cable selections/length basis, controller/device schedule, connection details, quantities and sequences | Inputs partly available; v0.1 CSV exporter remains usable for v0.1 only | device/channel/installer schedules and selected BOM, routing topology, calibrated lengths, detailed device/connection output and installation rules |
+| 10a. Installer design-estimate package | BID-LV scoped locations/routes, cable and installation schedules, printed sheets, declared assumptions and bid form | Adopted [external package contract](external-bid-packages.md); reviewed project records supply the basis | Reusable package/bid-form generator and saved-PDF flatten/popup verification remain to implement/prove |
+| 10b. Construction installer coordination | Complete selected products, installation details, coordinated routes, specifications and responsible review/release evidence | Existing M5 coordinated-issue review remains the construction gate | Full construction-package definition and generator; estimate issue does not establish release |
 | 11. Review and issue | Approved scope/revision, resolved release blockers, coordinated package and approval record | Manual review can use existing decisions/open items | Formal release checklist, approval tracking and complete cross-deliverable reconciliation |
 | 12. Installation and field changes | Substitution/field-change log, impact checks and revised affected outputs | Stable IDs and source/decision provenance support revision review | Defined change/diff workflow and reliable drawing/model round trip; authorized field changes still need documented approval |
 | 13. Commission and close | Function tests, deficiency closure, accepted configuration, final schedules/markups and as-built record | Normal/emergency intent provides part of the test basis | Test protocols/results, coverage/daylight testing, installed configuration and as-built reconciliation not implemented |
@@ -125,7 +126,19 @@ M4 channel assignment, equipment placement and cable routing are not prerequisit
 
 The M2 package still extracts and presents the **original MEP source fixture schedule before takeoff acceptance**, even while later dimming requirements are unresolved. That intake schedule is not the post-M3 distributor selection/pricing schedule.
 
-This adopts the distributor schedule's timing and requirements dependency only. The remaining external-package governance details are still bounded by [the BID-FX proposal status](markup-deliverable-presentation-contracts.md#13-external-bid-package-proposal-boundary). No new schema fields, automatic gate or package generator are claimed.
+The timing/requirements dependency is adopted together with the later [external package/publication contract](external-bid-packages.md). BID-FX remains distinct from the M2 source schedule. Unrecovered DD technical details are not adopted by implication; no new schema fields, automatic gate or package generator are claimed.
+
+## External Bid-Package Readiness
+
+Follow [External LV Bid Packages](external-bid-packages.md). These are audience-specific issues, not new numbered milestones or construction release.
+
+| Package | Evidence needed for the scoped request | Not a prerequisite |
+|---|---|---|
+| BID-FX | Reviewed M2 takeoff and adopted M3 fixture-group dimming/control requirements; schedule, typed points and individual list | M4 channel assignment, equipment placement and physical routing |
+| BID-CTL | Reviewed equipment quantities/selection basis, architecture, required behavior and **logical single-line fan-outs**; services and unknowns scoped separately | Accepted geographic placement, physical routing, cable lengths, supports/raceway or installer quantities |
+| BID-LV | Scoped placements, physical route/endpoints and cable/installation quantity basis, accepted/proposed status, supply/install responsibility split and frozen estimate revision | Construction release; this remains a declared estimate issue |
+
+Every issued bidder PDF design object is flattened with properties popups and markup recovery disabled. Bidders may overlay their own notes and return separate schedules/proposals; proposed changes are reviewed into authoritative records before new issues. Keep designated frozen drafts and issued sets immutable. Preserve existing colors, chain order and independent package revisions.
 
 ## Milestone Review Points
 

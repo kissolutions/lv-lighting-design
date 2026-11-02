@@ -16,34 +16,7 @@ related_pages:
 
 **Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
 
-## Legend
-
-| Component | Symbol | Color | Example |
-|---|---|---|---|
-| PDU (current power component) | Rectangle | RED | PDU-01 |
-| CIO | Rectangle | BLUE | CIO-01 |
-| QDCD / driver controller | Square | BLUE | QDCD-01 |
-| Sensor aggregator | Diamond | BLUE | SW8-01 / SW4-01 |
-| Occupancy sensor | Diamond | RED | OCC-01 |
-| ALS / daylight sensor | Diamond | GREEN | DL-01 |
-| Combined ALS / occupancy sensor | Diamond | PURPLE | Preserve assigned device ID |
-| Wall controller | `---
-title: "Control-System Markup Legend"
-page_type: playbook
-page_status: draft
-confidence_level: medium
-domain_primary: low-voltage-lighting
-ai_role: prescriptive_standard
-invocation_triggers:
-  systems_present: [low_voltage_lighting, smartdc]
-decision_axes: [power_allocation, controls, equipment_placement, owner_review]
-related_pages:
-  - "https://github.com/kissolutions/knowledgebase_wikijs/blob/main/design-playbooks/smartdc-allocation-index.md"
----
-
-# Control-System Markup Legend
-
-**Presentation authority — October 30, 2026:** Follow [Markup Deliverable Presentation Contracts](markup-deliverable-presentation-contracts.md) for Full/Live, Flattened and Abridged forms and their explicit component dependencies. That contract supersedes conflicting older presentation text on this page, including ID-only Light Point display, all-purple room devices, mandatory room backgrounds, and blanket prohibitions on flattened publication/reference components. Use 4 pt markup text with 1.00 margins; retain live masters, stable identities, accepted geometry and engineering review requirements. Unspecified conventions remain in force. Documentation is not a claim of renderer implementation.
+**External publication:** Reuse this symbol/color scheme in [external bid packages](external-bid-packages.md). Issued bidder PDF design content is fully flattened with properties popups retained and no markup recovery; bidders may add their own overlay notes. Internal active-step owner review retains its live-source/readback rules.
 
 ## Legend
 
@@ -56,7 +29,7 @@ related_pages:
 | Occupancy sensor | Diamond | RED | OCC-01 |
 | ALS / daylight sensor | Diamond | GREEN | DL-01 |
 | Combined ALS / occupancy sensor | Diamond | PURPLE | Preserve assigned device ID |
- | BLUE | WC-01 |
+| Wall controller | `$` | BLUE | WC-01 |
 | Wall dimming controller | `$D` | BLUE | WC-02 |
 
 Device ID labels are required in Full and full-information Flattened forms, particularly shared rectangle/diamond shapes; explicitly defined Abridged forms omit external labels and retain identification in properties popups. `$D` is the accepted initial glyph; no special dollar-stroked D is required. Symbols show proposed physical locations. QDCD labels/callouts reference existing micro channels and outputs; sensor/wall labels reference served functional zones. Maintain visible proposal/owner-review status and annotation IDs mapped to device IDs.
@@ -95,4 +68,4 @@ Use an editable **cyan Polygon** on the cabling layer, with stable annotation/re
 
 Record geometry/frame, author, reason, source/owner basis and the existing review_status/location_basis. No reason means an incomplete review object. Do not infer exclusions from room names or promote demonstration zones to owner facts. Source-established obstacles and reviewer-stated restrictions retain separate provenance.
 
-A high per-foot weight can guide a crossing, but it does not prove compliance with crossing-only/support restrictions; validate the route against the actual rule. Document necessary fixture-drop treatment separately rather than silently granting through-traffic exceptions. Unknown/new returned IDs require owner reconciliation, never proximity matching. All delivered versions remain editable and unflattened.
+A high per-foot weight can guide a crossing, but it does not prove compliance with crossing-only/support restrictions; validate the route against the actual rule. Document necessary fixture-drop treatment separately rather than silently granting through-traffic exceptions. Unknown/new returned IDs require owner reconciliation, never proximity matching. Internal active-step review copies remain editable; included frozen-step references and issued external bidder copies follow the governing flattening/publication contracts.
